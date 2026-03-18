@@ -34,6 +34,9 @@
 # Ignore key files for decrypting credentials and more.
 /config/*.key
 
+# Ignore lofimx tools
+/flargon
+
 # Ignore slop tools
 .claude/settings.local.json
 .claude/settings.json
