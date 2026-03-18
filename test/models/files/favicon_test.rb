@@ -79,17 +79,17 @@ class Files::FaviconTest < ActiveSupport::TestCase
     assert_equal "image/png", favicon.content_type
   end
 
-  # --- Broken favicon: shittycodingagent.ai (HTML served as favicon) ---
+  # --- Broken favicon: HTML served as favicon ---
 
   test "HTML content is invalid as a favicon" do
-    content = read_fixture("favicon_html_shittycodingagent.html")
+    content = read_fixture("favicon_html_page.html")
     favicon = Files::Favicon.new(content, "text/html")
 
     assert_not favicon.valid?
   end
 
   test "HTML content is not sanitized or converted" do
-    content = read_fixture("favicon_html_shittycodingagent.html")
+    content = read_fixture("favicon_html_page.html")
     favicon = Files::Favicon.new(content, "text/html")
 
     assert_equal content, favicon.content
