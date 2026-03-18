@@ -1,0 +1,8 @@
+# Local development/testing override.
+# docker compose automatically merges this with docker-compose.yml.
+# This builds the image locally instead of pulling from Docker Hub.
+
+services:
+  web:
+    build: .
+    image: deobald/kaya_server:latest

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Save Button" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Save Button">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="color-scheme" content="light dark">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Apply theme immediately to prevent flash of wrong theme %>
+    <script>
+      (function() {
+        const theme = localStorage.getItem('theme');
+        if (theme && theme !== 'auto') {
+          document.documentElement.setAttribute('data-theme', theme);
+        }
+      })();
+    </script>
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css">
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <% if content_for?(:hide_header) %>
+      <%= render "shared/flash" %>
+      <%= yield %>
+    <% elsif content_for?(:app_layout) %>
+      <div data-controller="add-modal">
+        <%= render "shared/app_header" %>
+        <%= render "shared/flash" %>
+        <%= yield %>
+        <%= render "shared/add_modal" %>
+      </div>
+    <% else %>
+      <%= render "shared/header" %>
+      <%= render "shared/flash" %>
+      <%= yield %>
+    <% end %>
+    <%= render "shared/footer" %>
+  </body>
+</html>

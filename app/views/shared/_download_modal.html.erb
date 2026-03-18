@@ -1,0 +1,125 @@
+<% assets = Releases::GithubRelease.assets %>
+
+<div class="download-modal"
+     data-download-modal-target="modal"
+     data-action="click->download-modal#closeOnBackdrop keydown.esc->download-modal#closeOnEscape"
+     tabindex="-1">
+  <div class="download-modal-dialog">
+    <header class="download-modal-header">
+      <h2 class="download-modal-title">Download Save Button</h2>
+      <button type="button"
+              class="download-modal-close"
+              data-action="click->download-modal#close"
+              aria-label="Close">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </header>
+    <div class="download-modal-content">
+
+      <%# Windows panel %>
+      <div class="download-panel hidden" data-download-modal-target="panel" data-platform="windows">
+        <div class="download-grid">
+          <% if assets[:windows_msi] %>
+            <a href="<%= assets[:windows_msi] %>" class="download-item">
+              <img src="/icons/platforms/windows.png" alt="Windows" class="download-icon">
+              <div class="download-info">
+                <span class="download-name">x86 Windows Installer</span>
+                <span class="download-format">.msi</span>
+              </div>
+            </a>
+          <% end %>
+        </div>
+      </div>
+
+      <%# macOS panel %>
+      <div class="download-panel hidden" data-download-modal-target="panel" data-platform="macos">
+        <div class="download-grid">
+          <% if assets[:macos_intel] %>
+            <a href="<%= assets[:macos_intel] %>" class="download-item">
+              <img src="/icons/platforms/macos.png" alt="macOS" class="download-icon">
+              <div class="download-info">
+                <span class="download-name">Intel (x86)</span>
+                <span class="download-format">.dmg</span>
+              </div>
+            </a>
+          <% end %>
+          <% if assets[:macos_apple_silicon] %>
+            <a href="<%= assets[:macos_apple_silicon] %>" class="download-item">
+              <img src="/icons/platforms/macos.png" alt="macOS" class="download-icon">
+              <div class="download-info">
+                <span class="download-name">Apple Silicon</span>
+                <span class="download-format">.dmg</span>
+              </div>
+            </a>
+          <% end %>
+        </div>
+      </div>
+
+      <%# Linux panel %>
+      <div class="download-panel hidden" data-download-modal-target="panel" data-platform="linux">
+        <p class="apps-description">
+            If you aren't sure which package you need for your Linux distribution, download the Flatpak.
+            <a href="https://flatpak.org/setup/">Flatpaks</a> are the correct way to install apps on Linux.
+            <br>
+        </p>
+        <div class="download-grid">
+          <a href="<%= Releases::GithubRelease::AUR_URL %>" class="download-item" target="_blank" rel="noopener noreferrer">
+            <img src="/icons/platforms/arch.svg" alt="Arch Linux" class="download-icon">
+            <div class="download-info">
+              <span class="download-name">Arch Linux</span>
+              <span class="download-format">AUR</span>
+            </div>
+          </a>
+          <% if assets[:linux_deb] %>
+            <a href="<%= assets[:linux_deb] %>" class="download-item">
+              <img src="/icons/platforms/debian.svg" alt="Debian" class="download-icon">
+              <div class="download-info">
+                <span class="download-name">Debian</span>
+                <span class="download-format">.deb</span>
+              </div>
+            </a>
+          <% end %>
+          <% if assets[:linux_rpm] %>
+            <a href="<%= assets[:linux_rpm] %>" class="download-item">
+              <img src="/icons/platforms/fedora.svg" alt="Fedora" class="download-icon">
+              <div class="download-info">
+                <span class="download-name">Fedora</span>
+                <span class="download-format">.rpm</span>
+              </div>
+            </a>
+          <% end %>
+          <% if assets[:linux_flatpak] %>
+            <a href="<%= assets[:linux_flatpak] %>" class="download-item">
+              <img src="/icons/platforms/flatpak.svg" alt="Flatpak" class="download-icon">
+              <div class="download-info">
+                <span class="download-name">Flatpak</span>
+                <span class="download-format">.flatpak</span>
+              </div>
+            </a>
+          <% end %>
+          <% if assets[:linux_ebuild] %>
+            <a href="<%= assets[:linux_ebuild] %>" class="download-item">
+              <img src="/icons/platforms/gentoo.svg" alt="Gentoo" class="download-icon">
+              <div class="download-info">
+                <span class="download-name">Gentoo</span>
+                <span class="download-format">.ebuild</span>
+              </div>
+            </a>
+          <% end %>
+          <% if assets[:linux_snap] %>
+            <a href="<%= assets[:linux_snap] %>" class="download-item">
+              <img src="/icons/platforms/ubuntu.svg" alt="Ubuntu" class="download-icon">
+              <div class="download-info">
+                <span class="download-name">Ubuntu</span>
+                <span class="download-format">.snap</span>
+              </div>
+            </a>
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

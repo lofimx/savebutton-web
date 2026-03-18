@@ -1,0 +1,93 @@
+<% content_for :app_layout, true %>
+
+<div class="everything-container" data-controller="preview-modal">
+  <div class="search-container">
+    <%= form_with url: app_everything_path, method: :get, class: "search-form", data: { controller: "search", turbo_frame: "anga-results" } do |f| %>
+      <input type="search"
+             name="q"
+             value="<%= params[:q] %>"
+             placeholder="Search your cards..."
+             autocomplete="off"
+             class="search-input"
+             autofocus
+             data-search-target="input"
+             data-action="input->search#search keydown.enter->search#submit">
+    <% end %>
+  </div>
+
+  <%= turbo_frame_tag "anga-results" do %>
+    <div class="anga-grid">
+      <% @angas.each do |anga| %>
+        <%
+          file_type = Files::FileType.new(anga.filename)
+          original_url = anga.bookmark_url if file_type.bookmark?
+          cache_url = if file_type.bookmark? && anga.bookmark&.cached?
+                        app_anga_cache_file_path(anga, "index.html")
+                      end
+          cache_status_url = if file_type.bookmark?
+                               app_anga_cache_status_path(anga)
+                             end
+        %>
+        <div class="anga-tile"
+             id="anga-tile-<%= anga.id %>"
+             data-action="click->preview-modal#open"
+             data-preview-url="<%= app_anga_preview_path(anga) %>"
+             data-preview-filename="<%= anga.filename %>"
+             data-preview-type="<%= file_type.preview_type %>"
+             data-anga-id="<%= anga.id %>"
+             data-meta-url="<%= app_anga_meta_path(anga) %>"
+             data-save-meta-url="<%= app_anga_save_meta_path(anga) %>"
+             data-share-url="<%= share_anga_url(user_id: Current.user.id, filename: anga.filename) %>"
+             <%= "data-preview-original-url=#{original_url}" if original_url %>
+             <%= "data-preview-cache-url=#{cache_url}" if cache_url %>
+             <%= "data-cache-status-url=#{cache_status_url}" if cache_status_url %>>
+          <% if file_type.note? || file_type.text? %>
+            <div class="anga-tile-content anga-tile-note">
+              <% if anga.file.attached? %>
+                <div class="note-preview"><%= anga.file.download.force_encoding('UTF-8').truncate(500) %></div>
+              <% end %>
+            </div>
+          <% elsif file_type.bookmark? %>
+            <% if anga.bookmark&.favicon&.attached? %>
+              <div class="anga-tile-content anga-tile-bookmark" data-controller="favicon-fallback">
+                <%= image_tag app_anga_cache_file_path(anga, "favicon.ico"), class: "bookmark-favicon", alt: "Favicon", data: { action: "error->favicon-fallback#showDefault" } %>
+                <template data-favicon-fallback-target="fallback">
+                  <%= render "shared/icons/bookmark_icon" %>
+                </template>
+              </div>
+            <% else %>
+              <div class="anga-tile-content anga-tile-bookmark">
+                <%= render "shared/icons/bookmark_icon" %>
+              </div>
+            <% end %>
+          <% elsif file_type.image? %>
+            <div class="anga-tile-content anga-tile-image">
+              <%= image_tag app_anga_preview_path(anga), alt: anga.filename %>
+            </div>
+          <% elsif file_type.pdf? %>
+            <div class="anga-tile-content anga-tile-pdf">
+              <%= render "shared/icons/pdf_icon" %>
+            </div>
+          <% else %>
+            <div class="anga-tile-content anga-tile-file">
+              <div class="file-extension"><%= file_type.extension_name.upcase %></div>
+            </div>
+          <% end %>
+          <div class="anga-tile-filename"><%= file_type.bookmark? && original_url.present? ? original_url : display_filename(anga.filename) %></div>
+        </div>
+      <% end %>
+    </div>
+
+    <% if @angas.empty? %>
+      <div class="empty-state">
+        <% if params[:q].present? %>
+          <p>No results found.</p>
+        <% else %>
+          <p>No files yet. Start adding notes and bookmarks!</p>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <%= render "shared/preview_modal" %>
+</div>

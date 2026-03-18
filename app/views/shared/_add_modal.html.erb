@@ -1,0 +1,38 @@
+<div class="add-modal"
+     data-add-modal-target="modal"
+     data-action="click->add-modal#closeOnBackdrop keydown.esc->add-modal#closeOnEscape dragover->add-modal#dragOver dragenter->add-modal#dragEnter dragleave->add-modal#dragLeave drop->add-modal#drop"
+     tabindex="-1">
+  <div class="add-modal-dialog">
+    <header class="add-modal-header">
+      <h2 class="add-modal-title">Add</h2>
+      <button type="button"
+              class="add-modal-close"
+              data-action="click->add-modal#close"
+              aria-label="Close">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </header>
+    <div class="add-modal-content" data-add-modal-target="content">
+      <div class="add-modal-dropzone" data-add-modal-target="dropzone">
+        <textarea class="add-input"
+                  data-add-modal-target="input"
+                  placeholder="Enter bookmark/note..."
+                  rows="4"></textarea>
+        <div class="add-dropzone-hint">
+          <span>or drop files here</span>
+        </div>
+      </div>
+      <div class="add-modal-footer">
+        <button type="button"
+                class="btn btn-pill btn-primary"
+                data-action="click->add-modal#save"
+                data-add-modal-target="saveButton">
+          Save
+        </button>
+      </div>
+      <div class="add-modal-status hidden" data-add-modal-target="status"></div>
+    </div>
+  </div>
+</div>

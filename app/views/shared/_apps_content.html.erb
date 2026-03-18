@@ -1,0 +1,91 @@
+<div class="apps-subsection">
+  <h3 class="apps-subtitle">Mobile Apps</h3>
+  <p class="apps-description">Available for iPhone, iPad, Android phones, and Android tablets.</p>
+  <div class="store-buttons">
+    <a href="https://apps.apple.com/app/save-button-app/id6758891680" class="store-button" target="_blank" rel="noopener noreferrer">
+      <img src="/icons/platforms/app-store.svg" alt="Download on the App Store" class="store-badge">
+    </a>
+    <a href="https://play.google.com/store/apps/details?id=org.savebutton.app" class="store-button" target="_blank" rel="noopener noreferrer">
+      <img src="/icons/platforms/play-store.svg" alt="Get it on Google Play" class="store-badge">
+    </a>
+  </div>
+</div>
+
+<div class="apps-subsection">
+  <h3 class="apps-subtitle">Browser Extensions</h3>
+  <p class="apps-description">Save Button works on most browsers. If your browser is not listed, try installing from the Chromium link.</p>
+  <div class="browser-grid">
+    <a href="https://chromewebstore.google.com/detail/save-button/eeoleaffndkjkgbdhaojcgehcklfihid" class="browser-item" target="_blank" rel="noopener noreferrer">
+      <img src="/icons/browsers/chrome.png" alt="Chrome" class="browser-icon">
+      <span class="browser-name">Chrome</span>
+    </a>
+    <a href="https://addons.mozilla.org/en-US/firefox/addon/save-button/" class="browser-item" target="_blank" rel="noopener noreferrer">
+      <img src="/icons/browsers/firefox.png" alt="Firefox" class="browser-icon">
+      <span class="browser-name">Firefox</span>
+    </a>
+    <a href="https://microsoftedge.microsoft.com/addons/detail/save-button/ldcpchibphbafmclockfeoiffafjdekj" class="browser-item" target="_blank" rel="noopener noreferrer">
+      <img src="/icons/browsers/edge.png" alt="Edge" class="browser-icon">
+      <span class="browser-name">Edge</span>
+    </a>
+    <a href="https://apps.apple.com/app/save-button-for-safari/id6759535767" class="browser-item" target="_blank" rel="noopener noreferrer">
+      <img src="/icons/browsers/safari.png" alt="Safari" class="browser-icon">
+      <span class="browser-name">Safari</span>
+    </a>
+    <a href="https://chromewebstore.google.com/detail/save-button/eeoleaffndkjkgbdhaojcgehcklfihid" class="browser-item" target="_blank" rel="noopener noreferrer">
+      <img src="/icons/browsers/chromium.png" alt="Chromium" class="browser-icon">
+      <span class="browser-name">Chromium</span>
+    </a>
+    <a href="https://chromewebstore.google.com/detail/save-button/eeoleaffndkjkgbdhaojcgehcklfihid" class="browser-item" target="_blank" rel="noopener noreferrer">
+      <img src="/icons/browsers/brave.png" alt="Brave" class="browser-icon">
+      <span class="browser-name">Brave</span>
+    </a>
+    <a href="https://chromewebstore.google.com/detail/save-button/eeoleaffndkjkgbdhaojcgehcklfihid" class="browser-item" target="_blank" rel="noopener noreferrer">
+      <img src="/icons/browsers/vivaldi.png" alt="Vivaldi" class="browser-icon">
+      <span class="browser-name">Vivaldi</span>
+    </a>
+    <a href="https://chromewebstore.google.com/detail/save-button/eeoleaffndkjkgbdhaojcgehcklfihid" class="browser-item" target="_blank" rel="noopener noreferrer">
+      <img src="/icons/browsers/arc.png" alt="Arc" class="browser-icon">
+      <span class="browser-name">Arc</span>
+    </a>
+  </div>
+</div>
+
+<div class="apps-subsection" data-controller="download-modal">
+  <h3 class="apps-subtitle">Desktop Apps</h3>
+  <div class="platform-list">
+    <button type="button" class="platform-item" data-action="click->download-modal#open" data-download-platform="windows">
+      <img src="/icons/platforms/windows.png" alt="Windows" class="platform-icon">
+      <div class="platform-info">
+        <span class="platform-name">Windows</span>
+      </div>
+    </button>
+    <button type="button" class="platform-item" data-action="click->download-modal#open" data-download-platform="macos">
+      <img src="/icons/platforms/macos.png" alt="macOS" class="platform-icon">
+      <div class="platform-info">
+        <span class="platform-name">macOS</span>
+      </div>
+    </button>
+    <button type="button" class="platform-item" data-action="click->download-modal#open" data-download-platform="linux">
+      <img src="/icons/platforms/linux.png" alt="Linux" class="platform-icon">
+      <div class="platform-info">
+        <span class="platform-name">Linux</span>
+      </div>
+    </button>
+  </div>
+
+  <%= render "shared/download_modal" %>
+</div>
+
+<div class="apps-subsection">
+  <h3 class="apps-subtitle">Service</h3>
+  <p class="apps-description">Grab an account with savebutton.com or, if you're a big nerd, <a href="#nerd-features">host it yourself</a>.</p>
+  <div class="server-options">
+    <div class="server-option">
+      <% if authenticated? %>
+        <span class="btn btn-primary btn-disabled">You're already logged in!</span>
+      <% else %>
+        <%= link_to "Sign Up", new_registration_path, class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>

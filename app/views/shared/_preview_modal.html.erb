@@ -1,0 +1,126 @@
+<div class="preview-modal"
+     data-preview-modal-target="modal"
+     data-action="click->preview-modal#closeOnBackdrop keydown.esc->preview-modal#closeOnEscape"
+     tabindex="-1">
+  <div class="preview-modal-dialog preview-modal-with-sidebar">
+    <header class="preview-modal-header">
+      <h2 class="preview-modal-title" data-preview-modal-target="title"></h2>
+      <div class="preview-modal-actions">
+        <a href="#"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="btn btn-secondary hidden"
+           data-preview-modal-target="visitLink">
+          Visit original page
+        </a>
+        <button type="button"
+                class="preview-modal-close"
+                data-action="click->preview-modal#close"
+                aria-label="Close">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="preview-modal-body">
+      <div class="preview-modal-content" data-preview-modal-target="content">
+      </div>
+
+      <aside class="preview-sidebar" data-preview-modal-target="sidebar">
+        <button type="button"
+                class="sidebar-toggle"
+                data-action="click->preview-modal#toggleSidebar"
+                data-preview-modal-target="sidebarToggle"
+                aria-label="Toggle sidebar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+          <span class="sidebar-toggle-label" data-preview-modal-target="sidebarToggleLabel">Hide Sidebar</span>
+        </button>
+
+        <div class="sidebar-content" data-preview-modal-target="sidebarContent">
+          <section class="sidebar-section">
+            <h3 class="sidebar-section-title">Tags</h3>
+            <div class="tags-container">
+              <div class="tags-list" data-preview-modal-target="tagsList">
+              </div>
+              <div class="tag-input-container">
+                <input type="text"
+                       class="tag-input"
+                       placeholder="Add a tag..."
+                       data-preview-modal-target="tagInput"
+                       data-action="keydown.enter->preview-modal#addTag">
+                <button type="button"
+                        class="tag-add-btn"
+                        data-action="click->preview-modal#addTag"
+                        aria-label="Add tag">+</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="sidebar-section sidebar-section-note">
+            <h3 class="sidebar-section-title">Note</h3>
+            <textarea class="note-editor"
+                      placeholder="Add a note..."
+                      data-preview-modal-target="noteEditor"
+                      rows="6"></textarea>
+          </section>
+
+          <div class="sidebar-actions">
+            <button type="button"
+                    class="btn btn-secondary sidebar-action-btn"
+                    data-action="click->preview-modal#shareAnga"
+                    data-preview-modal-target="shareBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="18" cy="5" r="3"/>
+                <circle cx="6" cy="12" r="3"/>
+                <circle cx="18" cy="19" r="3"/>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+              </svg>
+              Share
+            </button>
+
+            <button type="button"
+                    class="btn btn-secondary sidebar-action-btn"
+                    disabled
+                    aria-label="Add to Space (coming soon)">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+              </svg>
+              Add to Space
+            </button>
+
+            <a class="btn btn-secondary sidebar-action-btn"
+               href="#"
+               download
+               data-preview-modal-target="downloadLink">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Download
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="preview-modal-footer">
+      <button type="button"
+              class="btn btn-secondary"
+              data-action="click->preview-modal#cancel">
+        Cancel
+      </button>
+      <button type="button"
+              class="btn btn-primary"
+              data-action="click->preview-modal#save"
+              data-preview-modal-target="saveBtn">
+        Save
+      </button>
+    </footer>
+  </div>
+</div>

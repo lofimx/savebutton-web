@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <path d="M60,40 H452 A20,20 0 0 1 472,60 V452 A20,20 0 0 1 452,472 H120 L40,392 V60 A20,20 0 0 1 60,40 Z" fill="#FFD700" stroke="black" stroke-width="14" stroke-linejoin="round"/>
+  <rect x="51" y="70" width="12" height="80" rx="6" fill="#ffffff" fill-opacity="0.5"/>
+  <rect x="51" y="320" width="10" height="40" rx="5" fill="#ffffff" fill-opacity="0.4"/>
+  <rect x="63" y="63" width="35" height="35" rx="5" fill="#4b3f00" stroke="#000000" stroke-width="8"/>
+  <rect x="414" y="63" width="35" height="35" rx="5" fill="#4b3f00" stroke="#000000" stroke-width="8"/>
+  <rect x="106" y="100" width="300" height="200" rx="25" fill="#FFFBE6" stroke="black" stroke-width="12"/>
+  <rect x="131" y="340" width="250" height="132" rx="20" fill="#E5E5E5" stroke="black" stroke-width="12"/>
+  <rect x="160" y="375" width="60" height="75" rx="10" fill="#FFD700" stroke="black" stroke-width="8"/>
+  <circle cx="169.42451" cy="171.17914" r="33.453533" fill="#000000"/>
+  <circle cx="343.38287" cy="171.17914" r="33.453533" fill="#000000"/>
+  <path d="m 222.95017,221.35943 q 33.45353,33.45353 66.90706,0" fill="none" stroke="#000000" stroke-width="20.0721" stroke-linecap="round"/>
+</svg>

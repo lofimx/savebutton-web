@@ -1,0 +1,120 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="128"
+    height="128"
+    viewBox="0 0 128 128"
+>
+  <defs>
+    <!-- Top face gradient - warm kaya wood -->
+    <linearGradient id="top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5e6c8" />
+      <stop offset="50%" stop-color="#e8d4a8" />
+      <stop offset="100%" stop-color="#dcc18c" />
+    </linearGradient>
+
+    <!-- Left face gradient - slightly darker -->
+    <linearGradient id="left" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#d4b678" />
+      <stop offset="100%" stop-color="#b89850" />
+    </linearGradient>
+
+    <!-- Right face gradient - darkest -->
+    <linearGradient id="right" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#c9a862" />
+      <stop offset="100%" stop-color="#a58040" />
+    </linearGradient>
+
+    <!-- Bevel highlight for top edge -->
+    <linearGradient id="bevelTop" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fffef8" />
+      <stop offset="100%" stop-color="#f5e6c8" />
+    </linearGradient>
+
+    <!-- Bevel shadow for bottom edges -->
+    <linearGradient id="bevelBottom" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#a58040" />
+      <stop offset="100%" stop-color="#8a6830" />
+    </linearGradient>
+  </defs>
+
+  <!-- Main cube structure -->
+  <g transform="translate(4, 4)">
+    <!-- Outer bevel/shadow base -->
+    <path
+            d="M60,6 L114,33 L114,93 L60,120 L6,93 L6,33 Z"
+            fill="#8a6830"
+            opacity="0.4"
+        />
+
+    <!-- Right face -->
+    <path d="M60,58 L108,34 L108,88 L60,112 Z" fill="url(#right)" />
+
+    <!-- Right face wood grain - thick horizontal lines -->
+    <g opacity="0.35" stroke="#6b5020" fill="none" stroke-linecap="round">
+      <path d="M65,62 Q85,58 105,38" stroke-width="3" />
+      <path d="M65,72 Q88,65 105,50" stroke-width="2.5" />
+      <path d="M65,82 Q90,72 105,62" stroke-width="3" />
+      <path d="M65,92 Q88,82 105,74" stroke-width="2" />
+      <path d="M65,102 Q85,95 105,86" stroke-width="2.5" />
+    </g>
+
+    <!-- Right face bevel highlight (top edge) -->
+    <path d="M60,58 L108,34 L105,36 L60,59 Z" fill="#d9c080" opacity="0.6" />
+
+    <!-- Left face -->
+    <path d="M60,58 L12,34 L12,88 L60,112 Z" fill="url(#left)" />
+
+    <!-- Left face wood grain - thick horizontal lines -->
+    <g opacity="0.3" stroke="#7a5a28" fill="none" stroke-linecap="round">
+      <path d="M55,62 Q35,58 15,38" stroke-width="3" />
+      <path d="M55,72 Q32,65 15,50" stroke-width="2.5" />
+      <path d="M55,82 Q30,72 15,62" stroke-width="3" />
+      <path d="M55,92 Q32,82 15,74" stroke-width="2" />
+      <path d="M55,102 Q35,95 15,86" stroke-width="2.5" />
+    </g>
+
+    <!-- Left face bevel highlight (top edge) -->
+    <path d="M60,58 L12,34 L15,36 L60,59 Z" fill="#e8d8b0" opacity="0.5" />
+
+    <!-- Left face bevel shadow (bottom edge) -->
+    <path d="M12,88 L60,112 L60,109 L15,86 Z" fill="#8a6830" opacity="0.4" />
+
+    <!-- Top face -->
+    <path d="M60,10 L108,34 L60,58 L12,34 Z" fill="url(#top)" />
+
+    <!-- Top face wood grain - thick curved lines resembling goban grain -->
+    <g opacity="0.28" stroke="#9a7a40" fill="none" stroke-linecap="round">
+      <path d="M25,34 Q60,22 95,34" stroke-width="3.5" />
+      <path d="M30,38 Q60,28 90,38" stroke-width="3" />
+      <path d="M35,42 Q60,34 85,42" stroke-width="2.5" />
+      <path d="M40,46 Q60,40 80,46" stroke-width="2" />
+      <path d="M48,50 Q60,46 72,50" stroke-width="1.5" />
+    </g>
+
+    <!-- Top face bevel highlight (outer edge) -->
+    <path
+            d="M60,10 L108,34 L104,35 L60,13 L16,35 L12,34 Z"
+            fill="url(#bevelTop)"
+            opacity="0.7"
+        />
+
+    <!-- Inner bevel highlight on top -->
+    <path
+            d="M60,14 L100,34 L60,54 L20,34 Z"
+            fill="none"
+            stroke="#fffef0"
+            stroke-width="2"
+            opacity="0.5"
+        />
+
+    <!-- Outer edge definition -->
+    <path
+            d="M60,10 L108,34 L108,88 L60,112 L12,88 L12,34 Z"
+            fill="none"
+            stroke="#7a5a28"
+            stroke-width="1.5"
+            stroke-linejoin="round"
+            opacity="0.5"
+        />
+  </g>
+</svg>

@@ -1,0 +1,15 @@
+<header class="site-header">
+  <div class="header-container">
+    <div class="logo">
+      <%= link_to root_path, class: "logo-link" do %>
+        <%= render "shared/logo_icon", size: 28, id_suffix: "header" %>
+        <span class="logo-text">Save Button</span>
+      <% end %>
+    </div>
+
+    <nav class="nav-links">
+      <%= link_to "Log In", new_session_path, class: "btn btn-secondary" %>
+      <%= link_to "Sign Up", new_registration_path, class: "btn btn-primary" %>
+    </nav>
+  </div>
+</header>

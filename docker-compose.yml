@@ -1,0 +1,48 @@
+# Deploy as a Portainer Stack on a single VPS.
+# TLS termination is handled externally (e.g. Caddy, nginx, or similar).
+#
+# Required environment variables (set in Portainer or .env):
+#   RAILS_MASTER_KEY  - from config/master.key
+#   POSTGRES_USER     - database user (e.g. "kaya")
+#   POSTGRES_PASSWORD - database password
+
+services:
+  db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - kaya_pg_data:/var/lib/postgresql/data
+      - ./db/production.sql:/docker-entrypoint-initdb.d/01-production.sql
+      - ./docker/02-setup-extensions.sh:/docker-entrypoint-initdb.d/02-setup-extensions.sh
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  web:
+    image: deobald/kaya_server:latest
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      RAILS_ENV: production
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      DB_HOST: db
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      SOLID_QUEUE_IN_PUMA: "true"
+    volumes:
+      - kaya_storage:/rails/storage
+    ports:
+      - "127.0.0.1:3000:80"
+
+volumes:
+  kaya_pg_data:
+  kaya_storage:

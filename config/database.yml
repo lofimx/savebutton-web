@@ -1,0 +1,40 @@
+# PostgreSQL 17
+#   gem "pg"
+#
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  primary:
+    <<: *default
+    database: kaya_development
+  queue:
+    <<: *default
+    database: kaya_development_queue
+    migrations_paths: db/queue_migrate
+
+test:
+  <<: *default
+  database: kaya_test
+
+production:
+  primary: &primary_production
+    <<: *default
+    host: <%= ENV["DB_HOST"] %>
+    username: <%= ENV.fetch("POSTGRES_USER", "kaya") %>
+    password: <%= ENV["POSTGRES_PASSWORD"] %>
+    database: kaya_production
+  cache:
+    <<: *primary_production
+    database: kaya_production_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    database: kaya_production_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_production
+    database: kaya_production_cable
+    migrations_paths: db/cable_migrate
