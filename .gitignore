@@ -38,8 +38,6 @@
 /flargon
 
 # Ignore slop tools
-.claude/settings.local.json
-.claude/settings.json
+/.claude
 AGENTS.md
 CLAUDE.md
-
