@@ -37,7 +37,10 @@
 # Ignore lofimx tools
 /flargon
 
-# Ignore slop tools
+# Ignore dem JavaScripts
+/node_modules
+
+# Ignore slop turds from PRs
 /.claude
 AGENTS.md
 CLAUDE.md
