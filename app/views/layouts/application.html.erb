@@ -22,9 +22,13 @@
     <%# Apply theme immediately to prevent flash of wrong theme %>
     <script>
       (function() {
-        const theme = localStorage.getItem('theme');
-        if (theme && theme !== 'auto') {
-          document.documentElement.setAttribute('data-theme', theme);
+        var theme = localStorage.getItem('theme');
+        if (theme === 'dark') {
+          document.documentElement.setAttribute('data-bs-theme', 'dark');
+        } else if (theme === 'light') {
+          document.documentElement.setAttribute('data-bs-theme', 'light');
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.documentElement.setAttribute('data-bs-theme', 'dark');
         }
       })();
     </script>
@@ -42,14 +46,18 @@
     <% elsif content_for?(:app_layout) %>
       <div data-controller="add-modal">
         <%= render "shared/app_header" %>
-        <%= render "shared/flash" %>
-        <%= yield %>
+        <main class="container py-3">
+          <%= render "shared/flash" %>
+          <%= yield %>
+        </main>
         <%= render "shared/add_modal" %>
       </div>
     <% else %>
       <%= render "shared/header" %>
-      <%= render "shared/flash" %>
-      <%= yield %>
+      <main>
+        <%= render "shared/flash" %>
+        <%= yield %>
+      </main>
     <% end %>
     <%= render "shared/footer" %>
   </body>

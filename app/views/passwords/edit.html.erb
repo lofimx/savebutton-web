@@ -2,37 +2,37 @@
 <% content_for(:hide_header) { true } %>
 
 <div class="auth-page">
-  <div class="auth-page-content">
-    <div class="auth-container">
-      <div class="auth-header">
-        <%= link_to root_path, class: "auth-logo" do %>
+  <div class="card shadow-sm" style="max-width: 420px; width: 100%;">
+    <div class="card-body p-4">
+      <div class="text-center mb-4">
+        <%= link_to root_path, class: "d-inline-flex align-items-center gap-2 text-decoration-none text-body" do %>
           <%= render "shared/logo_icon", size: 36, id_suffix: "auth-reset" %>
-          <span class="logo-text">Save Button</span>
+          <span class="fw-semibold">Save Button</span>
         <% end %>
-        <h1>Set a new password</h1>
-        <p class="auth-subtitle">Enter your new password below</p>
+        <h1 class="h4 mt-3">Set a new password</h1>
+        <p class="text-body-secondary small">Enter your new password below</p>
       </div>
 
       <% if flash[:alert] %>
-        <div class="alert alert-error"><%= flash[:alert] %></div>
+        <div class="alert alert-danger"><%= flash[:alert] %></div>
       <% end %>
 
-      <%= form_with url: password_path(params[:token]), method: :put, class: "auth-form" do |form| %>
-        <div class="form-group">
-          <%= form.label :password, "New password" %>
-          <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "At least 8 characters", minlength: 8, maxlength: 72, class: "form-input" %>
-          <span class="form-hint">Must be at least 8 characters</span>
+      <%= form_with url: password_path(params[:token]), method: :put do |form| %>
+        <div class="mb-3">
+          <%= form.label :password, "New password", class: "form-label" %>
+          <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "At least 8 characters", minlength: 8, maxlength: 72, class: "form-control" %>
+          <div class="form-text">Must be at least 8 characters</div>
         </div>
 
-        <div class="form-group">
-          <%= form.label :password_confirmation, "Confirm new password" %>
-          <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Enter your password again", maxlength: 72, class: "form-input" %>
+        <div class="mb-3">
+          <%= form.label :password_confirmation, "Confirm new password", class: "form-label" %>
+          <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Enter your password again", maxlength: 72, class: "form-control" %>
         </div>
 
-        <%= form.submit "Update password", class: "btn btn-primary btn-full" %>
+        <%= form.submit "Update password", class: "btn btn-primary w-100" %>
       <% end %>
 
-      <p class="auth-footer">
+      <p class="text-center mt-3 mb-0 small">
         <%= link_to "Back to login", new_session_path %>
       </p>
     </div>

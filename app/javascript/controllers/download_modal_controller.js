@@ -1,37 +1,31 @@
 import { Controller } from "@hotwired/stimulus";
+import * as bootstrap from "bootstrap";
 
 export default class extends Controller {
   static targets = ["modal", "panel"];
-  static values = { platform: String };
+
+  connect() {
+    this.bsModal = new bootstrap.Modal(this.modalTarget);
+  }
 
   open(event) {
     const platform = event.currentTarget.dataset.downloadPlatform;
-    this.showPanel(platform);
-    this.modalTarget.classList.add("active");
-    document.body.style.overflow = "hidden";
-    this.modalTarget.focus();
+    this.activateTab(platform);
+    this.bsModal.show();
   }
 
   close() {
-    this.modalTarget.classList.remove("active");
-    document.body.style.overflow = "";
+    this.bsModal.hide();
   }
 
-  closeOnBackdrop(event) {
-    if (event.target === this.modalTarget) {
-      this.close();
+  activateTab(platform) {
+    // Find the tab button for this platform and activate it
+    const tabEl = this.modalTarget.querySelector(
+      `#${platform}-tab`,
+    );
+    if (tabEl) {
+      const tab = new bootstrap.Tab(tabEl);
+      tab.show();
     }
-  }
-
-  closeOnEscape(event) {
-    if (event.key === "Escape") {
-      this.close();
-    }
-  }
-
-  showPanel(platform) {
-    this.panelTargets.forEach((panel) => {
-      panel.classList.toggle("hidden", panel.dataset.platform !== platform);
-    });
   }
 }

@@ -1,48 +1,44 @@
-<header class="site-header">
-  <div class="header-container">
-    <div class="header-left">
-      <div class="hamburger-menu" data-controller="hamburger">
-        <button class="hamburger-button" data-action="click->hamburger#toggle" aria-label="Menu">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
-        </button>
-        <nav class="hamburger-dropdown" data-hamburger-target="dropdown">
-          <%= link_to app_everything_path, class: "hamburger-item #{'active' if current_page?(app_everything_path)}" do %>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="7" height="7"></rect>
-              <rect x="14" y="3" width="7" height="7"></rect>
-              <rect x="14" y="14" width="7" height="7"></rect>
-              <rect x="3" y="14" width="7" height="7"></rect>
-            </svg>
-            <span>Everything</span>
-          <% end %>
-          <%= link_to get_the_apps_path, class: "hamburger-item #{'active' if current_page?(get_the_apps_path)}" do %>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <polyline points="7 10 12 15 17 10"></polyline>
-              <line x1="12" y1="15" x2="12" y2="3"></line>
-            </svg>
-            <span>Get The Apps</span>
-          <% end %>
-          <%= link_to account_path, class: "hamburger-item #{'active' if current_page?(account_path)}" do %>
-            <% if Current.user.avatar.attached? %>
-              <%= image_tag Current.user.avatar, class: "hamburger-avatar" %>
-            <% else %>
-              <%= render "shared/icons/profile_icon" %>
+<nav class="navbar bg-body-tertiary sticky-top">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#appNav" aria-controls="appNav" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="appNav" aria-labelledby="appNavLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="appNavLabel">Save Button</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <%= link_to app_everything_path, class: "nav-link d-flex align-items-center gap-2 #{'active' if current_page?(app_everything_path)}" do %>
+              <i class="bi bi-grid-3x3-gap"></i> Everything
             <% end %>
-            <span>Account</span>
-          <% end %>
-        </nav>
+          </li>
+          <li class="nav-item">
+            <%= link_to get_the_apps_path, class: "nav-link d-flex align-items-center gap-2 #{'active' if current_page?(get_the_apps_path)}" do %>
+              <i class="bi bi-download"></i> Get The Apps
+            <% end %>
+          </li>
+          <li class="nav-item">
+            <%= link_to account_path, class: "nav-link d-flex align-items-center gap-2 #{'active' if current_page?(account_path)}" do %>
+              <% if Current.user.avatar.attached? %>
+                <%= image_tag Current.user.avatar, class: "profile-avatar profile-avatar-sm" %>
+              <% else %>
+                <i class="bi bi-person-circle"></i>
+              <% end %>
+              Account
+            <% end %>
+          </li>
+        </ul>
       </div>
     </div>
 
     <% unless content_for?(:hide_add_button) %>
-      <button class="add-button" data-action="click->add-modal#open" aria-label="Add note or bookmark">
-        <%= render "shared/icons/plus_icon" %>
+      <button class="btn btn-primary ms-auto" data-action="click->add-modal#open" aria-label="Add note or bookmark">
+        <i class="bi bi-plus-lg"></i>
       </button>
     <% end %>
   </div>
-</header>
+</nav>

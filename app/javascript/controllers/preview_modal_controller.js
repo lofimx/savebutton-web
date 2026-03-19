@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
+import * as bootstrap from "bootstrap";
 
 export default class extends Controller {
   static targets = [
@@ -25,6 +26,7 @@ export default class extends Controller {
     this.originalTags = [];
     this.originalNote = "";
     this.sidebarVisible = true;
+    this.bsModal = new bootstrap.Modal(this.modalTarget);
   }
 
   disconnect() {
@@ -49,45 +51,33 @@ export default class extends Controller {
     this.currentSaveMetaUrl = saveMetaUrl;
     this.currentShareUrl = shareUrl;
 
-    // For bookmarks, show the original URL in the title if available
-    // Decode filename for human-readable display (filenames are stored URL-encoded)
-    this.titleTarget.textContent = originalUrl || decodeURIComponent(filename);
+    this.titleTarget.textContent =
+      originalUrl || decodeURIComponent(filename);
 
-    // Show/hide visit link for bookmarks
     if (originalUrl) {
       this.visitLinkTarget.href = originalUrl;
-      this.visitLinkTarget.classList.remove("hidden");
+      this.visitLinkTarget.classList.remove("d-none");
     } else {
-      this.visitLinkTarget.classList.add("hidden");
+      this.visitLinkTarget.classList.add("d-none");
     }
 
-    // Set up download link
     if (this.hasDownloadLinkTarget) {
       this.downloadLinkTarget.href = url;
       this.downloadLinkTarget.download = decodeURIComponent(filename);
     }
 
-    // Load content based on file type
     this.loadContent(url, fileType, cacheUrl, cacheStatusUrl);
-
-    // Load metadata (tags and note)
     this.loadMeta();
 
-    // Reset sidebar state
     this.sidebarVisible = true;
     this.updateSidebarVisibility();
 
-    this.modalTarget.classList.add("active");
-    document.body.style.overflow = "hidden";
-
-    // Focus the modal for keyboard navigation
-    this.modalTarget.focus();
+    this.bsModal.show();
   }
 
   close() {
     this.stopPolling();
-    this.modalTarget.classList.remove("active");
-    document.body.style.overflow = "";
+    this.bsModal.hide();
     this.contentTarget.innerHTML = "";
     this.currentTileElement = null;
     this.currentTags = [];
@@ -100,18 +90,6 @@ export default class extends Controller {
     this.close();
   }
 
-  closeOnBackdrop(event) {
-    if (event.target === this.modalTarget) {
-      this.close();
-    }
-  }
-
-  closeOnEscape(event) {
-    if (event.key === "Escape") {
-      this.close();
-    }
-  }
-
   toggleSidebar() {
     this.sidebarVisible = !this.sidebarVisible;
     this.updateSidebarVisibility();
@@ -120,12 +98,12 @@ export default class extends Controller {
   updateSidebarVisibility() {
     if (this.hasSidebarTarget) {
       if (this.sidebarVisible) {
-        this.sidebarTarget.classList.remove("collapsed");
+        this.sidebarTarget.classList.remove("d-none");
         if (this.hasSidebarToggleLabelTarget) {
           this.sidebarToggleLabelTarget.textContent = "Hide Sidebar";
         }
       } else {
-        this.sidebarTarget.classList.add("collapsed");
+        this.sidebarTarget.classList.add("d-none");
         if (this.hasSidebarToggleLabelTarget) {
           this.sidebarToggleLabelTarget.textContent = "Show Sidebar";
         }
@@ -133,7 +111,6 @@ export default class extends Controller {
     }
   }
 
-  // Load metadata from server
   async loadMeta() {
     if (!this.currentMetaUrl) return;
 
@@ -156,7 +133,6 @@ export default class extends Controller {
     }
   }
 
-  // Render tags in the UI
   renderTags() {
     if (!this.hasTagsListTarget) return;
 
@@ -165,14 +141,13 @@ export default class extends Controller {
         (tag, index) => `
       <span class="tag" data-index="${index}">
         <span class="tag-text">${this.escapeHtml(tag)}</span>
-        <button type="button" class="tag-remove" data-action="click->preview-modal#removeTag" data-index="${index}" aria-label="Remove tag">×</button>
+        <button type="button" class="tag-remove" data-action="click->preview-modal#removeTag" data-index="${index}" aria-label="Remove tag">&times;</button>
       </span>
     `,
       )
       .join("");
   }
 
-  // Add a new tag
   addTag(event) {
     event.preventDefault();
 
@@ -188,7 +163,6 @@ export default class extends Controller {
     this.tagInputTarget.focus();
   }
 
-  // Remove a tag
   removeTag(event) {
     const index = parseInt(event.currentTarget.dataset.index, 10);
     if (!isNaN(index) && index >= 0 && index < this.currentTags.length) {
@@ -197,7 +171,6 @@ export default class extends Controller {
     }
   }
 
-  // Clear tags and note UI
   clearTagsAndNote() {
     if (this.hasTagsListTarget) {
       this.tagsListTarget.innerHTML = "";
@@ -210,32 +183,27 @@ export default class extends Controller {
     }
   }
 
-  // Check if metadata has changed
   hasMetaChanges() {
     const currentNote = this.hasNoteEditorTarget
       ? this.noteEditorTarget.value
       : "";
 
-    // Check if tags changed
     if (this.currentTags.length !== this.originalTags.length) return true;
     for (let i = 0; i < this.currentTags.length; i++) {
       if (this.currentTags[i] !== this.originalTags[i]) return true;
     }
 
-    // Check if note changed
     if (currentNote !== this.originalNote) return true;
 
     return false;
   }
 
-  // Save metadata
   async save() {
     if (!this.currentSaveMetaUrl) {
       this.close();
       return;
     }
 
-    // Only save if there are changes
     if (!this.hasMetaChanges()) {
       this.close();
       return;
@@ -271,39 +239,33 @@ export default class extends Controller {
     }
   }
 
-  // Share functionality - copy URL to clipboard
   async shareAnga() {
     if (!this.currentShareUrl) return;
 
     try {
       await navigator.clipboard.writeText(this.currentShareUrl);
 
-      // Show feedback
       if (this.hasShareBtnTarget) {
         const originalText = this.shareBtnTarget.innerHTML;
-        this.shareBtnTarget.innerHTML = `
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-          Copied!
-        `;
-        this.shareBtnTarget.classList.add("success");
+        this.shareBtnTarget.innerHTML = `<i class="bi bi-check-lg"></i> Copied!`;
+        this.shareBtnTarget.classList.add("btn-success");
+        this.shareBtnTarget.classList.remove("btn-outline-secondary");
 
         setTimeout(() => {
           this.shareBtnTarget.innerHTML = originalText;
-          this.shareBtnTarget.classList.remove("success");
+          this.shareBtnTarget.classList.remove("btn-success");
+          this.shareBtnTarget.classList.add("btn-outline-secondary");
         }, 2000);
       }
     } catch (error) {
       console.error("Failed to copy share URL:", error);
-      // Fallback: show the URL in an alert
       alert(`Share URL: ${this.currentShareUrl}`);
     }
   }
 
   loadContent(url, fileType, cacheUrl, cacheStatusUrl) {
     this.contentTarget.innerHTML =
-      '<div class="preview-loading">Loading...</div>';
+      '<div class="preview-loading"><div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div> Loading...</div>';
 
     switch (fileType) {
       case "note":
@@ -329,7 +291,7 @@ export default class extends Controller {
     fetch(url)
       .then((response) => response.text())
       .then((text) => {
-        this.contentTarget.innerHTML = `<pre class="preview-text">${this.escapeHtml(text)}</pre>`;
+        this.contentTarget.innerHTML = `<pre class="preview-text p-3">${this.escapeHtml(text)}</pre>`;
       })
       .catch(() => {
         this.contentTarget.innerHTML =
@@ -341,7 +303,7 @@ export default class extends Controller {
     const img = document.createElement("img");
     img.src = url;
     img.alt = "Preview";
-    img.className = "preview-image";
+    img.className = "preview-image d-block mx-auto p-3";
     img.onload = () => {
       this.contentTarget.innerHTML = "";
       this.contentTarget.appendChild(img);
@@ -353,23 +315,19 @@ export default class extends Controller {
   }
 
   loadPdf(url) {
-    // Use an iframe to render PDF with browser's built-in PDF viewer
     this.contentTarget.innerHTML = `<iframe src="${url}" class="preview-pdf" title="PDF Preview"></iframe>`;
   }
 
   loadBookmark(url, cacheUrl, cacheStatusUrl) {
-    // If we have a cached version, render it in an iframe
     if (cacheUrl) {
       this.contentTarget.innerHTML = `<iframe src="${cacheUrl}" class="preview-cached-page" title="Cached Webpage"></iframe>`;
       return;
     }
 
-    // Otherwise, trigger caching and poll for completion
     if (cacheStatusUrl) {
       this.showCachingStatus(url);
       this.startPolling(cacheStatusUrl, url);
     } else {
-      // Fallback for bookmarks without cache status URL
       this.showBookmarkFallback(url);
     }
   }
@@ -380,7 +338,7 @@ export default class extends Controller {
       .then((text) => {
         this.contentTarget.innerHTML = `
           <div class="preview-bookmark">
-            <div class="preview-caching-status">
+            <div class="text-center mb-3">
               <div class="caching-spinner"></div>
               <p class="preview-bookmark-notice">Caching webpage...</p>
             </div>
@@ -408,23 +366,19 @@ export default class extends Controller {
   startPolling(cacheStatusUrl, previewUrl) {
     this.stopPolling();
 
-    // Trigger caching immediately
     fetch(cacheStatusUrl)
       .then((response) => response.json())
       .then((data) => {
         this.handleCacheStatus(data, previewUrl);
       });
 
-    // Poll every 2 seconds
     this.pollingInterval = setInterval(() => {
       fetch(cacheStatusUrl)
         .then((response) => response.json())
         .then((data) => {
           this.handleCacheStatus(data, previewUrl);
         })
-        .catch(() => {
-          // Ignore polling errors
-        });
+        .catch(() => {});
     }, 2000);
   }
 
@@ -434,7 +388,6 @@ export default class extends Controller {
     } else if (data.status === "error") {
       this.onCacheError(data, previewUrl);
     }
-    // If status is "pending", keep polling
   }
 
   stopPolling() {
@@ -447,19 +400,16 @@ export default class extends Controller {
   onCacheComplete(data, previewUrl) {
     this.stopPolling();
 
-    // Update the modal with the cached page
     if (data.cache_url) {
       this.contentTarget.innerHTML = `<iframe src="${data.cache_url}" class="preview-cached-page" title="Cached Webpage"></iframe>`;
     }
 
-    // Update the tile to show the favicon and cache URL
     this.updateTile(data);
   }
 
   onCacheError(data, previewUrl) {
     this.stopPolling();
 
-    // Show error message and fall back to showing the URL
     fetch(previewUrl)
       .then((response) => response.text())
       .then((text) => {
@@ -467,7 +417,7 @@ export default class extends Controller {
           <div class="preview-bookmark">
             <div class="preview-cache-error">
               <p class="preview-bookmark-notice">Failed to cache webpage</p>
-              <p class="preview-error-details">${this.escapeHtml(data.error || "Unknown error")}</p>
+              <p class="text-body-secondary small">${this.escapeHtml(data.error || "Unknown error")}</p>
             </div>
             <pre class="preview-bookmark-content">${this.escapeHtml(text)}</pre>
           </div>`;
@@ -483,15 +433,16 @@ export default class extends Controller {
 
     const tile = this.currentTileElement;
 
-    // Update the tile's cache URL data attribute
     if (data.cache_url) {
       tile.dataset.previewCacheUrl = data.cache_url;
     }
 
-    // Update the tile content to show favicon if available
     if (data.favicon_url) {
       const tileContent = tile.querySelector(".anga-tile-content");
-      if (tileContent && tileContent.classList.contains("anga-tile-bookmark")) {
+      if (
+        tileContent &&
+        tileContent.classList.contains("anga-tile-bookmark")
+      ) {
         const previousContent = tileContent.innerHTML;
         const img = document.createElement("img");
         img.src = data.favicon_url;

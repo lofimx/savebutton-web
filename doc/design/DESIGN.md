@@ -1,12 +1,12 @@
-# Kaya Design
+# Save Button Design
 
-Kaya borrows all its design principles from the [GNOME Human Interface Guidelines](https://developer.gnome.org/hig/), as translated to the web.
+Save Button (Web) is styled with vanilla Bootstrap.
 
 ## Icons
 
-Symbolic icons should always use the GNOME HIG icons: https://developer.gnome.org/hig/guidelines/ui-icons.html or https://lucide.dev/, retaining symmetry with other icons on a screen/view.
+Symbolic icons should always use Bootstrap icons by default.
 
-GNOME icons used are Creative Commons Zero 1.0 Universal. Lucide icons are licensed ISC.
+If Bootstrap does not have a particular icon, use icons from https://lucide.dev/, retaining symmetry with other icons on a screen/view. Lucide icons are licensed ISC.
 
 ## UI Rules
 

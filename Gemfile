@@ -100,3 +100,5 @@ group :test do
   gem "minitest", "~> 6.0"
   gem "minitest-mock"
 end
+
+gem "cssbundling-rails", "~> 1.4"

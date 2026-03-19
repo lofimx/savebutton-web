@@ -1,25 +1,26 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["message"]
+  static targets = ["message"];
 
   connect() {
     // Auto-dismiss after 5 seconds
     this.timeout = setTimeout(() => {
-      this.dismiss()
-    }, 5000)
+      this.dismiss();
+    }, 5000);
   }
 
   disconnect() {
     if (this.timeout) {
-      clearTimeout(this.timeout)
+      clearTimeout(this.timeout);
     }
   }
 
   dismiss() {
-    this.element.classList.add("flash-hiding")
+    // Use Bootstrap's fade class for smooth dismissal
+    this.element.classList.remove("show");
     setTimeout(() => {
-      this.element.remove()
-    }, 300)
+      this.element.remove();
+    }, 150);
   }
 }

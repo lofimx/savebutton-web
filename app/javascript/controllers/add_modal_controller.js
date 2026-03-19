@@ -1,31 +1,27 @@
 import { Controller } from "@hotwired/stimulus";
+import * as bootstrap from "bootstrap";
 
 export default class extends Controller {
   static targets = ["modal", "content", "input", "dropzone", "saveButton", "status"];
 
+  connect() {
+    this.bsModal = new bootstrap.Modal(this.modalTarget);
+  }
+
   open() {
-    this.modalTarget.classList.add("active");
-    document.body.style.overflow = "hidden";
-    this.inputTarget.focus();
+    this.bsModal.show();
+    // Focus input after modal is shown
+    this.modalTarget.addEventListener(
+      "shown.bs.modal",
+      () => this.inputTarget.focus(),
+      { once: true },
+    );
   }
 
   close() {
-    this.modalTarget.classList.remove("active");
-    document.body.style.overflow = "";
+    this.bsModal.hide();
     this.inputTarget.value = "";
     this.hideStatus();
-  }
-
-  closeOnBackdrop(event) {
-    if (event.target === this.modalTarget) {
-      this.close();
-    }
-  }
-
-  closeOnEscape(event) {
-    if (event.key === "Escape") {
-      this.close();
-    }
   }
 
   dragOver(event) {
@@ -40,7 +36,6 @@ export default class extends Controller {
 
   dragLeave(event) {
     event.preventDefault();
-    // Only remove class if leaving the dropzone entirely
     if (!this.dropzoneTarget.contains(event.relatedTarget)) {
       this.dropzoneTarget.classList.remove("drag-over");
     }
@@ -89,7 +84,6 @@ export default class extends Controller {
         this.showStatus("Saved!", "success");
         setTimeout(() => {
           this.close();
-          // Refresh the page to show the new anga
           window.location.reload();
         }, 500);
       } else {
@@ -144,7 +138,7 @@ export default class extends Controller {
     } else {
       this.showStatus(
         `Uploaded ${successCount}, failed ${errorCount}`,
-        "error"
+        "error",
       );
     }
   }
@@ -160,10 +154,10 @@ export default class extends Controller {
   showStatus(message, type) {
     this.statusTarget.textContent = message;
     this.statusTarget.className = `add-modal-status add-modal-status-${type}`;
-    this.statusTarget.classList.remove("hidden");
+    this.statusTarget.classList.remove("d-none");
   }
 
   hideStatus() {
-    this.statusTarget.classList.add("hidden");
+    this.statusTarget.classList.add("d-none");
   }
 }

@@ -1,17 +1,20 @@
 <% content_for :app_layout, true %>
 
-<div class="everything-container" data-controller="preview-modal">
-  <div class="search-container">
-    <%= form_with url: app_everything_path, method: :get, class: "search-form", data: { controller: "search", turbo_frame: "anga-results" } do |f| %>
-      <input type="search"
-             name="q"
-             value="<%= params[:q] %>"
-             placeholder="Search your cards..."
-             autocomplete="off"
-             class="search-input"
-             autofocus
-             data-search-target="input"
-             data-action="input->search#search keydown.enter->search#submit">
+<div data-controller="preview-modal">
+  <div class="mb-4">
+    <%= form_with url: app_everything_path, method: :get, data: { controller: "search", turbo_frame: "anga-results" } do |f| %>
+      <div class="input-group">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+        <input type="search"
+               name="q"
+               value="<%= params[:q] %>"
+               placeholder="Search your cards..."
+               autocomplete="off"
+               class="form-control"
+               autofocus
+               data-search-target="input"
+               data-action="input->search#search keydown.enter->search#submit">
+      </div>
     <% end %>
   </div>
 
@@ -52,12 +55,12 @@
               <div class="anga-tile-content anga-tile-bookmark" data-controller="favicon-fallback">
                 <%= image_tag app_anga_cache_file_path(anga, "favicon.ico"), class: "bookmark-favicon", alt: "Favicon", data: { action: "error->favicon-fallback#showDefault" } %>
                 <template data-favicon-fallback-target="fallback">
-                  <%= render "shared/icons/bookmark_icon" %>
+                  <i class="bi bi-bookmark fs-1 text-secondary"></i>
                 </template>
               </div>
             <% else %>
               <div class="anga-tile-content anga-tile-bookmark">
-                <%= render "shared/icons/bookmark_icon" %>
+                <i class="bi bi-bookmark fs-1 text-secondary"></i>
               </div>
             <% end %>
           <% elsif file_type.image? %>
@@ -66,7 +69,7 @@
             </div>
           <% elsif file_type.pdf? %>
             <div class="anga-tile-content anga-tile-pdf">
-              <%= render "shared/icons/pdf_icon" %>
+              <i class="bi bi-file-earmark-pdf fs-1 text-danger"></i>
             </div>
           <% else %>
             <div class="anga-tile-content anga-tile-file">
