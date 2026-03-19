@@ -1,21 +1,14 @@
-<div class="add-modal"
-     data-add-modal-target="modal"
-     data-action="click->add-modal#closeOnBackdrop keydown.esc->add-modal#closeOnEscape dragover->add-modal#dragOver dragenter->add-modal#dragEnter dragleave->add-modal#dragLeave drop->add-modal#drop"
-     tabindex="-1">
-  <div class="add-modal-dialog">
-    <header class="add-modal-header">
-      <h2 class="add-modal-title">Add</h2>
-      <button type="button"
-              class="add-modal-close"
-              data-action="click->add-modal#close"
-              aria-label="Close">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M18 6L6 18M6 6l12 12"/>
-        </svg>
-      </button>
+<dialog class="dialog w-full sm:max-w-lg"
+       data-add-modal-target="modal"
+       data-action="click->add-modal#closeOnBackdrop"
+       aria-labelledby="add-modal-title">
+  <div>
+    <header>
+      <h2 id="add-modal-title">Add</h2>
     </header>
-    <div class="add-modal-content" data-add-modal-target="content">
-      <div class="add-modal-dropzone" data-add-modal-target="dropzone">
+    <section data-add-modal-target="content">
+      <div data-add-modal-target="dropzone"
+           data-action="dragover->add-modal#dragOver dragenter->add-modal#dragEnter dragleave->add-modal#dragLeave drop->add-modal#drop">
         <textarea class="add-input"
                   data-add-modal-target="input"
                   placeholder="Enter bookmark/note..."
@@ -24,15 +17,22 @@
           <span>or drop files here</span>
         </div>
       </div>
-      <div class="add-modal-footer">
-        <button type="button"
-                class="btn btn-pill btn-primary"
-                data-action="click->add-modal#save"
-                data-add-modal-target="saveButton">
-          Save
-        </button>
-      </div>
       <div class="add-modal-status hidden" data-add-modal-target="status"></div>
-    </div>
+    </section>
+    <footer>
+      <button type="button" class="btn-outline" data-action="click->add-modal#close">Cancel</button>
+      <button type="button"
+              class="btn"
+              data-action="click->add-modal#save"
+              data-add-modal-target="saveButton">
+        Save
+      </button>
+    </footer>
+    <button type="button" aria-label="Close" data-action="click->add-modal#close">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6 6 18"/>
+        <path d="m6 6 12 12"/>
+      </svg>
+    </button>
   </div>
-</div>
+</dialog>

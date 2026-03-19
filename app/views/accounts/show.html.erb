@@ -40,28 +40,28 @@
           </div>
         </div>
         <div class="avatar-modal-footer">
-          <button type="button" class="btn btn-secondary" data-action="avatar-cropper#cancel">Cancel</button>
-          <button type="button" class="btn btn-primary" data-action="avatar-cropper#save">Save Avatar</button>
+          <button type="button" class="btn-outline" data-action="avatar-cropper#cancel">Cancel</button>
+          <button type="button" class="btn" data-action="avatar-cropper#save">Save Avatar</button>
         </div>
       </div>
     </div>
 
     <section class="account-section">
-      <h2 class="title-4">Email Address</h2>
-      <%= form_with url: account_path, method: :patch, class: "account-form" do |f| %>
+      <h2>Email Address</h2>
+      <%= form_with url: account_path, method: :patch, class: "account-form form" do |f| %>
         <div class="form-group">
           <label for="email_address">Email</label>
           <%= f.email_field :email_address, value: @user.email_address, class: "form-input", required: true %>
         </div>
         <div class="form-actions">
-          <%= f.submit "Update Email", class: "btn btn-primary" %>
+          <%= f.submit "Update Email", class: "btn" %>
         </div>
       <% end %>
     </section>
 
     <section class="account-section">
-      <h2 class="title-4"><%= @user.incidental_password? ? "Set Password" : "Change Password" %></h2>
-      <%= form_with url: account_path, method: :patch, class: "account-form" do |f| %>
+      <h2><%= @user.incidental_password? ? "Set Password" : "Change Password" %></h2>
+      <%= form_with url: account_path, method: :patch, class: "account-form form" do |f| %>
         <div class="form-group">
           <label for="current_password">Current Password</label>
           <% if @user.incidental_password? %>
@@ -81,13 +81,13 @@
           <%= f.password_field :password_confirmation, class: "form-input", autocomplete: "new-password" %>
         </div>
         <div class="form-actions">
-          <%= f.submit(@user.incidental_password? ? "Set Password" : "Update Password", class: "btn btn-primary") %>
+          <%= f.submit(@user.incidental_password? ? "Set Password" : "Update Password", class: "btn") %>
         </div>
       <% end %>
     </section>
 
     <section class="account-section">
-      <h2 class="title-4">Connected Accounts</h2>
+      <h2>Connected Accounts</h2>
       <p class="section-description">Manage your connected login methods.</p>
 
       <div class="connected-accounts">
@@ -99,7 +99,7 @@
                 <span class="provider-name"><%= provider_name(identity.provider) %></span>
               </div>
               <% if @user.identities.count > 1 || @user.password_digest.present? %>
-                <%= button_to "Disconnect", identity_account_path(identity_id: identity.id), method: :delete, class: "btn btn-secondary btn-small", data: { turbo_confirm: "Are you sure you want to disconnect #{provider_name(identity.provider)}?" } %>
+                <%= button_to "Disconnect", identity_account_path(identity_id: identity.id), method: :delete, class: "btn-sm-outline", data: { turbo_confirm: "Are you sure you want to disconnect #{provider_name(identity.provider)}?" } %>
               <% else %>
                 <span class="form-hint">Set a password to disconnect</span>
               <% end %>
@@ -114,13 +114,13 @@
         <p class="section-description">Connect additional accounts:</p>
         <div class="oauth-buttons-row">
           <% unless @user.identities.exists?(provider: "google_oauth2") %>
-            <%= button_to "/auth/google_oauth2", method: :post, data: { turbo: false }, class: "btn btn-oauth btn-small" do %>
+            <%= button_to "/auth/google_oauth2", method: :post, data: { turbo: false }, class: "btn-sm-outline" do %>
               <%= render "shared/google_icon" %>
               <span>Google</span>
             <% end %>
           <% end %>
           <% unless @user.identities.exists?(provider: "microsoft_graph") %>
-            <%= button_to "/auth/microsoft_graph", method: :post, data: { turbo: false }, class: "btn btn-oauth btn-small" do %>
+            <%= button_to "/auth/microsoft_graph", method: :post, data: { turbo: false }, class: "btn-sm-outline" do %>
               <%= render "shared/microsoft_icon" %>
               <span>Microsoft</span>
             <% end %>
@@ -130,10 +130,10 @@
     </section>
 
     <section class="account-section">
-      <h2 class="title-4">Log Out</h2>
+      <h2>Log Out</h2>
       <p class="section-description">End your session in this browser.</p>
       <div class="form-actions">
-        <%= button_to "Log Out", session_path, method: :delete, class: "btn btn-secondary" %>
+        <%= button_to "Log Out", session_path, method: :delete, class: "btn-outline" %>
       </div>
     </section>
   </div>

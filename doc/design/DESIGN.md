@@ -1,26 +1,14 @@
-# Kaya Design
+# Save Button Design
 
-Kaya borrows all its design principles from the [GNOME Human Interface Guidelines](https://developer.gnome.org/hig/), as translated to the web.
+Save Button borrows all its design principles from `shadcn/ui` and implements them with `basecoat`.
 
 ## Icons
 
-Symbolic icons should always use the GNOME HIG icons: https://developer.gnome.org/hig/guidelines/ui-icons.html or https://lucide.dev/, retaining symmetry with other icons on a screen/view.
+Symbolic icons should always use https://lucide.dev/, retaining symmetry with other icons on a screen/view. Alternatively, Material UI icons can be used if an icon isn't available from Lucide.
 
-GNOME icons used are Creative Commons Zero 1.0 Universal. Lucide icons are licensed ISC.
+Lucide icons are licensed ISC.
 
 ## UI Rules
-
-**Strings**: All user-visible text in localization files, never hardcoded
-```
-# Do:    I18n.t('welcome_message')
-# Don't: "Welcome to Kaya"
-```
-
-**Date/Time**: All user-visible dates and times localized
-```
-# Do:    I18n.l(Time.now)
-# Don't: Time.now
-```
 
 **Colors**: Use theme system, never hardcoded values
 

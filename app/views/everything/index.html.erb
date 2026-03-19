@@ -2,13 +2,13 @@
 
 <div class="everything-container" data-controller="preview-modal">
   <div class="search-container">
-    <%= form_with url: app_everything_path, method: :get, class: "search-form", data: { controller: "search", turbo_frame: "anga-results" } do |f| %>
+    <%= form_with url: app_everything_path, method: :get, class: "form", data: { controller: "search", turbo_frame: "anga-results" } do |f| %>
       <input type="search"
              name="q"
              value="<%= params[:q] %>"
              placeholder="Search your cards..."
              autocomplete="off"
-             class="search-input"
+             class="form-input"
              autofocus
              data-search-target="input"
              data-action="input->search#search keydown.enter->search#submit">

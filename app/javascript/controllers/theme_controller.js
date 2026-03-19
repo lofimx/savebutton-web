@@ -2,6 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Theme controller for managing light/dark mode
 // Cycles through: auto -> light -> dark -> auto
+// Basecoat uses the `dark` class on <html> for dark mode
 export default class extends Controller {
   static targets = ["label"]
 
@@ -37,10 +38,20 @@ export default class extends Controller {
     const theme = this.getCurrentTheme()
     const root = document.documentElement
 
-    if (theme === "auto") {
-      root.removeAttribute("data-theme")
+    // Remove existing theme state
+    root.classList.remove("dark")
+    root.removeAttribute("data-theme")
+
+    if (theme === "dark") {
+      root.classList.add("dark")
+      root.setAttribute("data-theme", "dark")
+    } else if (theme === "light") {
+      root.setAttribute("data-theme", "light")
     } else {
-      root.setAttribute("data-theme", theme)
+      // Auto: follow system preference
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        root.classList.add("dark")
+      }
     }
   }
 
@@ -52,17 +63,8 @@ export default class extends Controller {
       dark: "Dark"
     }
 
-    // Update all labels on the page
     document.querySelectorAll("[data-theme-label]").forEach(el => {
       el.textContent = labels[theme]
     })
-
-    // Update data-theme attribute for CSS icon switching
-    const root = document.documentElement
-    if (theme === "auto") {
-      root.removeAttribute("data-theme")
-    } else {
-      root.setAttribute("data-theme", theme)
-    }
   }
 }

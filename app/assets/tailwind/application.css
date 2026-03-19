@@ -1,0 +1,697 @@
+@import "tailwindcss";
+@import "../../../vendor/basecoat/css/basecoat.css";
+@import "../../../vendor/javascript/cropperjs/cropper.css";
+
+/*
+ * Save Button - Custom Styles
+ * Built on Basecoat (shadcn/ui) + Tailwind CSS v4
+ *
+ * Basecoat provides: alert, badge, btn, card, dialog, dropdown-menu,
+ * input, label, form, tabs, toast, and more.
+ *
+ * Custom styles below cover: homepage hero/landing, anga grid tiles,
+ * avatar cropper, and layout helpers.
+ */
+
+/* ============================================
+   Homepage Hero & Landing Page
+   ============================================ */
+@layer components {
+  .hero {
+    @apply relative overflow-hidden py-16 sm:py-24 px-6;
+    background: linear-gradient(
+      135deg,
+      oklch(0.97 0.01 250) 0%,
+      oklch(0.98 0.005 280) 50%,
+      oklch(0.97 0.01 320) 100%
+    );
+  }
+  .dark .hero {
+    background: linear-gradient(
+      135deg,
+      oklch(0.18 0.02 250) 0%,
+      oklch(0.16 0.015 280) 50%,
+      oklch(0.18 0.02 320) 100%
+    );
+  }
+  .hero-content {
+    @apply max-w-3xl mx-auto text-center;
+  }
+  .hero-title {
+    @apply text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-tight;
+  }
+  .hero-title .highlight {
+    @apply text-primary;
+  }
+  .dark .hero-title .highlight {
+    @apply text-primary-foreground;
+  }
+  .hero-subtitle {
+    @apply mt-4 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed;
+  }
+  .hero-subtitle a {
+    @apply text-foreground underline underline-offset-4 hover:text-primary;
+  }
+  .hero-cta {
+    @apply mt-8 flex flex-col sm:flex-row gap-3 justify-center;
+  }
+  .hero-visual {
+    @apply mt-12 max-w-2xl mx-auto;
+  }
+
+  /* Preview cards in hero */
+  .cards-preview {
+    @apply grid grid-cols-2 sm:grid-cols-4 gap-3;
+  }
+  .preview-card {
+    @apply flex flex-col items-center gap-2 rounded-lg border bg-card p-4 text-card-foreground shadow-sm transition-transform hover:-translate-y-0.5;
+  }
+  .card-icon {
+    @apply flex items-center justify-center size-10 rounded-full bg-muted text-muted-foreground;
+  }
+  .card-label {
+    @apply text-sm font-semibold;
+  }
+  .card-desc {
+    @apply text-xs text-muted-foreground text-center;
+  }
+
+  /* Features section */
+  .features-section {
+    @apply py-16 sm:py-20 px-6;
+  }
+  .features-container {
+    @apply max-w-5xl mx-auto;
+  }
+  .section-title {
+    @apply text-2xl sm:text-3xl font-bold text-center mb-10 text-foreground;
+  }
+  .features-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6;
+  }
+  .feature {
+    @apply flex flex-col items-center text-center gap-3 p-6 rounded-lg;
+  }
+  .feature-icon {
+    @apply flex items-center justify-center size-12 rounded-full;
+  }
+  .feature-icon.blue { @apply bg-blue-100 text-blue-600 dark:bg-blue-950 dark:text-blue-400; }
+  .feature-icon.green { @apply bg-green-100 text-green-600 dark:bg-green-950 dark:text-green-400; }
+  .feature-icon.purple { @apply bg-purple-100 text-purple-600 dark:bg-purple-950 dark:text-purple-400; }
+  .feature-icon.red { @apply bg-red-100 text-red-600 dark:bg-red-950 dark:text-red-400; }
+  .feature-icon.orange { @apply bg-orange-100 text-orange-600 dark:bg-orange-950 dark:text-orange-400; }
+  .feature-icon.darkblue { @apply bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-400; }
+  .feature h3 {
+    @apply text-lg font-semibold text-foreground;
+  }
+  .feature p {
+    @apply text-sm text-muted-foreground leading-relaxed;
+  }
+  .feature p a {
+    @apply text-foreground underline underline-offset-4 hover:text-primary;
+  }
+
+  /* Apps section */
+  .apps-section {
+    @apply py-16 sm:py-20 px-6 bg-muted/50;
+  }
+  .apps-container {
+    @apply max-w-4xl mx-auto;
+  }
+}
+
+/* ============================================
+   Apps Content (shared between home & get_the_apps)
+   ============================================ */
+@layer components {
+  .apps-subsection {
+    @apply mb-10;
+  }
+  .apps-subtitle {
+    @apply text-xl font-semibold text-foreground mb-2;
+  }
+  .apps-description {
+    @apply text-sm text-muted-foreground mb-4 leading-relaxed;
+  }
+  .apps-description a {
+    @apply text-foreground underline underline-offset-4 hover:text-primary;
+  }
+  .store-buttons {
+    @apply flex flex-wrap gap-3;
+  }
+  .store-button {
+    @apply block;
+  }
+  .store-badge {
+    @apply h-10;
+  }
+  .browser-grid {
+    @apply grid grid-cols-4 sm:grid-cols-8 gap-4;
+  }
+  .browser-item {
+    @apply flex flex-col items-center gap-1.5 p-2 rounded-lg hover:bg-accent transition-colors text-center;
+  }
+  .browser-icon {
+    @apply size-8;
+  }
+  .browser-name {
+    @apply text-xs text-muted-foreground;
+  }
+  .platform-list {
+    @apply grid grid-cols-1 sm:grid-cols-3 gap-3;
+  }
+  .platform-item {
+    @apply flex items-center gap-3 p-4 rounded-lg border bg-card hover:bg-accent transition-colors cursor-pointer text-left w-full;
+  }
+  .platform-icon {
+    @apply size-8;
+  }
+  .platform-name {
+    @apply text-sm font-medium text-foreground;
+  }
+  .server-options {
+    @apply mt-2;
+  }
+}
+
+/* ============================================
+   Anga Grid (main app tile layout)
+   ============================================ */
+@layer components {
+  .everything-container {
+    @apply max-w-6xl mx-auto px-4 py-6;
+  }
+  .search-container {
+    @apply mb-6;
+  }
+  .anga-grid {
+    @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3;
+  }
+  .anga-tile {
+    @apply flex flex-col rounded-lg border bg-card overflow-hidden cursor-pointer hover:shadow-md transition-shadow;
+  }
+  .anga-tile-content {
+    @apply flex items-center justify-center aspect-square p-3 overflow-hidden;
+  }
+  .anga-tile-note {
+    @apply items-start text-left bg-muted/30;
+  }
+  .anga-tile-bookmark {
+    @apply bg-muted/20;
+  }
+  .anga-tile-image {
+    @apply p-0;
+  }
+  .anga-tile-image img {
+    @apply w-full h-full object-cover;
+  }
+  .anga-tile-pdf {
+    @apply bg-red-50 text-red-500 dark:bg-red-950/30 dark:text-red-400;
+  }
+  .anga-tile-file {
+    @apply bg-muted/30;
+  }
+  .anga-tile-filename {
+    @apply px-2 py-1.5 text-xs text-muted-foreground truncate border-t;
+  }
+  .note-preview {
+    @apply text-xs text-muted-foreground leading-relaxed whitespace-pre-wrap break-words;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .bookmark-favicon {
+    @apply size-12 object-contain;
+  }
+  .file-extension {
+    @apply text-lg font-bold text-muted-foreground;
+  }
+  .empty-state {
+    @apply text-center py-16 text-muted-foreground;
+  }
+}
+
+/* ============================================
+   Auth Pages
+   ============================================ */
+@layer components {
+  .auth-page {
+    @apply min-h-screen flex items-center justify-center p-4 bg-muted/30;
+  }
+  .auth-page-content {
+    @apply w-full max-w-md;
+  }
+  .auth-container {
+    @apply rounded-lg border bg-card p-6 sm:p-8 shadow-sm;
+  }
+  .auth-header {
+    @apply text-center mb-6;
+  }
+  .auth-header h1 {
+    @apply text-2xl font-bold text-foreground;
+  }
+  .auth-header .auth-subtitle {
+    @apply mt-1 text-sm text-muted-foreground;
+  }
+  .auth-logo {
+    @apply inline-flex items-center gap-2 mb-4;
+  }
+  .auth-logo .logo-text {
+    @apply text-lg font-bold text-foreground;
+  }
+  .auth-divider {
+    @apply relative my-6;
+  }
+  .auth-divider::before {
+    content: "";
+    @apply absolute inset-x-0 top-1/2 h-px bg-border;
+  }
+  .auth-divider span {
+    @apply relative bg-card px-3 text-xs text-muted-foreground;
+    display: inline-block;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .auth-footer {
+    @apply text-center mt-6 text-sm text-muted-foreground;
+  }
+  .auth-footer a {
+    @apply text-foreground font-medium underline underline-offset-4 hover:text-primary;
+  }
+
+  /* OAuth buttons */
+  .oauth-buttons {
+    @apply flex flex-col gap-2;
+  }
+  .btn-oauth {
+    @apply inline-flex items-center justify-center gap-2 rounded-md border bg-card px-4 py-2.5 text-sm font-medium text-foreground hover:bg-accent transition-colors w-full;
+  }
+  .btn-oauth svg {
+    @apply size-5 shrink-0;
+  }
+  .btn-oauth .coming-soon {
+    @apply ml-auto text-xs text-muted-foreground;
+  }
+
+  /* Form helpers */
+  .form-group {
+    @apply grid gap-1.5 mb-4;
+  }
+  .form-group label {
+    @apply text-sm font-medium text-foreground;
+  }
+  .form-input {
+    @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .form-hint {
+    @apply text-xs text-muted-foreground;
+  }
+  .form-actions {
+    @apply flex items-center gap-2 mt-2;
+  }
+  .forgot-link {
+    @apply text-sm text-muted-foreground hover:text-foreground underline underline-offset-4;
+  }
+  .btn-disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+}
+
+/* ============================================
+   Account Page
+   ============================================ */
+@layer components {
+  .account-page {
+    @apply max-w-2xl mx-auto px-4 py-6;
+  }
+  .account-container {
+    @apply flex flex-col gap-6;
+  }
+  .account-header {
+    @apply flex flex-col items-center gap-3 pb-6 border-b;
+  }
+  .account-email {
+    @apply text-sm text-muted-foreground;
+  }
+  .account-section {
+    @apply rounded-lg border bg-card p-6;
+  }
+  .account-section h2 {
+    @apply text-lg font-semibold text-foreground mb-1;
+  }
+  .account-form {
+    @apply mt-4;
+  }
+  .section-description {
+    @apply text-sm text-muted-foreground mb-4;
+  }
+
+  /* Connected accounts */
+  .connected-accounts {
+    @apply flex flex-col gap-2 mb-4;
+  }
+  .connected-account {
+    @apply flex items-center justify-between p-3 rounded-md bg-muted/50;
+  }
+  .connected-account-info {
+    @apply flex items-center gap-2;
+  }
+  .provider-icon {
+    @apply flex items-center;
+  }
+  .provider-icon svg {
+    @apply size-5;
+  }
+  .provider-name {
+    @apply text-sm font-medium;
+  }
+  .no-accounts {
+    @apply text-sm text-muted-foreground;
+  }
+  .oauth-connect-buttons {
+    @apply mt-4;
+  }
+  .oauth-buttons-row {
+    @apply flex flex-wrap gap-2 mt-2;
+  }
+
+  /* Profile avatar */
+  .profile-avatar {
+    @apply flex items-center justify-center rounded-full bg-muted text-foreground font-semibold;
+  }
+  .profile-avatar-large {
+    @apply size-20 text-2xl;
+  }
+  .profile-avatar-image {
+    @apply object-cover;
+  }
+  .avatar-upload-button {
+    @apply relative cursor-pointer;
+  }
+  .avatar-upload-button:hover .avatar-upload-overlay {
+    opacity: 1;
+  }
+  .avatar-upload-overlay {
+    @apply absolute inset-0 flex items-center justify-center rounded-full bg-black/40 text-white opacity-0 transition-opacity;
+  }
+  .visually-hidden {
+    @apply sr-only;
+  }
+
+  /* Avatar cropper modal */
+  .avatar-modal {
+    @apply fixed inset-0 z-50 hidden items-center justify-center bg-black/50;
+  }
+  .avatar-modal.active {
+    @apply flex;
+  }
+  .avatar-modal-content {
+    @apply bg-card rounded-lg border shadow-lg max-w-lg w-full mx-4;
+  }
+  .avatar-modal-header {
+    @apply flex items-center justify-between p-4 border-b;
+  }
+  .avatar-modal-header h2 {
+    @apply text-lg font-semibold mb-0;
+  }
+  .avatar-modal-close {
+    @apply text-muted-foreground hover:text-foreground text-xl leading-none;
+  }
+  .avatar-modal-body {
+    @apply p-4 flex flex-col gap-4;
+  }
+  .avatar-cropper-container {
+    @apply w-full max-h-64 overflow-hidden;
+  }
+  .avatar-cropper-image {
+    @apply max-w-full;
+  }
+  .avatar-preview-container {
+    @apply flex flex-col items-center gap-2;
+  }
+  .avatar-preview-container .caption {
+    @apply text-xs text-muted-foreground;
+  }
+  .avatar-preview-image {
+    @apply size-16 rounded-full object-cover;
+  }
+  .avatar-modal-footer {
+    @apply flex justify-end gap-2 p-4 border-t;
+  }
+}
+
+/* ============================================
+   Header / Navigation
+   ============================================ */
+@layer components {
+  .site-header {
+    @apply sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60;
+  }
+  .header-container {
+    @apply flex items-center justify-between h-14 max-w-6xl mx-auto px-4;
+  }
+  .header-left {
+    @apply flex items-center;
+  }
+  .logo {
+    @apply flex items-center;
+  }
+  .logo-link {
+    @apply inline-flex items-center gap-2 font-bold text-foreground hover:text-foreground/80 transition-colors;
+  }
+  .logo-text {
+    @apply text-base font-bold;
+  }
+
+  /* Hamburger / mobile nav */
+  .hamburger-menu {
+    @apply relative;
+  }
+  .hamburger-button {
+    @apply inline-flex items-center justify-center size-10 rounded-md text-foreground hover:bg-accent transition-colors;
+  }
+  .hamburger-dropdown {
+    @apply absolute top-full left-0 mt-1 w-48 rounded-md border bg-popover p-1 shadow-md hidden;
+  }
+  .hamburger-dropdown.open {
+    @apply block;
+  }
+  .hamburger-item {
+    @apply flex items-center gap-2 rounded-sm px-3 py-2 text-sm text-popover-foreground hover:bg-accent transition-colors;
+  }
+  .hamburger-item.active {
+    @apply bg-accent font-medium;
+  }
+  .hamburger-item svg {
+    @apply size-4 text-muted-foreground;
+  }
+  .hamburger-avatar {
+    @apply size-4 rounded-full object-cover;
+  }
+
+  /* Add button (floating action) */
+  .add-button {
+    @apply inline-flex items-center justify-center size-10 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm transition-colors;
+  }
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+@layer components {
+  .site-footer {
+    @apply border-t mt-auto;
+  }
+  .footer-container {
+    @apply flex items-center justify-between h-12 max-w-6xl mx-auto px-4;
+  }
+  .footer-copyright {
+    @apply text-xs text-muted-foreground;
+  }
+  .theme-toggle {
+    @apply flex items-center gap-1.5;
+  }
+  .theme-toggle-label {
+    @apply text-xs text-muted-foreground hidden sm:inline;
+  }
+  .theme-toggle-btn {
+    @apply inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-muted-foreground hover:bg-accent hover:text-foreground transition-colors;
+  }
+  .theme-toggle-btn svg {
+    @apply size-3.5;
+  }
+
+  /* Theme icon visibility */
+  .theme-icon-auto,
+  .theme-icon-light,
+  .theme-icon-dark {
+    @apply hidden;
+  }
+  html:not(.light):not(.dark):not([data-theme]) .theme-icon-auto {
+    @apply block;
+  }
+  [data-theme="auto"] .theme-icon-auto {
+    @apply block;
+  }
+  [data-theme="light"] .theme-icon-light,
+  html.light .theme-icon-light {
+    @apply block;
+  }
+  [data-theme="dark"] .theme-icon-dark,
+  html.dark .theme-icon-dark {
+    @apply block;
+  }
+}
+
+/* ============================================
+   Flash Messages
+   ============================================ */
+@layer components {
+  .flash-container {
+    @apply max-w-6xl mx-auto px-4 pt-4;
+  }
+  .flash-message {
+    @apply flex items-center justify-between;
+  }
+  .flash-close {
+    @apply ml-3 text-lg leading-none opacity-60 hover:opacity-100 transition-opacity;
+  }
+  .flash-hiding {
+    @apply opacity-0 transition-opacity duration-300;
+  }
+}
+
+/* ============================================
+   Download Modal
+   ============================================ */
+@layer components {
+  .download-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-3;
+  }
+  .download-item {
+    @apply flex items-center gap-3 p-3 rounded-md border hover:bg-accent transition-colors;
+  }
+  .download-icon {
+    @apply size-8;
+  }
+  .download-info {
+    @apply flex flex-col;
+  }
+  .download-name {
+    @apply text-sm font-medium text-foreground;
+  }
+  .download-format {
+    @apply text-xs text-muted-foreground;
+  }
+}
+
+/* ============================================
+   Preview Modal Extras
+   ============================================ */
+@layer components {
+  .preview-modal-body {
+    @apply flex flex-1 overflow-hidden;
+  }
+  .preview-modal-content-area {
+    @apply flex-1 overflow-auto p-4;
+  }
+  .preview-sidebar {
+    @apply w-72 border-l bg-muted/30 shrink-0 overflow-y-auto hidden sm:flex sm:flex-col;
+  }
+  .preview-sidebar.collapsed {
+    @apply hidden;
+  }
+  .sidebar-content {
+    @apply p-4 flex flex-col gap-4;
+  }
+  .sidebar-toggle {
+    @apply flex items-center gap-1 px-4 py-2 text-xs text-muted-foreground hover:text-foreground border-b transition-colors;
+  }
+  .sidebar-toggle svg {
+    @apply size-4 transition-transform;
+  }
+  .sidebar-toggle.collapsed svg {
+    @apply rotate-180;
+  }
+  .sidebar-toggle-label {
+    @apply text-xs;
+  }
+  .sidebar-section {
+    @apply flex flex-col gap-2;
+  }
+  .sidebar-section-title {
+    @apply text-xs font-semibold text-muted-foreground uppercase tracking-wider;
+  }
+  .sidebar-actions {
+    @apply flex flex-col gap-2 pt-2 border-t;
+  }
+  .sidebar-action-btn {
+    @apply justify-start text-sm;
+  }
+
+  /* Tags */
+  .tags-container {
+    @apply flex flex-col gap-2;
+  }
+  .tags-list {
+    @apply flex flex-wrap gap-1;
+  }
+  .tag {
+    @apply inline-flex items-center gap-1 rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground;
+  }
+  .tag-remove {
+    @apply ml-0.5 text-muted-foreground hover:text-foreground cursor-pointer leading-none;
+  }
+  .tag-input-container {
+    @apply flex gap-1;
+  }
+  .tag-input {
+    @apply flex-1 h-7 rounded-md border border-input bg-background px-2 text-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring;
+  }
+  .tag-add-btn {
+    @apply inline-flex items-center justify-center size-7 rounded-md border text-sm hover:bg-accent transition-colors;
+  }
+
+  /* Note editor in sidebar */
+  .note-editor {
+    @apply w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring resize-y;
+  }
+}
+
+/* ============================================
+   Add Modal Content
+   ============================================ */
+@layer components {
+  .add-input {
+    @apply w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring resize-y min-h-24;
+  }
+  .add-dropzone-hint {
+    @apply text-center py-3 text-xs text-muted-foreground;
+  }
+  .add-modal-status {
+    @apply mt-2 text-sm text-center;
+  }
+  .add-modal-status.success {
+    @apply text-green-600 dark:text-green-400;
+  }
+  .add-modal-status.error {
+    @apply text-destructive;
+  }
+  .dropzone-active {
+    @apply ring-2 ring-primary ring-offset-2 rounded-md;
+  }
+}
+
+/* ============================================
+   Misc Utilities
+   ============================================ */
+@layer components {
+  .title-2 {
+    @apply text-2xl font-bold text-foreground;
+  }
+  .title-4 {
+    @apply text-lg font-semibold text-foreground;
+  }
+}

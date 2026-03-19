@@ -14,10 +14,10 @@
       </div>
 
       <% if flash[:alert] %>
-        <div class="alert alert-error"><%= flash[:alert] %></div>
+        <div class="alert-destructive mb-4"><%= flash[:alert] %></div>
       <% end %>
 
-      <%= form_with url: password_path(params[:token]), method: :put, class: "auth-form" do |form| %>
+      <%= form_with url: password_path(params[:token]), method: :put, class: "form" do |form| %>
         <div class="form-group">
           <%= form.label :password, "New password" %>
           <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "At least 8 characters", minlength: 8, maxlength: 72, class: "form-input" %>
@@ -29,7 +29,7 @@
           <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Enter your password again", maxlength: 72, class: "form-input" %>
         </div>
 
-        <%= form.submit "Update password", class: "btn btn-primary btn-full" %>
+        <%= form.submit "Update password", class: "btn w-full" %>
       <% end %>
 
       <p class="auth-footer">

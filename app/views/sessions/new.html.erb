@@ -9,24 +9,24 @@
     </div>
 
     <% if flash[:alert] %>
-      <div class="alert alert-error"><%= flash[:alert] %></div>
+      <div class="alert-destructive mb-4"><%= flash[:alert] %></div>
     <% end %>
     <% if flash[:notice] %>
-      <div class="alert alert-success"><%= flash[:notice] %></div>
+      <div class="alert mb-4"><%= flash[:notice] %></div>
     <% end %>
 
     <div class="oauth-buttons">
-      <%= button_to "/auth/google_oauth2", method: :post, data: { turbo: false }, class: "btn btn-oauth" do %>
+      <%= button_to "/auth/google_oauth2", method: :post, data: { turbo: false }, class: "btn-oauth" do %>
         <%= render "shared/google_icon" %>
         Log in with Google
       <% end %>
 
-      <%= button_to "/auth/microsoft_graph", method: :post, data: { turbo: false }, class: "btn btn-oauth" do %>
+      <%= button_to "/auth/microsoft_graph", method: :post, data: { turbo: false }, class: "btn-oauth" do %>
         <%= render "shared/microsoft_icon" %>
         Log in with Microsoft
       <% end %>
 
-      <button type="button" class="btn btn-oauth btn-disabled" disabled>
+      <button type="button" class="btn-oauth btn-disabled" disabled>
         <%= render "shared/apple_icon" %>
         Log in with Apple
         <span class="coming-soon">Coming soon</span>
@@ -37,7 +37,7 @@
       <span>or</span>
     </div>
 
-    <%= form_with url: session_path, class: "auth-form" do |form| %>
+    <%= form_with url: session_path, class: "form" do |form| %>
       <div class="form-group">
         <%= form.label :email_address, "Email address" %>
         <%= form.email_field :email_address, required: true, autofocus: params[:email_address].blank?, autocomplete: "username", placeholder: "you@example.com", value: params[:email_address], class: "form-input" %>
@@ -52,7 +52,7 @@
         <%= link_to "Forgot password?", new_password_path, class: "forgot-link" %>
       </div>
 
-      <%= form.submit "Log in", class: "btn btn-primary btn-full" %>
+      <%= form.submit "Log in", class: "btn w-full" %>
     <% end %>
 
     <p class="auth-footer">

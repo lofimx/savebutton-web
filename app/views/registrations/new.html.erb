@@ -9,24 +9,24 @@
     </div>
 
     <% if flash[:alert] %>
-      <div class="alert alert-error"><%= flash[:alert] %></div>
+      <div class="alert-destructive mb-4"><%= flash[:alert] %></div>
     <% end %>
     <% if flash[:notice] %>
-      <div class="alert alert-success"><%= flash[:notice] %></div>
+      <div class="alert mb-4"><%= flash[:notice] %></div>
     <% end %>
 
     <div class="oauth-buttons">
-      <%= button_to "/auth/google_oauth2", method: :post, data: { turbo: false }, class: "btn btn-oauth" do %>
+      <%= button_to "/auth/google_oauth2", method: :post, data: { turbo: false }, class: "btn-oauth" do %>
         <%= render "shared/google_icon" %>
         Sign up with Google
       <% end %>
 
-      <%= button_to "/auth/microsoft_graph", method: :post, data: { turbo: false }, class: "btn btn-oauth" do %>
+      <%= button_to "/auth/microsoft_graph", method: :post, data: { turbo: false }, class: "btn-oauth" do %>
         <%= render "shared/microsoft_icon" %>
         Sign up with Microsoft
       <% end %>
 
-      <button type="button" class="btn btn-oauth btn-disabled" disabled>
+      <button type="button" class="btn-oauth btn-disabled" disabled>
         <%= render "shared/apple_icon" %>
         Sign up with Apple
         <span class="coming-soon">Coming soon</span>
@@ -37,10 +37,10 @@
       <span>or</span>
     </div>
 
-    <%= form_with model: @user, url: registration_path, class: "auth-form" do |form| %>
+    <%= form_with model: @user, url: registration_path, class: "form" do |form| %>
       <% if @user.errors.any? %>
-        <div class="alert alert-error">
-          <ul>
+        <div class="alert-destructive mb-4">
+          <ul class="list-disc list-inside text-sm">
             <% @user.errors.full_messages.each do |message| %>
               <li><%= message %></li>
             <% end %>
@@ -64,7 +64,7 @@
         <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Enter your password again", class: "form-input" %>
       </div>
 
-      <%= form.submit "Create account", class: "btn btn-primary btn-full" %>
+      <%= form.submit "Create account", class: "btn w-full" %>
     <% end %>
 
     <p class="auth-footer">

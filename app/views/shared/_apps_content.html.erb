@@ -82,9 +82,9 @@
   <div class="server-options">
     <div class="server-option">
       <% if authenticated? %>
-        <span class="btn btn-primary btn-disabled">You're already logged in!</span>
+        <span class="btn btn-disabled">You're already logged in!</span>
       <% else %>
-        <%= link_to "Sign Up", new_registration_path, class: "btn btn-primary" %>
+        <%= link_to "Sign Up", new_registration_path, class: "btn" %>
       <% end %>
     </div>
   </div>

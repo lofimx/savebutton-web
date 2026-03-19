@@ -1,25 +1,16 @@
 <% assets = Releases::GithubRelease.assets %>
 
-<div class="download-modal"
-     data-download-modal-target="modal"
-     data-action="click->download-modal#closeOnBackdrop keydown.esc->download-modal#closeOnEscape"
-     tabindex="-1">
-  <div class="download-modal-dialog">
-    <header class="download-modal-header">
-      <h2 class="download-modal-title">Download Save Button</h2>
-      <button type="button"
-              class="download-modal-close"
-              data-action="click->download-modal#close"
-              aria-label="Close">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M18 6L6 18M6 6l12 12"/>
-        </svg>
-      </button>
+<dialog class="dialog w-full sm:max-w-lg"
+       data-download-modal-target="modal"
+       data-action="click->download-modal#closeOnBackdrop"
+       aria-labelledby="download-modal-title">
+  <div>
+    <header>
+      <h2 id="download-modal-title">Download Save Button</h2>
     </header>
-    <div class="download-modal-content">
-
+    <section>
       <%# Windows panel %>
-      <div class="download-panel hidden" data-download-modal-target="panel" data-platform="windows">
+      <div class="hidden" data-download-modal-target="panel" data-platform="windows">
         <div class="download-grid">
           <% if assets[:windows_msi] %>
             <a href="<%= assets[:windows_msi] %>" class="download-item">
@@ -34,7 +25,7 @@
       </div>
 
       <%# macOS panel %>
-      <div class="download-panel hidden" data-download-modal-target="panel" data-platform="macos">
+      <div class="hidden" data-download-modal-target="panel" data-platform="macos">
         <div class="download-grid">
           <% if assets[:macos_intel] %>
             <a href="<%= assets[:macos_intel] %>" class="download-item">
@@ -58,11 +49,10 @@
       </div>
 
       <%# Linux panel %>
-      <div class="download-panel hidden" data-download-modal-target="panel" data-platform="linux">
+      <div class="hidden" data-download-modal-target="panel" data-platform="linux">
         <p class="apps-description">
             If you aren't sure which package you need for your Linux distribution, download the Flatpak.
             <a href="https://flatpak.org/setup/">Flatpaks</a> are the correct way to install apps on Linux.
-            <br>
         </p>
         <div class="download-grid">
           <a href="<%= Releases::GithubRelease::AUR_URL %>" class="download-item" target="_blank" rel="noopener noreferrer">
@@ -119,7 +109,12 @@
           <% end %>
         </div>
       </div>
-
-    </div>
+    </section>
+    <button type="button" aria-label="Close" data-action="click->download-modal#close">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6 6 18"/>
+        <path d="m6 6 12 12"/>
+      </svg>
+    </button>
   </div>
-</div>
+</dialog>

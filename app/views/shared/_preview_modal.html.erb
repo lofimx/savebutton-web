@@ -1,31 +1,23 @@
-<div class="preview-modal"
-     data-preview-modal-target="modal"
-     data-action="click->preview-modal#closeOnBackdrop keydown.esc->preview-modal#closeOnEscape"
-     tabindex="-1">
-  <div class="preview-modal-dialog preview-modal-with-sidebar">
-    <header class="preview-modal-header">
-      <h2 class="preview-modal-title" data-preview-modal-target="title"></h2>
-      <div class="preview-modal-actions">
+<dialog class="dialog w-full sm:max-w-4xl max-h-[90vh]"
+       data-preview-modal-target="modal"
+       data-action="click->preview-modal#closeOnBackdrop"
+       aria-labelledby="preview-modal-title">
+  <div class="flex flex-col h-full">
+    <header class="flex items-center justify-between gap-4 shrink-0">
+      <h2 id="preview-modal-title" class="truncate" data-preview-modal-target="title"></h2>
+      <div class="flex items-center gap-2 shrink-0">
         <a href="#"
            target="_blank"
            rel="noopener noreferrer"
-           class="btn btn-secondary hidden"
+           class="btn-outline btn-sm hidden"
            data-preview-modal-target="visitLink">
           Visit original page
         </a>
-        <button type="button"
-                class="preview-modal-close"
-                data-action="click->preview-modal#close"
-                aria-label="Close">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 6L6 18M6 6l12 12"/>
-          </svg>
-        </button>
       </div>
     </header>
 
-    <div class="preview-modal-body">
-      <div class="preview-modal-content" data-preview-modal-target="content">
+    <div class="preview-modal-body flex-1 min-h-0 -mx-6">
+      <div class="preview-modal-content-area" data-preview-modal-target="content">
       </div>
 
       <aside class="preview-sidebar" data-preview-modal-target="sidebar">
@@ -60,7 +52,7 @@
             </div>
           </section>
 
-          <section class="sidebar-section sidebar-section-note">
+          <section class="sidebar-section">
             <h3 class="sidebar-section-title">Note</h3>
             <textarea class="note-editor"
                       placeholder="Add a note..."
@@ -70,7 +62,7 @@
 
           <div class="sidebar-actions">
             <button type="button"
-                    class="btn btn-secondary sidebar-action-btn"
+                    class="btn-ghost sidebar-action-btn"
                     data-action="click->preview-modal#shareAnga"
                     data-preview-modal-target="shareBtn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -84,7 +76,7 @@
             </button>
 
             <button type="button"
-                    class="btn btn-secondary sidebar-action-btn"
+                    class="btn-ghost sidebar-action-btn"
                     disabled
                     aria-label="Add to Space (coming soon)">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -93,7 +85,7 @@
               Add to Space
             </button>
 
-            <a class="btn btn-secondary sidebar-action-btn"
+            <a class="btn-ghost sidebar-action-btn"
                href="#"
                download
                data-preview-modal-target="downloadLink">
@@ -109,18 +101,25 @@
       </aside>
     </div>
 
-    <footer class="preview-modal-footer">
+    <footer class="shrink-0 border-t pt-4 -mb-2">
       <button type="button"
-              class="btn btn-secondary"
+              class="btn-outline"
               data-action="click->preview-modal#cancel">
         Cancel
       </button>
       <button type="button"
-              class="btn btn-primary"
+              class="btn"
               data-action="click->preview-modal#save"
               data-preview-modal-target="saveBtn">
         Save
       </button>
     </footer>
+
+    <button type="button" aria-label="Close" data-action="click->preview-modal#close">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6 6 18"/>
+        <path d="m6 6 12 12"/>
+      </svg>
+    </button>
   </div>
-</div>
+</dialog>
