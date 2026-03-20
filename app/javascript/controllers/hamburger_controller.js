@@ -9,7 +9,7 @@ export default class extends Controller {
 
   toggle(event) {
     event.stopPropagation()
-    const isOpen = this.dropdownTarget.classList.contains("open")
+    const isOpen = this.dropdownTarget.classList.contains("menu-open")
 
     if (isOpen) {
       this.close()
@@ -19,12 +19,12 @@ export default class extends Controller {
   }
 
   open() {
-    this.dropdownTarget.classList.add("open")
+    this.dropdownTarget.classList.add("menu-open")
     document.addEventListener("click", this.closeOnClickOutside)
   }
 
   close() {
-    this.dropdownTarget.classList.remove("open")
+    this.dropdownTarget.classList.remove("menu-open")
     document.removeEventListener("click", this.closeOnClickOutside)
   }
 

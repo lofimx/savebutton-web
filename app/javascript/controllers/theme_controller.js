@@ -3,8 +3,6 @@ import { Controller } from "@hotwired/stimulus"
 // Theme controller for managing light/dark mode
 // Cycles through: auto -> light -> dark -> auto
 export default class extends Controller {
-  static targets = ["label"]
-
   connect() {
     this.applyTheme()
     this.updateLabel()
@@ -38,7 +36,8 @@ export default class extends Controller {
     const root = document.documentElement
 
     if (theme === "auto") {
-      root.removeAttribute("data-theme")
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+      root.setAttribute("data-theme", prefersDark ? "dark" : "light")
     } else {
       root.setAttribute("data-theme", theme)
     }
@@ -52,17 +51,8 @@ export default class extends Controller {
       dark: "Dark"
     }
 
-    // Update all labels on the page
     document.querySelectorAll("[data-theme-label]").forEach(el => {
       el.textContent = labels[theme]
     })
-
-    // Update data-theme attribute for CSS icon switching
-    const root = document.documentElement
-    if (theme === "auto") {
-      root.removeAttribute("data-theme")
-    } else {
-      root.setAttribute("data-theme", theme)
-    }
   }
 }

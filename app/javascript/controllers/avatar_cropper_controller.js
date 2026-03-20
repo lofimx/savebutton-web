@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import Cropper from "cropperjs"
 
 export default class extends Controller {
-  static targets = ["input", "modal", "image", "preview", "croppedData"]
+  static targets = ["input", "modal", "image", "preview"]
 
   connect() {
     this.cropper = null
@@ -35,13 +35,11 @@ export default class extends Controller {
   }
 
   showModal() {
-    this.modalTarget.classList.add('active')
-    document.body.style.overflow = 'hidden'
+    this.modalTarget.showModal()
   }
 
   hideModal() {
-    this.modalTarget.classList.remove('active')
-    document.body.style.overflow = ''
+    this.modalTarget.close()
     this.destroyCropper()
     this.inputTarget.value = ''
   }

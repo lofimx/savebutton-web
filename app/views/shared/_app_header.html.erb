@@ -1,48 +1,55 @@
-<header class="site-header">
-  <div class="header-container">
-    <div class="header-left">
-      <div class="hamburger-menu" data-controller="hamburger">
-        <button class="hamburger-button" data-action="click->hamburger#toggle" aria-label="Menu">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
-        </button>
-        <nav class="hamburger-dropdown" data-hamburger-target="dropdown">
-          <%= link_to app_everything_path, class: "hamburger-item #{'active' if current_page?(app_everything_path)}" do %>
+<header class="navbar bg-base-100 shadow-sm">
+  <div class="navbar-start">
+    <div class="dropdown" data-controller="hamburger">
+      <button tabindex="0" class="btn btn-ghost btn-square" data-action="click->hamburger#toggle" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <ul tabindex="0" class="menu dropdown-content bg-base-100 rounded-box z-10 w-52 p-2 shadow-lg" data-hamburger-target="dropdown">
+        <li>
+          <%= link_to app_everything_path, class: current_page?(app_everything_path) ? "active" : "" do %>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="3" width="7" height="7"></rect>
               <rect x="14" y="3" width="7" height="7"></rect>
               <rect x="14" y="14" width="7" height="7"></rect>
               <rect x="3" y="14" width="7" height="7"></rect>
             </svg>
-            <span>Everything</span>
+            Everything
           <% end %>
-          <%= link_to get_the_apps_path, class: "hamburger-item #{'active' if current_page?(get_the_apps_path)}" do %>
+        </li>
+        <li>
+          <%= link_to get_the_apps_path, class: current_page?(get_the_apps_path) ? "active" : "" do %>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
               <polyline points="7 10 12 15 17 10"></polyline>
               <line x1="12" y1="15" x2="12" y2="3"></line>
             </svg>
-            <span>Get The Apps</span>
+            Get The Apps
           <% end %>
-          <%= link_to account_path, class: "hamburger-item #{'active' if current_page?(account_path)}" do %>
+        </li>
+        <li>
+          <%= link_to account_path, class: current_page?(account_path) ? "active" : "" do %>
             <% if Current.user.avatar.attached? %>
-              <%= image_tag Current.user.avatar, class: "hamburger-avatar" %>
+              <%= image_tag Current.user.avatar, class: "w-5 h-5 rounded-full object-cover" %>
             <% else %>
               <%= render "shared/icons/profile_icon" %>
             <% end %>
-            <span>Account</span>
+            Account
           <% end %>
-        </nav>
-      </div>
+        </li>
+      </ul>
     </div>
-
-    <% unless content_for?(:hide_add_button) %>
-      <button class="add-button" data-action="click->add-modal#open" aria-label="Add note or bookmark">
-        <%= render "shared/icons/plus_icon" %>
-      </button>
-    <% end %>
   </div>
+
+  <% unless content_for?(:hide_add_button) %>
+    <div class="navbar-end">
+      <button class="btn btn-primary btn-sm gap-1" data-action="click->add-modal#open" aria-label="Add note or bookmark">
+        <%= render "shared/icons/plus_icon" %>
+        Add
+      </button>
+    </div>
+  <% end %>
 </header>

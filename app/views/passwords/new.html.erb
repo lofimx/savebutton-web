@@ -1,36 +1,38 @@
 <% content_for(:title) { "Reset Password - Save Button" } %>
 <% content_for(:hide_header) { true } %>
 
-<div class="auth-page">
-  <div class="auth-page-content">
-    <div class="auth-container">
-      <div class="auth-header">
-        <%= link_to root_path, class: "auth-logo" do %>
+<div class="min-h-screen flex items-center justify-center bg-base-200 px-4">
+  <div class="card bg-base-100 shadow-xl w-full max-w-sm">
+    <div class="card-body">
+      <div class="text-center mb-4">
+        <%= link_to root_path, class: "inline-flex items-center gap-2 mb-2" do %>
           <%= render "shared/logo_icon", size: 36, id_suffix: "auth-forgot" %>
-          <span class="logo-text">Save Button</span>
+          <span class="text-lg font-semibold">Save Button</span>
         <% end %>
-        <h1>Forgot your password?</h1>
-        <p class="auth-subtitle">Enter your email and we'll send you reset instructions</p>
+        <h1 class="text-2xl font-bold">Forgot your password?</h1>
+        <p class="text-sm opacity-70 mt-1">Enter your email and we'll send you reset instructions</p>
       </div>
 
       <% if flash[:alert] %>
-        <div class="alert alert-error"><%= flash[:alert] %></div>
+        <div class="alert alert-error text-sm"><span><%= flash[:alert] %></span></div>
       <% end %>
       <% if flash[:notice] %>
-        <div class="alert alert-success"><%= flash[:notice] %></div>
+        <div class="alert alert-success text-sm"><span><%= flash[:notice] %></span></div>
       <% end %>
 
-      <%= form_with url: passwords_path, class: "auth-form" do |form| %>
-        <div class="form-group">
-          <%= form.label :email_address, "Email address" %>
-          <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "you@example.com", value: params[:email_address], class: "form-input" %>
+      <%= form_with url: passwords_path do |form| %>
+        <div class="space-y-3">
+          <div>
+            <label class="text-sm opacity-60 mb-1 block">Email address</label>
+            <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "you@example.com", value: params[:email_address], class: "input input-bordered w-full" %>
+          </div>
+
+          <%= form.submit "Send reset instructions", class: "btn btn-primary w-full" %>
         </div>
-
-        <%= form.submit "Send reset instructions", class: "btn btn-primary btn-full" %>
       <% end %>
 
-      <p class="auth-footer">
-        Remember your password? <%= link_to "Log in", new_session_path %>
+      <p class="text-center text-sm mt-4">
+        Remember your password? <%= link_to "Log in", new_session_path, class: "link link-primary" %>
       </p>
     </div>
   </div>

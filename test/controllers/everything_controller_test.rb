@@ -15,7 +15,7 @@ class EverythingControllerTest < ActionDispatch::IntegrationTest
   test "index shows empty state when no angas" do
     get app_everything_path
     assert_response :success
-    assert_select ".empty-state"
+    assert_select "[data-testid='empty-state']"
   end
 
   test "index shows angas in reverse chronological order" do
@@ -24,7 +24,7 @@ class EverythingControllerTest < ActionDispatch::IntegrationTest
 
     get app_everything_path
     assert_response :success
-    assert_select ".anga-tile", 2
+    assert_select "[data-anga-id]", 2
   end
 
   test "index filters angas by search query" do
@@ -33,7 +33,7 @@ class EverythingControllerTest < ActionDispatch::IntegrationTest
 
     get app_everything_path, params: { q: "hello" }
     assert_response :success
-    assert_select ".anga-tile", 1
+    assert_select "[data-anga-id]", 1
   end
 
   test "app root redirects to everything" do

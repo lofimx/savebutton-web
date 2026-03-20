@@ -1,14 +1,14 @@
 <% content_for :app_layout, true %>
 
-<div class="everything-container" data-controller="preview-modal">
-  <div class="search-container">
-    <%= form_with url: app_everything_path, method: :get, class: "search-form", data: { controller: "search", turbo_frame: "anga-results" } do |f| %>
+<div class="max-w-6xl mx-auto px-4 py-4" data-controller="preview-modal">
+  <div class="mb-4">
+    <%= form_with url: app_everything_path, method: :get, data: { controller: "search", turbo_frame: "anga-results" } do |f| %>
       <input type="search"
              name="q"
              value="<%= params[:q] %>"
              placeholder="Search your cards..."
              autocomplete="off"
-             class="search-input"
+             class="input input-bordered w-full"
              autofocus
              data-search-target="input"
              data-action="input->search#search keydown.enter->search#submit">
@@ -16,7 +16,7 @@
   </div>
 
   <%= turbo_frame_tag "anga-results" do %>
-    <div class="anga-grid">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
       <% @angas.each do |anga| %>
         <%
           file_type = Files::FileType.new(anga.filename)
@@ -28,7 +28,8 @@
                                app_anga_cache_status_path(anga)
                              end
         %>
-        <div class="anga-tile"
+        <div class="flex flex-col bg-base-100 rounded-lg shadow-sm cursor-pointer hover:shadow-md transition-shadow p-3"
+             style="height: 100%"
              id="anga-tile-<%= anga.id %>"
              data-action="click->preview-modal#open"
              data-preview-url="<%= app_anga_preview_path(anga) %>"
@@ -41,45 +42,41 @@
              <%= "data-preview-original-url=#{original_url}" if original_url %>
              <%= "data-preview-cache-url=#{cache_url}" if cache_url %>
              <%= "data-cache-status-url=#{cache_status_url}" if cache_status_url %>>
-          <% if file_type.note? || file_type.text? %>
-            <div class="anga-tile-content anga-tile-note">
-              <% if anga.file.attached? %>
-                <div class="note-preview"><%= anga.file.download.force_encoding('UTF-8').truncate(500) %></div>
-              <% end %>
-            </div>
-          <% elsif file_type.bookmark? %>
-            <% if anga.bookmark&.favicon&.attached? %>
-              <div class="anga-tile-content anga-tile-bookmark" data-controller="favicon-fallback">
-                <%= image_tag app_anga_cache_file_path(anga, "favicon.ico"), class: "bookmark-favicon", alt: "Favicon", data: { action: "error->favicon-fallback#showDefault" } %>
-                <template data-favicon-fallback-target="fallback">
+          <div style="flex:1 1 0%">
+            <% if file_type.note? || file_type.text? %>
+              <div class="text-xs opacity-70 line-clamp-6 whitespace-pre-wrap"><% if anga.file.attached? %><%= anga.file.download.force_encoding('UTF-8').truncate(500).strip %><% end %></div>
+            <% elsif file_type.bookmark? %>
+              <div class="flex items-center justify-center h-16" data-controller="favicon-fallback">
+                <% if anga.bookmark&.favicon&.attached? %>
+                  <%= image_tag app_anga_cache_file_path(anga, "favicon.ico"), class: "w-10 h-10", alt: "Favicon", data: { action: "error->favicon-fallback#showDefault" } %>
+                  <template data-favicon-fallback-target="fallback">
+                    <%= render "shared/icons/bookmark_icon" %>
+                  </template>
+                <% else %>
                   <%= render "shared/icons/bookmark_icon" %>
-                </template>
+                <% end %>
+              </div>
+            <% elsif file_type.image? %>
+              <div class="h-24 overflow-hidden rounded">
+                <%= image_tag app_anga_preview_path(anga), alt: anga.filename, class: "w-full h-full object-cover" %>
+              </div>
+            <% elsif file_type.pdf? %>
+              <div class="flex items-center justify-center h-16">
+                <%= render "shared/icons/pdf_icon" %>
               </div>
             <% else %>
-              <div class="anga-tile-content anga-tile-bookmark">
-                <%= render "shared/icons/bookmark_icon" %>
+              <div class="flex items-center justify-center h-16">
+                <span class="text-lg font-bold opacity-40"><%= file_type.extension_name.upcase %></span>
               </div>
             <% end %>
-          <% elsif file_type.image? %>
-            <div class="anga-tile-content anga-tile-image">
-              <%= image_tag app_anga_preview_path(anga), alt: anga.filename %>
-            </div>
-          <% elsif file_type.pdf? %>
-            <div class="anga-tile-content anga-tile-pdf">
-              <%= render "shared/icons/pdf_icon" %>
-            </div>
-          <% else %>
-            <div class="anga-tile-content anga-tile-file">
-              <div class="file-extension"><%= file_type.extension_name.upcase %></div>
-            </div>
-          <% end %>
-          <div class="anga-tile-filename"><%= file_type.bookmark? && original_url.present? ? original_url : display_filename(anga.filename) %></div>
+          </div>
+          <p class="text-xs truncate opacity-60 mt-1"><%= file_type.bookmark? && original_url.present? ? original_url : display_filename(anga.filename) %></p>
         </div>
       <% end %>
     </div>
 
     <% if @angas.empty? %>
-      <div class="empty-state">
+      <div class="text-center py-16 opacity-60" data-testid="empty-state">
         <% if params[:q].present? %>
           <p>No results found.</p>
         <% else %>

@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+/* DaisyUI v5.5.18 - vendored modular imports */
+
+/* Themes (light + dark only) */
+@import "../../../vendor/daisyui/theme/light.css";
+@import "../../../vendor/daisyui/theme/dark.css";
+
+/* Base */
+@import "../../../vendor/daisyui/base/rootscrollgutter.css";
+@import "../../../vendor/daisyui/base/scrollbar.css";
+@import "../../../vendor/daisyui/base/rootcolor.css";
+@import "../../../vendor/daisyui/base/rootscrolllock.css";
+@import "../../../vendor/daisyui/base/reset.css";
+@import "../../../vendor/daisyui/base/svg.css";
+@import "../../../vendor/daisyui/base/properties.css";
+
+/* Components */
+@import "../../../vendor/daisyui/components/alert.css";
+@import "../../../vendor/daisyui/components/avatar.css";
+@import "../../../vendor/daisyui/components/badge.css";
+@import "../../../vendor/daisyui/components/button.css";
+@import "../../../vendor/daisyui/components/card.css";
+@import "../../../vendor/daisyui/components/checkbox.css";
+@import "../../../vendor/daisyui/components/collapse.css";
+@import "../../../vendor/daisyui/components/divider.css";
+@import "../../../vendor/daisyui/components/dropdown.css";
+@import "../../../vendor/daisyui/components/fieldset.css";
+@import "../../../vendor/daisyui/components/footer.css";
+@import "../../../vendor/daisyui/components/hero.css";
+@import "../../../vendor/daisyui/components/input.css";
+@import "../../../vendor/daisyui/components/label.css";
+@import "../../../vendor/daisyui/components/link.css";
+@import "../../../vendor/daisyui/components/list.css";
+@import "../../../vendor/daisyui/components/loading.css";
+@import "../../../vendor/daisyui/components/menu.css";
+@import "../../../vendor/daisyui/components/modal.css";
+@import "../../../vendor/daisyui/components/navbar.css";
+@import "../../../vendor/daisyui/components/select.css";
+@import "../../../vendor/daisyui/components/swap.css";
+@import "../../../vendor/daisyui/components/tab.css";
+@import "../../../vendor/daisyui/components/table.css";
+@import "../../../vendor/daisyui/components/textarea.css";
+@import "../../../vendor/daisyui/components/toast.css";
+@import "../../../vendor/daisyui/components/toggle.css";
+@import "../../../vendor/daisyui/components/tooltip.css";
+
+/* Utilities */
+@import "../../../vendor/daisyui/utilities/typography.css";
+@import "../../../vendor/daisyui/utilities/radius.css";
+@import "../../../vendor/daisyui/utilities/glass.css";
+@import "../../../vendor/daisyui/utilities/join.css";
+
+/* Colors */
+@import "../../../vendor/daisyui/colors/properties.css";
+@import "../../../vendor/daisyui/colors/properties-extended.css";
+@import "../../../vendor/daisyui/colors/responsive.css";
+@import "../../../vendor/daisyui/colors/responsive-extended.css";
+@import "../../../vendor/daisyui/colors/states.css";
+@import "../../../vendor/daisyui/colors/states-extended.css";
+
+/* DaisyUI dark: variant bridge for Tailwind utilities */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+/* Inter font */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/assets/InterVariable.woff2') format('woff2');
+}
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+/* Cropper.js styles (vendored) */
+@import "../../../vendor/javascript/cropperjs/cropper.min.css";

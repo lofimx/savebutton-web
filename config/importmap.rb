@@ -6,5 +6,5 @@ pin "@hotwired/stimulus", to: "stimulus.min.js"
 pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
 pin_all_from "app/javascript/controllers", under: "controllers"
 
-# Cropper.js for avatar image cropping
-pin "cropperjs", to: "https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.esm.js"
+# Cropper.js for avatar image cropping (vendored locally)
+pin "cropperjs", to: "cropperjs/cropper.esm.js"

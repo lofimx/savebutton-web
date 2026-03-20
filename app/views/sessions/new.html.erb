@@ -1,62 +1,60 @@
 <% content_for(:title) { "Log In - Save Button" } %>
 <% content_for(:hide_header) { true } %>
 
-<div class="auth-page">
-  <div class="auth-page-content">
-    <div class="auth-container">
-    <div class="auth-header">
-      <h1>Welcome Back</h1>
-    </div>
+<div class="min-h-screen flex items-center justify-center bg-base-200 px-4">
+  <div class="card bg-base-100 shadow-xl w-full max-w-sm">
+    <div class="card-body">
+      <h1 class="text-2xl font-bold text-center mb-2">Welcome Back</h1>
 
-    <% if flash[:alert] %>
-      <div class="alert alert-error"><%= flash[:alert] %></div>
-    <% end %>
-    <% if flash[:notice] %>
-      <div class="alert alert-success"><%= flash[:notice] %></div>
-    <% end %>
-
-    <div class="oauth-buttons">
-      <%= button_to "/auth/google_oauth2", method: :post, data: { turbo: false }, class: "btn btn-oauth" do %>
-        <%= render "shared/google_icon" %>
-        Log in with Google
+      <% if flash[:alert] %>
+        <div class="alert alert-error text-sm"><span><%= flash[:alert] %></span></div>
+      <% end %>
+      <% if flash[:notice] %>
+        <div class="alert alert-success text-sm"><span><%= flash[:notice] %></span></div>
       <% end %>
 
-      <%= button_to "/auth/microsoft_graph", method: :post, data: { turbo: false }, class: "btn btn-oauth" do %>
-        <%= render "shared/microsoft_icon" %>
-        Log in with Microsoft
+      <div class="space-y-2 mb-2">
+        <%= button_to "/auth/google_oauth2", method: :post, data: { turbo: false }, class: "btn btn-outline w-full gap-2" do %>
+          <%= render "shared/google_icon" %>
+          Log in with Google
+        <% end %>
+
+        <%= button_to "/auth/microsoft_graph", method: :post, data: { turbo: false }, class: "btn btn-outline w-full gap-2" do %>
+          <%= render "shared/microsoft_icon" %>
+          Log in with Microsoft
+        <% end %>
+
+        <button type="button" class="btn btn-outline w-full gap-2" disabled>
+          <%= render "shared/apple_icon" %>
+          Log in with Apple
+          <span class="badge badge-sm">Soon</span>
+        </button>
+      </div>
+
+      <div class="divider text-sm">or</div>
+
+      <%= form_with url: session_path do |form| %>
+        <div class="space-y-3">
+          <div>
+            <label class="text-sm opacity-60 mb-1 block">Email address</label>
+            <%= form.email_field :email_address, required: true, autofocus: params[:email_address].blank?, autocomplete: "username", placeholder: "you@example.com", value: params[:email_address], class: "input input-bordered w-full" %>
+          </div>
+
+          <div>
+            <label class="text-sm opacity-60 mb-1 block">Password</label>
+            <%= form.password_field :password, required: true, autofocus: params[:email_address].present?, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "input input-bordered w-full" %>
+          </div>
+
+          <div class="text-right">
+            <%= link_to "Forgot password?", new_password_path, class: "link link-primary text-sm" %>
+          </div>
+
+          <%= form.submit "Log in", class: "btn btn-primary w-full" %>
+        </div>
       <% end %>
 
-      <button type="button" class="btn btn-oauth btn-disabled" disabled>
-        <%= render "shared/apple_icon" %>
-        Log in with Apple
-        <span class="coming-soon">Coming soon</span>
-      </button>
-    </div>
-
-    <div class="auth-divider">
-      <span>or</span>
-    </div>
-
-    <%= form_with url: session_path, class: "auth-form" do |form| %>
-      <div class="form-group">
-        <%= form.label :email_address, "Email address" %>
-        <%= form.email_field :email_address, required: true, autofocus: params[:email_address].blank?, autocomplete: "username", placeholder: "you@example.com", value: params[:email_address], class: "form-input" %>
-      </div>
-
-      <div class="form-group">
-        <%= form.label :password, "Password" %>
-        <%= form.password_field :password, required: true, autofocus: params[:email_address].present?, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "form-input" %>
-      </div>
-
-      <div class="form-actions">
-        <%= link_to "Forgot password?", new_password_path, class: "forgot-link" %>
-      </div>
-
-      <%= form.submit "Log in", class: "btn btn-primary btn-full" %>
-    <% end %>
-
-    <p class="auth-footer">
-        Don't have an account? <%= link_to "Sign up", new_registration_path %>
+      <p class="text-center text-sm mt-4">
+        Don't have an account? <%= link_to "Sign up", new_registration_path, class: "link link-primary" %>
       </p>
     </div>
   </div>

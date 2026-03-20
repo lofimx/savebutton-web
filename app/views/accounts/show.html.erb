@@ -1,140 +1,157 @@
 <% content_for :app_layout, true %>
 <% content_for :hide_add_button, true %>
 
-<div class="account-page" data-controller="avatar-cropper">
-  <div class="account-container">
-    <div class="account-header">
-      <button type="button" class="avatar-upload-button" data-action="avatar-cropper#openFilePicker" title="Change avatar">
-        <% if @user.avatar.attached? %>
-          <%= image_tag @user.avatar, class: "profile-avatar profile-avatar-large profile-avatar-image" %>
-        <% else %>
-          <div class="profile-avatar profile-avatar-large">
-            <%= @user.email_address[0].upcase %>
+<div class="max-w-lg mx-auto px-4 py-8" data-controller="avatar-cropper">
+  <div class="text-center mb-8">
+    <button type="button" class="relative group inline-block" data-action="avatar-cropper#openFilePicker" title="Change avatar">
+      <% if @user.avatar.attached? %>
+        <div class="avatar">
+          <div class="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+            <%= image_tag @user.avatar %>
+          </div>
+        </div>
+      <% else %>
+        <div class="avatar placeholder">
+          <div class="bg-neutral text-neutral-content w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 flex items-center justify-center">
+            <span class="text-3xl"><%= @user.email_address[0].upcase %></span>
+          </div>
+        </div>
+      <% end %>
+      <div class="absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="white">
+          <path d="M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0 8a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm6.5-12H18l-1.5-2h-9L6 5H5.5A2.5 2.5 0 0 0 3 7.5v9A2.5 2.5 0 0 0 5.5 19h13a2.5 2.5 0 0 0 2.5-2.5v-9A2.5 2.5 0 0 0 18.5 5z"/>
+        </svg>
+      </div>
+    </button>
+    <input type="file" accept="image/*" class="hidden" data-avatar-cropper-target="input" data-action="change->avatar-cropper#fileSelected">
+    <h1 class="text-2xl font-bold mt-4">Account</h1>
+    <p class="text-sm opacity-60"><%= Current.user.email_address %></p>
+  </div>
+
+  <%# Avatar Cropper Modal %>
+  <dialog class="modal" data-avatar-cropper-target="modal">
+    <div class="modal-box">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-bold">Crop Avatar</h3>
+        <form method="dialog">
+          <button class="btn btn-ghost btn-sm btn-square" data-action="click->avatar-cropper#cancel">&times;</button>
+        </form>
+      </div>
+      <div class="flex gap-4 items-start">
+        <div class="flex-1 max-h-80 overflow-hidden">
+          <img data-avatar-cropper-target="image" class="max-w-full">
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <p class="text-xs opacity-60">Preview</p>
+          <img data-avatar-cropper-target="preview" class="w-20 h-20 rounded-full object-cover">
+        </div>
+      </div>
+      <div class="modal-action">
+        <button type="button" class="btn btn-ghost" data-action="avatar-cropper#cancel">Cancel</button>
+        <button type="button" class="btn btn-primary" data-action="avatar-cropper#save">Save Avatar</button>
+      </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
+
+  <div class="space-y-6">
+    <div class="card bg-base-100 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title text-base">Email Address</h2>
+        <%= form_with url: account_path, method: :patch do |f| %>
+          <div class="space-y-3">
+            <div>
+              <label class="text-sm opacity-60 mb-1 block">Email</label>
+              <%= f.email_field :email_address, value: @user.email_address, class: "input input-bordered w-full", required: true %>
+            </div>
+            <%= f.submit "Update Email", class: "btn btn-primary btn-sm" %>
           </div>
         <% end %>
-        <div class="avatar-upload-overlay">
-          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-            <path d="M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0 8a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm6.5-12H18l-1.5-2h-9L6 5H5.5A2.5 2.5 0 0 0 3 7.5v9A2.5 2.5 0 0 0 5.5 19h13a2.5 2.5 0 0 0 2.5-2.5v-9A2.5 2.5 0 0 0 18.5 5z"/>
-          </svg>
-        </div>
-      </button>
-      <input type="file" accept="image/*" class="visually-hidden" data-avatar-cropper-target="input" data-action="change->avatar-cropper#fileSelected">
-      <h1 class="title-2">Account</h1>
-      <p class="account-email"><%= Current.user.email_address %></p>
-    </div>
-
-    <!-- Avatar Cropper Modal -->
-    <div class="avatar-modal" data-avatar-cropper-target="modal">
-      <div class="avatar-modal-content">
-        <div class="avatar-modal-header">
-          <h2 class="title-4">Crop Avatar</h2>
-          <button type="button" class="avatar-modal-close" data-action="avatar-cropper#cancel">&times;</button>
-        </div>
-        <div class="avatar-modal-body">
-          <div class="avatar-cropper-container">
-            <img data-avatar-cropper-target="image" class="avatar-cropper-image">
-          </div>
-          <div class="avatar-preview-container">
-            <p class="caption">Preview</p>
-            <img data-avatar-cropper-target="preview" class="avatar-preview-image">
-          </div>
-        </div>
-        <div class="avatar-modal-footer">
-          <button type="button" class="btn btn-secondary" data-action="avatar-cropper#cancel">Cancel</button>
-          <button type="button" class="btn btn-primary" data-action="avatar-cropper#save">Save Avatar</button>
-        </div>
       </div>
     </div>
 
-    <section class="account-section">
-      <h2 class="title-4">Email Address</h2>
-      <%= form_with url: account_path, method: :patch, class: "account-form" do |f| %>
-        <div class="form-group">
-          <label for="email_address">Email</label>
-          <%= f.email_field :email_address, value: @user.email_address, class: "form-input", required: true %>
-        </div>
-        <div class="form-actions">
-          <%= f.submit "Update Email", class: "btn btn-primary" %>
-        </div>
-      <% end %>
-    </section>
-
-    <section class="account-section">
-      <h2 class="title-4"><%= @user.incidental_password? ? "Set Password" : "Change Password" %></h2>
-      <%= form_with url: account_path, method: :patch, class: "account-form" do |f| %>
-        <div class="form-group">
-          <label for="current_password">Current Password</label>
-          <% if @user.incidental_password? %>
-            <%= f.password_field :current_password, class: "form-input", disabled: true, placeholder: "Not required" %>
-            <span class="form-hint">Your account was created by <%= provider_name(@user.identities.first&.provider) %></span>
-          <% else %>
-            <%= f.password_field :current_password, class: "form-input", autocomplete: "current-password" %>
-          <% end %>
-        </div>
-        <div class="form-group">
-          <label for="password">New Password</label>
-          <%= f.password_field :password, class: "form-input", autocomplete: "new-password" %>
-          <span class="form-hint">Minimum 8 characters</span>
-        </div>
-        <div class="form-group">
-          <label for="password_confirmation">Confirm New Password</label>
-          <%= f.password_field :password_confirmation, class: "form-input", autocomplete: "new-password" %>
-        </div>
-        <div class="form-actions">
-          <%= f.submit(@user.incidental_password? ? "Set Password" : "Update Password", class: "btn btn-primary") %>
-        </div>
-      <% end %>
-    </section>
-
-    <section class="account-section">
-      <h2 class="title-4">Connected Accounts</h2>
-      <p class="section-description">Manage your connected login methods.</p>
-
-      <div class="connected-accounts">
-        <% if @user.identities.any? %>
-          <% @user.identities.each do |identity| %>
-            <div class="connected-account">
-              <div class="connected-account-info">
-                <span class="provider-icon"><%= provider_icon(identity.provider) %></span>
-                <span class="provider-name"><%= provider_name(identity.provider) %></span>
-              </div>
-              <% if @user.identities.count > 1 || @user.password_digest.present? %>
-                <%= button_to "Disconnect", identity_account_path(identity_id: identity.id), method: :delete, class: "btn btn-secondary btn-small", data: { turbo_confirm: "Are you sure you want to disconnect #{provider_name(identity.provider)}?" } %>
+    <div class="card bg-base-100 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title text-base"><%= @user.incidental_password? ? "Set Password" : "Change Password" %></h2>
+        <%= form_with url: account_path, method: :patch do |f| %>
+          <div class="space-y-3">
+            <div>
+              <label class="text-sm opacity-60 mb-1 block">Current Password</label>
+              <% if @user.incidental_password? %>
+                <%= f.password_field :current_password, class: "input input-bordered w-full", disabled: true, placeholder: "Not required" %>
+                <p class="text-xs opacity-50 mt-1">Your account was created by <%= provider_name(@user.identities.first&.provider) %></p>
               <% else %>
-                <span class="form-hint">Set a password to disconnect</span>
+                <%= f.password_field :current_password, class: "input input-bordered w-full", autocomplete: "current-password" %>
               <% end %>
             </div>
-          <% end %>
-        <% else %>
-          <p class="no-accounts">No connected accounts.</p>
+            <div>
+              <label class="text-sm opacity-60 mb-1 block">New Password</label>
+              <%= f.password_field :password, class: "input input-bordered w-full", autocomplete: "new-password" %>
+              <p class="text-xs opacity-50 mt-1">Minimum 8 characters</p>
+            </div>
+            <div>
+              <label class="text-sm opacity-60 mb-1 block">Confirm New Password</label>
+              <%= f.password_field :password_confirmation, class: "input input-bordered w-full", autocomplete: "new-password" %>
+            </div>
+            <%= f.submit(@user.incidental_password? ? "Set Password" : "Update Password", class: "btn btn-primary btn-sm") %>
+          </div>
         <% end %>
       </div>
+    </div>
 
-      <div class="oauth-connect-buttons">
-        <p class="section-description">Connect additional accounts:</p>
-        <div class="oauth-buttons-row">
-          <% unless @user.identities.exists?(provider: "google_oauth2") %>
-            <%= button_to "/auth/google_oauth2", method: :post, data: { turbo: false }, class: "btn btn-oauth btn-small" do %>
-              <%= render "shared/google_icon" %>
-              <span>Google</span>
+    <div class="card bg-base-100 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title text-base">Connected Accounts</h2>
+        <p class="text-sm opacity-60">Manage your connected login methods.</p>
+
+        <% if @user.identities.any? %>
+          <div class="space-y-2 mt-2">
+            <% @user.identities.each do |identity| %>
+              <div class="flex items-center justify-between p-3 bg-base-200 rounded-lg">
+                <div class="flex items-center gap-2">
+                  <span><%= provider_icon(identity.provider) %></span>
+                  <span class="font-medium text-sm"><%= provider_name(identity.provider) %></span>
+                </div>
+                <% if @user.identities.count > 1 || @user.password_digest.present? %>
+                  <%= button_to "Disconnect", identity_account_path(identity_id: identity.id), method: :delete, class: "btn btn-ghost btn-xs", data: { turbo_confirm: "Are you sure you want to disconnect #{provider_name(identity.provider)}?" } %>
+                <% else %>
+                  <span class="text-xs opacity-60">Set a password to disconnect</span>
+                <% end %>
+              </div>
             <% end %>
-          <% end %>
-          <% unless @user.identities.exists?(provider: "microsoft_graph") %>
-            <%= button_to "/auth/microsoft_graph", method: :post, data: { turbo: false }, class: "btn btn-oauth btn-small" do %>
-              <%= render "shared/microsoft_icon" %>
-              <span>Microsoft</span>
+          </div>
+        <% else %>
+          <p class="text-sm opacity-60 mt-2">No connected accounts.</p>
+        <% end %>
+
+        <div class="mt-4">
+          <p class="text-sm opacity-60 mb-2">Connect additional accounts:</p>
+          <div class="flex gap-2">
+            <% unless @user.identities.exists?(provider: "google_oauth2") %>
+              <%= button_to "/auth/google_oauth2", method: :post, data: { turbo: false }, class: "btn btn-outline btn-sm gap-1" do %>
+                <%= render "shared/google_icon" %>
+                Google
+              <% end %>
             <% end %>
-          <% end %>
+            <% unless @user.identities.exists?(provider: "microsoft_graph") %>
+              <%= button_to "/auth/microsoft_graph", method: :post, data: { turbo: false }, class: "btn btn-outline btn-sm gap-1" do %>
+                <%= render "shared/microsoft_icon" %>
+                Microsoft
+              <% end %>
+            <% end %>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <section class="account-section">
-      <h2 class="title-4">Log Out</h2>
-      <p class="section-description">End your session in this browser.</p>
-      <div class="form-actions">
-        <%= button_to "Log Out", session_path, method: :delete, class: "btn btn-secondary" %>
+    <div class="card bg-base-100 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title text-base">Log Out</h2>
+        <p class="text-sm opacity-60">End your session in this browser.</p>
+        <%= button_to "Log Out", session_path, method: :delete, class: "btn btn-outline btn-sm mt-2" %>
       </div>
-    </section>
+    </div>
   </div>
 </div>

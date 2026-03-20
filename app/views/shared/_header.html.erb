@@ -1,15 +1,13 @@
-<header class="site-header">
-  <div class="header-container">
-    <div class="logo">
-      <%= link_to root_path, class: "logo-link" do %>
-        <%= render "shared/logo_icon", size: 28, id_suffix: "header" %>
-        <span class="logo-text">Save Button</span>
-      <% end %>
-    </div>
+<header class="navbar bg-base-100 shadow-sm">
+  <div class="navbar-start">
+    <%= link_to root_path, class: "btn btn-ghost text-lg gap-2" do %>
+      <%= render "shared/logo_icon", size: 28, id_suffix: "header" %>
+      Save Button
+    <% end %>
+  </div>
 
-    <nav class="nav-links">
-      <%= link_to "Log In", new_session_path, class: "btn btn-secondary" %>
-      <%= link_to "Sign Up", new_registration_path, class: "btn btn-primary" %>
-    </nav>
+  <div class="navbar-end gap-2">
+    <%= link_to "Log In", new_session_path, class: "btn btn-ghost" %>
+    <%= link_to "Sign Up", new_registration_path, class: "btn btn-primary" %>
   </div>
 </header>

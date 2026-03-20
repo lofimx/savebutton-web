@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="light">
   <head>
     <title><%= content_for(:title) || "Save Button" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -23,19 +23,22 @@
     <script>
       (function() {
         const theme = localStorage.getItem('theme');
-        if (theme && theme !== 'auto') {
+        if (theme === 'light' || theme === 'dark') {
           document.documentElement.setAttribute('data-theme', theme);
+        } else {
+          // Auto mode: detect system preference
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
         }
       })();
     </script>
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css">
+    <%# Tailwind CSS (includes DaisyUI and Cropper.js styles) %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body class="bg-base-200 min-h-screen flex flex-col">
     <% if content_for?(:hide_header) %>
       <%= render "shared/flash" %>
       <%= yield %>
@@ -43,13 +46,17 @@
       <div data-controller="add-modal">
         <%= render "shared/app_header" %>
         <%= render "shared/flash" %>
-        <%= yield %>
+        <main class="flex-1">
+          <%= yield %>
+        </main>
         <%= render "shared/add_modal" %>
       </div>
     <% else %>
       <%= render "shared/header" %>
       <%= render "shared/flash" %>
-      <%= yield %>
+      <main class="flex-1">
+        <%= yield %>
+      </main>
     <% end %>
     <%= render "shared/footer" %>
   </body>

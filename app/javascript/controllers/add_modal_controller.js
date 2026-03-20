@@ -4,28 +4,14 @@ export default class extends Controller {
   static targets = ["modal", "content", "input", "dropzone", "saveButton", "status"];
 
   open() {
-    this.modalTarget.classList.add("active");
-    document.body.style.overflow = "hidden";
+    this.modalTarget.showModal();
     this.inputTarget.focus();
   }
 
   close() {
-    this.modalTarget.classList.remove("active");
-    document.body.style.overflow = "";
+    this.modalTarget.close();
     this.inputTarget.value = "";
     this.hideStatus();
-  }
-
-  closeOnBackdrop(event) {
-    if (event.target === this.modalTarget) {
-      this.close();
-    }
-  }
-
-  closeOnEscape(event) {
-    if (event.key === "Escape") {
-      this.close();
-    }
   }
 
   dragOver(event) {
@@ -35,20 +21,19 @@ export default class extends Controller {
 
   dragEnter(event) {
     event.preventDefault();
-    this.dropzoneTarget.classList.add("drag-over");
+    this.dropzoneTarget.classList.add("border-primary");
   }
 
   dragLeave(event) {
     event.preventDefault();
-    // Only remove class if leaving the dropzone entirely
     if (!this.dropzoneTarget.contains(event.relatedTarget)) {
-      this.dropzoneTarget.classList.remove("drag-over");
+      this.dropzoneTarget.classList.remove("border-primary");
     }
   }
 
   drop(event) {
     event.preventDefault();
-    this.dropzoneTarget.classList.remove("drag-over");
+    this.dropzoneTarget.classList.remove("border-primary");
 
     const files = event.dataTransfer.files;
     const text = event.dataTransfer.getData("text/plain");
@@ -89,7 +74,6 @@ export default class extends Controller {
         this.showStatus("Saved!", "success");
         setTimeout(() => {
           this.close();
-          // Refresh the page to show the new anga
           window.location.reload();
         }, 500);
       } else {
@@ -158,8 +142,8 @@ export default class extends Controller {
   }
 
   showStatus(message, type) {
-    this.statusTarget.textContent = message;
-    this.statusTarget.className = `add-modal-status add-modal-status-${type}`;
+    const alertClass = type === "error" ? "alert-error" : type === "success" ? "alert-success" : "alert-info";
+    this.statusTarget.innerHTML = `<div class="alert ${alertClass} text-sm py-2"><span>${message}</span></div>`;
     this.statusTarget.classList.remove("hidden");
   }
 
