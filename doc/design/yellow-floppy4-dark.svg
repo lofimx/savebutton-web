@@ -5,7 +5,7 @@
    viewBox="0 0 512 512"
    version="1.1"
    id="svg10"
-   sodipodi:docname="yellow-floppy4.svg"
+   sodipodi:docname="yellow-floppy4-dark.svg"
    inkscape:version="1.4.3 (0d15f75042, 2025-12-25)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -18,10 +18,15 @@
       <circle cx="106" cy="96" r="22" fill="black"/>
       <circle cx="406" cy="96" r="22" fill="black"/>
     </mask>
+    <!-- Dark mode: subtle top-light on dark surface, slightly lighter at top -->
+    <linearGradient id="bg-gradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a3530"/>
+      <stop offset="100%" stop-color="#1a1714"/>
+    </linearGradient>
   </defs>
   <sodipodi:namedview
      id="namedview10"
-     pagecolor="#505050"
+     pagecolor="#252220"
      bordercolor="#eeeeee"
      borderopacity="1"
      inkscape:showpageshadow="0"
@@ -37,6 +42,8 @@
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg10" />
+  <!-- Background with soft 3D gradient -->
+  <rect x="0" y="0" width="512" height="512" fill="url(#bg-gradient)" id="background" />
   <!-- Floppy body with holes punched through -->
   <path
      d="M122,40 H390 A82,82 0 0 1 472,122 V390 A82,82 0 0 1 390,472 H120 L40,392 V122 A82,82 0 0 1 122,40 Z"
@@ -66,7 +73,7 @@
      fill="#ffffff"
      fill-opacity="0.4"
      id="rect2" />
-  <!-- Hole borders: position these in Inkscape, then report coordinates for mask -->
+  <!-- Hole borders -->
   <circle
      cx="106"
      cy="96"
@@ -85,7 +92,7 @@
      stroke-width="12"
      id="hole-right"
      inkscape:label="hole-right" />
-  <!-- Sticker label (shortened, corners rounded to match outer shape) -->
+  <!-- Sticker label -->
   <rect
      x="130.50179"
      y="112"
