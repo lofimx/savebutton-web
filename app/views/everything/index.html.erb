@@ -16,7 +16,7 @@
   </div>
 
   <%= turbo_frame_tag "anga-results" do %>
-    <div class="grid grid-cols-4 gap-4 max-lg:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1">
+    <div class="anga-grid grid grid-cols-4 gap-4 max-lg:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1">
       <% @angas.each do |anga| %>
         <%
           file_type = Files::FileType.new(anga.filename)
