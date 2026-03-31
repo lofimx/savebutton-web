@@ -5,14 +5,11 @@
   <% content_for(:title) { "Save Button - Save Notes & Bookmarks" } %>
 <% end %>
 
-<div class="everything-container">
-  <section class="apps-section">
-    <div class="apps-container">
-      <h2 class="section-title">Get The Apps</h2>
-
-      <div class="apps-content">
-        <%= render "shared/apps_content" %>
-      </div>
+<div class="max-w-5xl mx-auto pt-[calc(60px+1.5rem)] px-6 pb-6">
+  <section class="py-16">
+    <h2 class="text-3xl font-bold text-center mb-12 tracking-tight text-neutral-900 dark:text-neutral-100">Get The Apps</h2>
+    <div class="flex flex-col gap-12">
+      <%= render "shared/apps_content" %>
     </div>
   </section>
 </div>

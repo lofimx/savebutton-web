@@ -1,14 +1,14 @@
 <% assets = Releases::GithubRelease.assets %>
 
-<div class="download-modal"
+<div class="modal-backdrop"
      data-download-modal-target="modal"
      data-action="click->download-modal#closeOnBackdrop keydown.esc->download-modal#closeOnEscape"
      tabindex="-1">
-  <div class="download-modal-dialog">
-    <header class="download-modal-header">
-      <h2 class="download-modal-title">Download Save Button</h2>
+  <div class="bg-white dark:bg-neutral-800 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-lg w-full max-w-lg flex flex-col overflow-hidden">
+    <header class="flex items-center justify-between px-4 py-2.5 border-b border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900">
+      <h2 class="text-sm font-semibold text-neutral-900 dark:text-neutral-100 m-0">Download Save Button</h2>
       <button type="button"
-              class="download-modal-close"
+              class="flex items-center justify-center w-8 h-8 p-0 bg-transparent border-none rounded-lg text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100 cursor-pointer transition-colors"
               data-action="click->download-modal#close"
               aria-label="Close">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -16,17 +16,17 @@
         </svg>
       </button>
     </header>
-    <div class="download-modal-content">
+    <div class="p-4">
 
       <%# Windows panel %>
       <div class="download-panel hidden" data-download-modal-target="panel" data-platform="windows">
-        <div class="download-grid">
+        <div class="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
           <% if assets[:windows_msi] %>
-            <a href="<%= assets[:windows_msi] %>" class="download-item">
-              <img src="/icons/platforms/windows.png" alt="Windows" class="download-icon">
-              <div class="download-info">
-                <span class="download-name">x86 Windows Installer</span>
-                <span class="download-format">.msi</span>
+            <a href="<%= assets[:windows_msi] %>" class="flex items-center gap-3 p-3 bg-neutral-50 dark:bg-neutral-900 rounded-lg no-underline border border-transparent hover:border-primary-400 hover:bg-white dark:hover:bg-neutral-800 hover:-translate-y-0.5 transition-all min-h-[48px]">
+              <img src="/icons/platforms/windows.png" alt="Windows" class="w-9 h-9 object-contain shrink-0">
+              <div class="flex flex-col gap-0.5 min-w-0">
+                <span class="text-sm font-medium text-neutral-900 dark:text-neutral-100">x86 Windows Installer</span>
+                <span class="text-xs text-neutral-500">.msi</span>
               </div>
             </a>
           <% end %>
@@ -35,22 +35,22 @@
 
       <%# macOS panel %>
       <div class="download-panel hidden" data-download-modal-target="panel" data-platform="macos">
-        <div class="download-grid">
+        <div class="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
           <% if assets[:macos_intel] %>
-            <a href="<%= assets[:macos_intel] %>" class="download-item">
-              <img src="/icons/platforms/macos.png" alt="macOS" class="download-icon">
-              <div class="download-info">
-                <span class="download-name">Intel (x86)</span>
-                <span class="download-format">.dmg</span>
+            <a href="<%= assets[:macos_intel] %>" class="flex items-center gap-3 p-3 bg-neutral-50 dark:bg-neutral-900 rounded-lg no-underline border border-transparent hover:border-primary-400 hover:bg-white dark:hover:bg-neutral-800 hover:-translate-y-0.5 transition-all min-h-[48px]">
+              <img src="/icons/platforms/macos.png" alt="macOS" class="w-9 h-9 object-contain shrink-0">
+              <div class="flex flex-col gap-0.5 min-w-0">
+                <span class="text-sm font-medium text-neutral-900 dark:text-neutral-100">Intel (x86)</span>
+                <span class="text-xs text-neutral-500">.dmg</span>
               </div>
             </a>
           <% end %>
           <% if assets[:macos_apple_silicon] %>
-            <a href="<%= assets[:macos_apple_silicon] %>" class="download-item">
-              <img src="/icons/platforms/macos.png" alt="macOS" class="download-icon">
-              <div class="download-info">
-                <span class="download-name">Apple Silicon</span>
-                <span class="download-format">.dmg</span>
+            <a href="<%= assets[:macos_apple_silicon] %>" class="flex items-center gap-3 p-3 bg-neutral-50 dark:bg-neutral-900 rounded-lg no-underline border border-transparent hover:border-primary-400 hover:bg-white dark:hover:bg-neutral-800 hover:-translate-y-0.5 transition-all min-h-[48px]">
+              <img src="/icons/platforms/macos.png" alt="macOS" class="w-9 h-9 object-contain shrink-0">
+              <div class="flex flex-col gap-0.5 min-w-0">
+                <span class="text-sm font-medium text-neutral-900 dark:text-neutral-100">Apple Silicon</span>
+                <span class="text-xs text-neutral-500">.dmg</span>
               </div>
             </a>
           <% end %>
@@ -59,61 +59,61 @@
 
       <%# Linux panel %>
       <div class="download-panel hidden" data-download-modal-target="panel" data-platform="linux">
-        <p class="apps-description">
+        <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-3">
             If you aren't sure which package you need for your Linux distribution, download the Flatpak.
             <a href="https://flatpak.org/setup/">Flatpaks</a> are the correct way to install apps on Linux.
             <br>
         </p>
-        <div class="download-grid">
-          <a href="<%= Releases::GithubRelease::AUR_URL %>" class="download-item" target="_blank" rel="noopener noreferrer">
-            <img src="/icons/platforms/arch.svg" alt="Arch Linux" class="download-icon">
-            <div class="download-info">
-              <span class="download-name">Arch Linux</span>
-              <span class="download-format">AUR</span>
+        <div class="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
+          <a href="<%= Releases::GithubRelease::AUR_URL %>" class="flex items-center gap-3 p-3 bg-neutral-50 dark:bg-neutral-900 rounded-lg no-underline border border-transparent hover:border-primary-400 hover:bg-white dark:hover:bg-neutral-800 hover:-translate-y-0.5 transition-all min-h-[48px]" target="_blank" rel="noopener noreferrer">
+            <img src="/icons/platforms/arch.svg" alt="Arch Linux" class="w-9 h-9 object-contain shrink-0">
+            <div class="flex flex-col gap-0.5 min-w-0">
+              <span class="text-sm font-medium text-neutral-900 dark:text-neutral-100">Arch Linux</span>
+              <span class="text-xs text-neutral-500">AUR</span>
             </div>
           </a>
           <% if assets[:linux_deb] %>
-            <a href="<%= assets[:linux_deb] %>" class="download-item">
-              <img src="/icons/platforms/debian.svg" alt="Debian" class="download-icon">
-              <div class="download-info">
-                <span class="download-name">Debian</span>
-                <span class="download-format">.deb</span>
+            <a href="<%= assets[:linux_deb] %>" class="flex items-center gap-3 p-3 bg-neutral-50 dark:bg-neutral-900 rounded-lg no-underline border border-transparent hover:border-primary-400 hover:bg-white dark:hover:bg-neutral-800 hover:-translate-y-0.5 transition-all min-h-[48px]">
+              <img src="/icons/platforms/debian.svg" alt="Debian" class="w-9 h-9 object-contain shrink-0">
+              <div class="flex flex-col gap-0.5 min-w-0">
+                <span class="text-sm font-medium text-neutral-900 dark:text-neutral-100">Debian</span>
+                <span class="text-xs text-neutral-500">.deb</span>
               </div>
             </a>
           <% end %>
           <% if assets[:linux_rpm] %>
-            <a href="<%= assets[:linux_rpm] %>" class="download-item">
-              <img src="/icons/platforms/fedora.svg" alt="Fedora" class="download-icon">
-              <div class="download-info">
-                <span class="download-name">Fedora</span>
-                <span class="download-format">.rpm</span>
+            <a href="<%= assets[:linux_rpm] %>" class="flex items-center gap-3 p-3 bg-neutral-50 dark:bg-neutral-900 rounded-lg no-underline border border-transparent hover:border-primary-400 hover:bg-white dark:hover:bg-neutral-800 hover:-translate-y-0.5 transition-all min-h-[48px]">
+              <img src="/icons/platforms/fedora.svg" alt="Fedora" class="w-9 h-9 object-contain shrink-0">
+              <div class="flex flex-col gap-0.5 min-w-0">
+                <span class="text-sm font-medium text-neutral-900 dark:text-neutral-100">Fedora</span>
+                <span class="text-xs text-neutral-500">.rpm</span>
               </div>
             </a>
           <% end %>
           <% if assets[:linux_flatpak] %>
-            <a href="<%= assets[:linux_flatpak] %>" class="download-item">
-              <img src="/icons/platforms/flatpak.svg" alt="Flatpak" class="download-icon">
-              <div class="download-info">
-                <span class="download-name">Flatpak</span>
-                <span class="download-format">.flatpak</span>
+            <a href="<%= assets[:linux_flatpak] %>" class="flex items-center gap-3 p-3 bg-neutral-50 dark:bg-neutral-900 rounded-lg no-underline border border-transparent hover:border-primary-400 hover:bg-white dark:hover:bg-neutral-800 hover:-translate-y-0.5 transition-all min-h-[48px]">
+              <img src="/icons/platforms/flatpak.svg" alt="Flatpak" class="w-9 h-9 object-contain shrink-0">
+              <div class="flex flex-col gap-0.5 min-w-0">
+                <span class="text-sm font-medium text-neutral-900 dark:text-neutral-100">Flatpak</span>
+                <span class="text-xs text-neutral-500">.flatpak</span>
               </div>
             </a>
           <% end %>
           <% if assets[:linux_ebuild] %>
-            <a href="<%= assets[:linux_ebuild] %>" class="download-item">
-              <img src="/icons/platforms/gentoo.svg" alt="Gentoo" class="download-icon">
-              <div class="download-info">
-                <span class="download-name">Gentoo</span>
-                <span class="download-format">.ebuild</span>
+            <a href="<%= assets[:linux_ebuild] %>" class="flex items-center gap-3 p-3 bg-neutral-50 dark:bg-neutral-900 rounded-lg no-underline border border-transparent hover:border-primary-400 hover:bg-white dark:hover:bg-neutral-800 hover:-translate-y-0.5 transition-all min-h-[48px]">
+              <img src="/icons/platforms/gentoo.svg" alt="Gentoo" class="w-9 h-9 object-contain shrink-0">
+              <div class="flex flex-col gap-0.5 min-w-0">
+                <span class="text-sm font-medium text-neutral-900 dark:text-neutral-100">Gentoo</span>
+                <span class="text-xs text-neutral-500">.ebuild</span>
               </div>
             </a>
           <% end %>
           <% if assets[:linux_snap] %>
-            <a href="<%= assets[:linux_snap] %>" class="download-item">
-              <img src="/icons/platforms/ubuntu.svg" alt="Ubuntu" class="download-icon">
-              <div class="download-info">
-                <span class="download-name">Ubuntu</span>
-                <span class="download-format">.snap</span>
+            <a href="<%= assets[:linux_snap] %>" class="flex items-center gap-3 p-3 bg-neutral-50 dark:bg-neutral-900 rounded-lg no-underline border border-transparent hover:border-primary-400 hover:bg-white dark:hover:bg-neutral-800 hover:-translate-y-0.5 transition-all min-h-[48px]">
+              <img src="/icons/platforms/ubuntu.svg" alt="Ubuntu" class="w-9 h-9 object-contain shrink-0">
+              <div class="flex flex-col gap-0.5 min-w-0">
+                <span class="text-sm font-medium text-neutral-900 dark:text-neutral-100">Ubuntu</span>
+                <span class="text-xs text-neutral-500">.snap</span>
               </div>
             </a>
           <% end %>

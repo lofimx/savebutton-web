@@ -1,16 +1,16 @@
 <% if flash[:notice] %>
-  <div class="flash-container">
-    <div class="alert alert-success flash-message" data-controller="flash" data-flash-target="message">
+  <div class="fixed top-[70px] left-1/2 -translate-x-1/2 z-[1000] max-w-md w-[calc(100%-1.5rem)]">
+    <div class="flex items-center justify-between gap-3 px-3 py-2 rounded-lg shadow-lg bg-green-100 text-green-700 border border-green-200 dark:bg-green-500/15 dark:text-green-400 dark:border-green-500/30 flash-message" data-controller="flash" data-flash-target="message">
       <%= flash[:notice] %>
-      <button type="button" class="flash-close" data-action="click->flash#dismiss" aria-label="Dismiss">&times;</button>
+      <button type="button" class="bg-transparent border-none text-xl leading-none cursor-pointer opacity-70 hover:opacity-100 p-0 text-inherit" data-action="click->flash#dismiss" aria-label="Dismiss">&times;</button>
     </div>
   </div>
 <% end %>
 <% if flash[:alert] %>
-  <div class="flash-container">
-    <div class="alert alert-error flash-message" data-controller="flash" data-flash-target="message">
+  <div class="fixed top-[70px] left-1/2 -translate-x-1/2 z-[1000] max-w-md w-[calc(100%-1.5rem)]">
+    <div class="flex items-center justify-between gap-3 px-3 py-2 rounded-lg shadow-lg bg-red-100 text-red-700 border border-red-200 dark:bg-red-500/15 dark:text-red-400 dark:border-red-500/30 flash-message" data-controller="flash" data-flash-target="message">
       <%= flash[:alert] %>
-      <button type="button" class="flash-close" data-action="click->flash#dismiss" aria-label="Dismiss">&times;</button>
+      <button type="button" class="bg-transparent border-none text-xl leading-none cursor-pointer opacity-70 hover:opacity-100 p-0 text-inherit" data-action="click->flash#dismiss" aria-label="Dismiss">&times;</button>
     </div>
   </div>
 <% end %>
