@@ -1,0 +1,378 @@
+@import "tailwindcss";
+
+/* ============================================
+   Dark Mode Variant
+   data-theme is always resolved to "light" or "dark"
+   by the inline script and theme_controller.js,
+   even in "auto" mode (resolved from system preference).
+   ============================================ */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@layer base {
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+  }
+}
+
+/* ============================================
+   Design Tokens
+   Primary palette derived from Save Button
+   floppy icon yellow gradient (#ffc830 → #e89f00)
+   ============================================ */
+@theme {
+  /* Primary — Yellow from floppy icon */
+  --color-primary-50: #fffbe6;
+  --color-primary-100: #fff3c4;
+  --color-primary-200: #ffe588;
+  --color-primary-300: #ffd54f;
+  --color-primary-400: #ffc830;
+  --color-primary-500: #e89f00;
+  --color-primary-600: #c78500;
+  --color-primary-700: #a56d00;
+  --color-primary-800: #845700;
+  --color-primary-900: #6b4600;
+
+  /* Neutral — Zinc (shadcn-style) */
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f4f4f5;
+  --color-neutral-200: #e4e4e7;
+  --color-neutral-300: #d4d4d8;
+  --color-neutral-400: #a1a1aa;
+  --color-neutral-500: #71717a;
+  --color-neutral-600: #52525b;
+  --color-neutral-700: #3f3f46;
+  --color-neutral-800: #27272a;
+  --color-neutral-900: #18181b;
+  --color-neutral-950: #09090b;
+
+  /* Semantic colors */
+  --color-success-light: #dcfce7;
+  --color-success: #22c55e;
+  --color-success-dark: #16a34a;
+
+  --color-error-light: #fef2f2;
+  --color-error: #ef4444;
+  --color-error-dark: #dc2626;
+
+  --color-info-light: #dbeafe;
+  --color-info: #3b82f6;
+  --color-info-dark: #2563eb;
+
+  /* Feature card accent colors (homepage) */
+  --color-accent-blue: #99c1f1;
+  --color-accent-blue-dark: #1a5fb4;
+  --color-accent-green: #8ff0a4;
+  --color-accent-green-dark: #1a7f37;
+  --color-accent-purple: #dc8add;
+  --color-accent-purple-dark: #613583;
+  --color-accent-red: #f66151;
+  --color-accent-red-dark: #8b1a10;
+  --color-accent-yellow: #f9f06b;
+  --color-accent-yellow-dark: #865e00;
+  --color-accent-darkblue: #1a5fb4;
+  --color-accent-darkblue-dark: #0d3166;
+  --color-accent-orange: #ffed99;
+  --color-accent-orange-dark: #936400;
+
+  /* Font */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* ============================================
+   Inter Font
+   ============================================ */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("InterVariable.woff2") format("woff2");
+}
+
+/* ============================================
+   Base Styles
+   ============================================ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans text-sm antialiased;
+    @apply text-neutral-900 bg-white;
+    @apply dark:text-neutral-100 dark:bg-neutral-950;
+  }
+
+  a {
+    @apply text-primary-500 no-underline transition-colors duration-100;
+  }
+  a:hover {
+    @apply text-primary-600;
+  }
+  a:focus-visible {
+    @apply outline-none ring-2 ring-primary-400 rounded;
+  }
+
+  img {
+    @apply max-w-full h-auto;
+  }
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+@keyframes flash-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes flash-slide-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================
+   Component styles that can't be pure utilities
+   ============================================ */
+@layer components {
+  /* Flash messages */
+  .flash-message {
+    animation: flash-slide-in 0.3s ease;
+  }
+  .flash-hiding {
+    animation: flash-slide-out 0.3s ease forwards;
+  }
+
+  /* Modal show/hide */
+  .modal-backdrop {
+    @apply fixed inset-0 z-50 hidden items-center justify-center p-4;
+    background: rgba(0, 0, 0, 0.6);
+  }
+  .modal-backdrop.active {
+    @apply flex;
+  }
+
+  /* Hamburger dropdown */
+  .hamburger-dropdown {
+    @apply absolute top-full left-0 mt-1 min-w-[200px] bg-white border border-neutral-200 rounded-lg shadow-lg;
+    @apply opacity-0 invisible -translate-y-2.5 transition-all duration-200 z-50;
+    @apply dark:bg-neutral-800 dark:border-neutral-700;
+  }
+  .hamburger-dropdown.open {
+    @apply opacity-100 visible translate-y-0;
+  }
+
+  /* Theme icon visibility (keyed off preference, not resolved theme) */
+  .theme-icon-light,
+  .theme-icon-dark,
+  .theme-icon-auto {
+    @apply hidden;
+  }
+  :root:not([data-theme-preference]) .theme-icon-auto,
+  :root[data-theme-preference="auto"] .theme-icon-auto {
+    @apply block;
+  }
+  :root[data-theme-preference="light"] .theme-icon-light {
+    @apply block;
+  }
+  :root[data-theme-preference="dark"] .theme-icon-dark {
+    @apply block;
+  }
+
+  /* Dropzone drag-over state (JS adds "drag-over" class) */
+  .drag-over {
+    @apply border-primary-400 bg-primary-50 dark:bg-primary-400/15;
+  }
+
+  /* Add modal status messages (JS sets className directly) */
+  .add-modal-status {
+    @apply px-3 py-2 rounded-lg text-sm text-center;
+  }
+  .add-modal-status-info {
+    @apply bg-primary-100 text-primary-700 dark:bg-primary-400/20 dark:text-primary-300;
+  }
+  .add-modal-status-success {
+    @apply bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400;
+  }
+  .add-modal-status-error {
+    @apply bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400;
+  }
+
+  /* Preview sidebar — width managed here so .collapsed can override */
+  .preview-sidebar {
+    width: 280px;
+    @apply shrink-0 flex flex-col border-l border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900;
+    @apply transition-all duration-200 overflow-hidden;
+  }
+  @media (max-width: 1024px) {
+    .preview-sidebar {
+      width: 240px;
+    }
+  }
+  @media (max-width: 768px) {
+    .preview-sidebar {
+      width: 100%;
+      max-height: 300px;
+      @apply border-l-0 border-t border-neutral-200 dark:border-neutral-700;
+    }
+  }
+  .preview-sidebar.collapsed {
+    width: 40px;
+  }
+  .preview-sidebar.collapsed .sidebar-content {
+    @apply opacity-0 pointer-events-none;
+  }
+  .preview-sidebar.collapsed .sidebar-toggle svg {
+    transform: rotate(180deg);
+  }
+  .preview-sidebar.collapsed .sidebar-toggle-label {
+    @apply hidden;
+  }
+  @media (max-width: 768px) {
+    .preview-sidebar.collapsed {
+      width: 100%;
+      max-height: 40px;
+    }
+    .preview-sidebar .sidebar-toggle svg {
+      transform: rotate(90deg);
+    }
+    .preview-sidebar.collapsed .sidebar-toggle svg {
+      transform: rotate(-90deg);
+    }
+  }
+
+  /* Caching spinner */
+  .caching-spinner {
+    @apply w-5 h-5 rounded-full border-2 border-neutral-300 border-t-primary-400;
+    animation: spin 1s linear infinite;
+  }
+
+  /* Preview content classes (JS-generated innerHTML) */
+  .preview-loading,
+  .preview-error,
+  .preview-unsupported {
+    @apply flex items-center justify-center h-full min-h-[200px] text-sm;
+  }
+  .preview-loading {
+    @apply text-neutral-500;
+  }
+  .preview-error {
+    @apply text-red-500;
+  }
+  .preview-unsupported {
+    @apply text-neutral-500;
+  }
+  .preview-note {
+    @apply font-sans text-sm leading-relaxed whitespace-pre-wrap break-words m-0 p-0;
+    @apply text-neutral-900 dark:text-neutral-100;
+  }
+  .preview-image {
+    @apply block max-w-full max-h-[70vh] mx-auto rounded-lg;
+  }
+  .preview-pdf {
+    @apply w-full h-[70vh] border-none rounded-lg;
+  }
+  .preview-cached-page {
+    @apply w-full h-[70vh] border-none rounded-lg bg-white;
+  }
+  .preview-bookmark {
+    @apply flex flex-col gap-4;
+  }
+  .preview-bookmark-notice {
+    @apply text-neutral-500 text-sm italic m-0;
+  }
+  .preview-bookmark-content {
+    @apply font-mono text-sm leading-normal whitespace-pre-wrap break-words m-0 p-4 rounded-lg;
+    @apply text-neutral-900 bg-neutral-100 dark:text-neutral-100 dark:bg-neutral-800;
+  }
+  .preview-caching-status {
+    @apply flex items-center gap-4 p-4 rounded-lg;
+    @apply bg-neutral-100 dark:bg-neutral-800;
+  }
+  .preview-caching-status .preview-bookmark-notice {
+    @apply not-italic;
+  }
+  .preview-cache-error {
+    @apply flex flex-col gap-1.5 p-4 rounded-lg;
+    @apply bg-red-50 border border-red-200;
+  }
+  :root[data-theme="dark"] .preview-cache-error {
+    background: #4a2020;
+    border-color: #7f1d1d;
+  }
+  .preview-cache-error .preview-bookmark-notice {
+    @apply not-italic font-medium text-red-600;
+  }
+  .preview-error-details {
+    @apply text-xs text-neutral-500 m-0 break-words;
+  }
+  .bookmark-favicon {
+    @apply w-16 h-16 object-contain;
+  }
+
+  /* Tag elements (JS-generated) */
+  .tag {
+    @apply inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium;
+    @apply bg-primary-100 text-primary-700 dark:bg-primary-400/20 dark:text-primary-300;
+  }
+  .tag-text {
+    @apply max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap;
+  }
+  .tag-remove {
+    @apply flex items-center justify-center w-4 h-4 p-0 bg-transparent border-none rounded-full text-inherit cursor-pointer opacity-70 hover:opacity-100 text-sm leading-none;
+  }
+
+  /* Share button success state (JS toggles) */
+  .sidebar-action-btn.success {
+    @apply bg-green-500 text-white border-green-500;
+  }
+
+  /* Download panel visibility (JS toggles) */
+  .download-panel.hidden {
+    @apply hidden;
+  }
+
+  /* Cropper.js overrides */
+  .cropper-view-box,
+  .cropper-face {
+    border-radius: 50%;
+  }
+  .cropper-view-box {
+    outline: 0;
+    box-shadow: 0 0 0 1px #39f;
+  }
+}
+
+/* ============================================
+   Utility additions
+   ============================================ */
+@utility visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

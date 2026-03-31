@@ -22,15 +22,17 @@
     <%# Apply theme immediately to prevent flash of wrong theme %>
     <script>
       (function() {
-        const theme = localStorage.getItem('theme');
-        if (theme && theme !== 'auto') {
-          document.documentElement.setAttribute('data-theme', theme);
+        var pref = localStorage.getItem('theme') || 'auto';
+        var resolved = pref;
+        if (pref === 'auto') {
+          resolved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         }
+        document.documentElement.setAttribute('data-theme', resolved);
+        document.documentElement.setAttribute('data-theme-preference', pref);
       })();
     </script>
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css">
     <%= javascript_importmap_tags %>
   </head>

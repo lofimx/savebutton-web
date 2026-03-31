@@ -1,22 +1,22 @@
 <% content_for :app_layout, true %>
 
-<div class="everything-container" data-controller="preview-modal">
-  <div class="search-container">
-    <%= form_with url: app_everything_path, method: :get, class: "search-form", data: { controller: "search", turbo_frame: "anga-results" } do |f| %>
+<div class="max-w-5xl mx-auto pt-[calc(60px+1.5rem)] px-6 pb-6" data-controller="preview-modal">
+  <div class="mb-6">
+    <%= form_with url: app_everything_path, method: :get, data: { controller: "search", turbo_frame: "anga-results" } do |f| %>
       <input type="search"
              name="q"
              value="<%= params[:q] %>"
              placeholder="Search your cards..."
              autocomplete="off"
-             class="search-input"
              autofocus
+             class="w-full px-4 py-2.5 text-base rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-colors"
              data-search-target="input"
              data-action="input->search#search keydown.enter->search#submit">
     <% end %>
   </div>
 
   <%= turbo_frame_tag "anga-results" do %>
-    <div class="anga-grid">
+    <div class="grid grid-cols-4 gap-4 max-lg:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1">
       <% @angas.each do |anga| %>
         <%
           file_type = Files::FileType.new(anga.filename)
@@ -28,7 +28,7 @@
                                app_anga_cache_status_path(anga)
                              end
         %>
-        <div class="anga-tile"
+        <div class="anga-tile bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl overflow-hidden cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition-all"
              id="anga-tile-<%= anga.id %>"
              data-action="click->preview-modal#open"
              data-preview-url="<%= app_anga_preview_path(anga) %>"
@@ -42,48 +42,48 @@
              <%= "data-preview-cache-url=#{cache_url}" if cache_url %>
              <%= "data-cache-status-url=#{cache_status_url}" if cache_status_url %>>
           <% if file_type.note? || file_type.text? %>
-            <div class="anga-tile-content anga-tile-note">
+            <div class="aspect-square flex items-start justify-start p-3 overflow-hidden bg-neutral-50 dark:bg-neutral-900">
               <% if anga.file.attached? %>
-                <div class="note-preview"><%= anga.file.download.force_encoding('UTF-8').truncate(500) %></div>
+                <div class="text-sm font-medium leading-normal text-neutral-900 dark:text-neutral-100 overflow-hidden line-clamp-8 break-words"><%= anga.file.download.force_encoding('UTF-8').truncate(500) %></div>
               <% end %>
             </div>
           <% elsif file_type.bookmark? %>
             <% if anga.bookmark&.favicon&.attached? %>
-              <div class="anga-tile-content anga-tile-bookmark" data-controller="favicon-fallback">
-                <%= image_tag app_anga_cache_file_path(anga, "favicon.ico"), class: "bookmark-favicon", alt: "Favicon", data: { action: "error->favicon-fallback#showDefault" } %>
+              <div class="aspect-square flex items-center justify-center p-3 bg-primary-50 dark:bg-neutral-700" data-controller="favicon-fallback">
+                <%= image_tag app_anga_cache_file_path(anga, "favicon.ico"), class: "w-16 h-16 object-contain", alt: "Favicon", data: { action: "error->favicon-fallback#showDefault" } %>
                 <template data-favicon-fallback-target="fallback">
                   <%= render "shared/icons/bookmark_icon" %>
                 </template>
               </div>
             <% else %>
-              <div class="anga-tile-content anga-tile-bookmark">
+              <div class="aspect-square flex items-center justify-center p-3 bg-primary-50 dark:bg-neutral-700">
                 <%= render "shared/icons/bookmark_icon" %>
               </div>
             <% end %>
           <% elsif file_type.image? %>
-            <div class="anga-tile-content anga-tile-image">
-              <%= image_tag app_anga_preview_path(anga), alt: anga.filename %>
+            <div class="aspect-square flex items-center justify-center overflow-hidden">
+              <%= image_tag app_anga_preview_path(anga), alt: anga.filename, class: "w-full h-full object-cover" %>
             </div>
           <% elsif file_type.pdf? %>
-            <div class="anga-tile-content anga-tile-pdf">
+            <div class="aspect-square flex items-center justify-center p-3 bg-red-50 dark:bg-neutral-700">
               <%= render "shared/icons/pdf_icon" %>
             </div>
           <% else %>
-            <div class="anga-tile-content anga-tile-file">
-              <div class="file-extension"><%= file_type.extension_name.upcase %></div>
+            <div class="aspect-square flex items-center justify-center p-3 bg-neutral-100 dark:bg-neutral-700">
+              <div class="text-xl font-bold text-neutral-400 uppercase"><%= file_type.extension_name.upcase %></div>
             </div>
           <% end %>
-          <div class="anga-tile-filename"><%= file_type.bookmark? && original_url.present? ? original_url : display_filename(anga.filename) %></div>
+          <div class="px-3 py-2 text-xs text-neutral-500 truncate border-t border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900"><%= file_type.bookmark? && original_url.present? ? original_url : display_filename(anga.filename) %></div>
         </div>
       <% end %>
     </div>
 
     <% if @angas.empty? %>
-      <div class="empty-state">
+      <div class="empty-state text-center py-16 px-6 text-neutral-500">
         <% if params[:q].present? %>
-          <p>No results found.</p>
+          <p class="text-base">No results found.</p>
         <% else %>
-          <p>No files yet. Start adding notes and bookmarks!</p>
+          <p class="text-base">No files yet. Start adding notes and bookmarks!</p>
         <% end %>
       </div>
     <% end %>

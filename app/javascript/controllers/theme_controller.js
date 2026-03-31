@@ -2,12 +2,28 @@ import { Controller } from "@hotwired/stimulus"
 
 // Theme controller for managing light/dark mode
 // Cycles through: auto -> light -> dark -> auto
+//
+// data-theme is always resolved to "light" or "dark" for CSS styling.
+// data-theme-preference stores the user's choice ("auto", "light", "dark")
+// and is used for the footer toggle icon display.
 export default class extends Controller {
   static targets = ["label"]
 
   connect() {
     this.applyTheme()
     this.updateLabel()
+
+    this.mediaQuery = window.matchMedia("(prefers-color-scheme: dark)")
+    this.handleMediaChange = () => {
+      if (this.getCurrentTheme() === "auto") this.applyTheme()
+    }
+    this.mediaQuery.addEventListener("change", this.handleMediaChange)
+  }
+
+  disconnect() {
+    if (this.mediaQuery) {
+      this.mediaQuery.removeEventListener("change", this.handleMediaChange)
+    }
   }
 
   toggle() {
@@ -37,8 +53,11 @@ export default class extends Controller {
     const theme = this.getCurrentTheme()
     const root = document.documentElement
 
+    root.setAttribute("data-theme-preference", theme)
+
     if (theme === "auto") {
-      root.removeAttribute("data-theme")
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+      root.setAttribute("data-theme", prefersDark ? "dark" : "light")
     } else {
       root.setAttribute("data-theme", theme)
     }
@@ -52,17 +71,8 @@ export default class extends Controller {
       dark: "Dark"
     }
 
-    // Update all labels on the page
     document.querySelectorAll("[data-theme-label]").forEach(el => {
       el.textContent = labels[theme]
     })
-
-    // Update data-theme attribute for CSS icon switching
-    const root = document.documentElement
-    if (theme === "auto") {
-      root.removeAttribute("data-theme")
-    } else {
-      root.setAttribute("data-theme", theme)
-    }
   }
 }

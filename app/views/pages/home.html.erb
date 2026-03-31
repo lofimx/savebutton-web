@@ -1,49 +1,49 @@
 <% content_for(:title) { "Save Button - Save Notes & Bookmarks" } %>
 
-<div class="hero">
-  <div class="hero-content">
-    <h1 class="hero-title">
+<div class="min-h-screen flex items-center max-w-5xl mx-auto px-6 pt-[calc(60px+3rem)] pb-12 gap-12 max-md:flex-col max-md:text-center max-md:pt-[calc(60px+1.5rem)] max-md:min-h-auto max-md:pb-6">
+  <div class="flex-1 max-w-[560px]">
+    <h1 class="text-4xl font-extrabold leading-tight tracking-tight mb-4 text-neutral-900 dark:text-neutral-100 max-md:text-3xl max-sm:text-2xl">
       Save stuff.<br>
-      <span class="highlight">Find it later.</span>
+      <span class="text-primary-500">Find it later.</span>
     </h1>
-    <p class="hero-subtitle">
+    <p class="text-base text-neutral-600 dark:text-neutral-400 mb-4 max-w-[460px] leading-relaxed max-md:max-w-full">
       Save Button is an easy, private, searchable, local, and offline-friendly
       bookmark and breadcrumb service with apps for every platform we can think of.
     </p>
-    <p class="hero-subtitle">
+    <p class="text-base text-neutral-600 dark:text-neutral-400 mb-6 max-w-[460px] leading-relaxed max-md:max-w-full">
       Nerds may like that it is append-only, open source, local-first,
       file-based, and (optionally) self-host-able.
       <a href="#nerd-features">Read more.</a>
     </p>
-    <div class="hero-cta">
-      <%= link_to "Learn More", "#features", class: "btn btn-secondary btn-large" %>
-      <%= link_to "Get The Apps", "#apps", class: "btn btn-primary btn-large" %>
+    <div class="flex gap-3 flex-wrap max-md:justify-center">
+      <%= link_to "Learn More", "#features", class: "inline-flex items-center justify-center px-6 py-2.5 text-base font-medium rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors no-underline" %>
+      <%= link_to "Get The Apps", "#apps", class: "inline-flex items-center justify-center px-6 py-2.5 text-base font-medium rounded-lg bg-primary-400 hover:bg-primary-500 text-neutral-900 transition-colors no-underline" %>
     </div>
   </div>
 
-  <div class="hero-visual">
-    <div class="cards-preview">
-      <div class="preview-card bookmark-card">
-        <div class="card-icon">
+  <div class="flex-1 flex justify-center items-center max-md:mt-6">
+    <div class="grid grid-cols-2 gap-4 -rotate-3 max-md:rotate-0 max-md:grid-cols-1 max-md:max-w-[260px] max-md:mx-auto">
+      <div class="bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-2xl p-6 w-[200px] shadow-lg hover:-translate-y-1 transition-transform rotate-2 max-md:rotate-0 max-md:w-full">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-3 bg-accent-green text-accent-green-dark">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
           </svg>
         </div>
-        <span class="card-label">Bookmarks</span>
-        <p class="card-desc">Don't think, just bookmark it</p>
+        <span class="font-semibold text-lg block mb-1 text-neutral-900 dark:text-neutral-100">Bookmarks</span>
+        <p class="text-sm text-neutral-500 leading-normal">Don't think, just bookmark it</p>
       </div>
-      <div class="preview-card note-card">
-        <div class="card-icon">
+      <div class="bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-2xl p-6 w-[200px] shadow-lg hover:-translate-y-1 transition-transform -rotate-2 max-md:rotate-0 max-md:w-full">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-3 bg-accent-yellow text-accent-yellow-dark">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M15.5 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5L15.5 3Z"></path>
             <path d="M15 3v6h6"></path>
           </svg>
         </div>
-        <span class="card-label">Notes</span>
-        <p class="card-desc">Passing thoughts and fieldstones</p>
+        <span class="font-semibold text-lg block mb-1 text-neutral-900 dark:text-neutral-100">Notes</span>
+        <p class="text-sm text-neutral-500 leading-normal">Passing thoughts and fieldstones</p>
       </div>
-      <div class="preview-card document-card">
-        <div class="card-icon">
+      <div class="bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-2xl p-6 w-[200px] shadow-lg hover:-translate-y-1 transition-transform -rotate-1 max-md:rotate-0 max-md:w-full">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-3 bg-accent-red text-accent-red-dark">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
             <polyline points="14 2 14 8 20 8"></polyline>
@@ -51,47 +51,47 @@
             <rect x="8" y="16" width="5" height="2" rx="0.5" fill="currentColor" stroke="none"></rect>
           </svg>
         </div>
-        <span class="card-label">Documents</span>
-        <p class="card-desc">PDFs, Office docs, and junk for work</p>
+        <span class="font-semibold text-lg block mb-1 text-neutral-900 dark:text-neutral-100">Documents</span>
+        <p class="text-sm text-neutral-500 leading-normal">PDFs, Office docs, and junk for work</p>
       </div>
-      <div class="preview-card image-card">
-        <div class="card-icon">
+      <div class="bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-2xl p-6 w-[200px] shadow-lg hover:-translate-y-1 transition-transform rotate-1 max-md:rotate-0 max-md:w-full">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-3 bg-accent-blue text-accent-blue-dark">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
             <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" stroke="none"></circle>
             <polyline points="21 15 16 10 5 21"></polyline>
           </svg>
         </div>
-        <span class="card-label">Images</span>
-        <p class="card-desc">Screenshots, photos, and dank memes</p>
+        <span class="font-semibold text-lg block mb-1 text-neutral-900 dark:text-neutral-100">Images</span>
+        <p class="text-sm text-neutral-500 leading-normal">Screenshots, photos, and dank memes</p>
       </div>
     </div>
   </div>
 </div>
 
-<section id="features" class="features-section">
-  <div class="features-container">
-    <h2 class="section-title">Stupidly Simple</h2>
-    <div class="features-grid">
-      <div class="feature">
-        <div class="feature-icon blue">
+<section id="features" class="py-16 px-6 bg-neutral-50 dark:bg-neutral-900">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="text-3xl font-bold text-center mb-12 tracking-tight text-neutral-900 dark:text-neutral-100">Stupidly Simple</h2>
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-6">
+      <div class="bg-white dark:bg-neutral-800 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-700">
+        <div class="w-13 h-13 rounded-xl flex items-center justify-center mb-3 bg-accent-blue text-accent-blue-dark">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"></circle>
             <path d="m21 21-4.35-4.35"></path>
           </svg>
         </div>
-        <h3>Find anything</h3>
-        <p>Search inside your notes, bookmarks, and documents from every app.</p>
+        <h3 class="text-lg font-semibold mb-1 text-neutral-900 dark:text-neutral-100">Find anything</h3>
+        <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">Search inside your notes, bookmarks, and documents from every app.</p>
       </div>
-      <div class="feature">
-        <div class="feature-icon green">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wifi-off-icon lucide-wifi-off"><path d="M12 20h.01"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/><path d="M5 12.859a10 10 0 0 1 5.17-2.69"/><path d="M19 12.859a10 10 0 0 0-2.007-1.523"/><path d="M2 8.82a15 15 0 0 1 4.177-2.643"/><path d="M22 8.82a15 15 0 0 0-11.288-3.764"/><path d="m2 2 20 20"/></svg>
+      <div class="bg-white dark:bg-neutral-800 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-700">
+        <div class="w-13 h-13 rounded-xl flex items-center justify-center mb-3 bg-accent-green text-accent-green-dark">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h.01"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/><path d="M5 12.859a10 10 0 0 1 5.17-2.69"/><path d="M19 12.859a10 10 0 0 0-2.007-1.523"/><path d="M2 8.82a15 15 0 0 1 4.177-2.643"/><path d="M22 8.82a15 15 0 0 0-11.288-3.764"/><path d="m2 2 20 20"/></svg>
         </div>
-        <h3>Local & Offline</h3>
-        <p>Save Button is always available offline. Sync between devices.</p>
+        <h3 class="text-lg font-semibold mb-1 text-neutral-900 dark:text-neutral-100">Local & Offline</h3>
+        <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">Save Button is always available offline. Sync between devices.</p>
       </div>
-      <div class="feature">
-        <div class="feature-icon purple">
+      <div class="bg-white dark:bg-neutral-800 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-700">
+        <div class="w-13 h-13 rounded-xl flex items-center justify-center mb-3 bg-accent-purple text-accent-purple-dark">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path>
             <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path>
@@ -99,74 +99,72 @@
             <line x1="1" y1="1" x2="23" y2="23"></line>
           </svg>
         </div>
-        <h3>Private</h3>
-        <p>Your data belongs to you. <br>No ads, no social features.</p>
+        <h3 class="text-lg font-semibold mb-1 text-neutral-900 dark:text-neutral-100">Private</h3>
+        <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">Your data belongs to you. <br>No ads, no social features.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section id="apps" class="apps-section">
-  <div class="apps-container">
-    <h2 class="section-title">Get The Apps</h2>
-
-    <div class="apps-content">
+<section id="apps" class="py-16 px-6 bg-white dark:bg-neutral-950">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="text-3xl font-bold text-center mb-12 tracking-tight text-neutral-900 dark:text-neutral-100">Get The Apps</h2>
+    <div class="flex flex-col gap-12 mt-12">
       <%= render "shared/apps_content" %>
     </div>
   </div>
 </section>
 
-
-<section id="nerd-features" class="features-section">
-  <div class="features-container">
-    <h2 class="section-title">Hey, Nerds!</h2>
-    <div class="features-grid">
-      <div class="feature">
-        <div class="feature-icon green">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-github-icon lucide-github"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+<section id="nerd-features" class="py-16 px-6 bg-neutral-50 dark:bg-neutral-900">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="text-3xl font-bold text-center mb-12 tracking-tight text-neutral-900 dark:text-neutral-100">Hey, Nerds!</h2>
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-6">
+      <div class="bg-white dark:bg-neutral-800 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-700">
+        <div class="w-13 h-13 rounded-xl flex items-center justify-center mb-3 bg-accent-green text-accent-green-dark">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
         </div>
-        <h3>Open Source</h3>
-        <p>
+        <h3 class="text-lg font-semibold mb-1 text-neutral-900 dark:text-neutral-100">Open Source</h3>
+        <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
           AGPL-3.0 for your viewing pleasure.<br>
           <a href="https://github.com/lofimx">Get it here.</a> (Repos named "kaya-")
         </p>
       </div>
-      <div class="feature">
-        <div class="feature-icon purple">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-heart-icon lucide-file-heart"><path d="M13 22h5a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v7"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M3.62 18.8A2.25 2.25 0 1 1 7 15.836a2.25 2.25 0 1 1 3.38 2.966l-2.626 2.856a1 1 0 0 1-1.507 0z"/></svg>
+      <div class="bg-white dark:bg-neutral-800 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-700">
+        <div class="w-13 h-13 rounded-xl flex items-center justify-center mb-3 bg-accent-purple text-accent-purple-dark">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 22h5a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v7"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M3.62 18.8A2.25 2.25 0 1 1 7 15.836a2.25 2.25 0 1 1 3.38 2.966l-2.626 2.856a1 1 0 0 1-1.507 0z"/></svg>
         </div>
-        <h3>File-Based</h3>
-        <p>Bookmarks are ".url" files.<br>Metadata are ".toml" files.</p>
+        <h3 class="text-lg font-semibold mb-1 text-neutral-900 dark:text-neutral-100">File-Based</h3>
+        <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">Bookmarks are ".url" files.<br>Metadata are ".toml" files.</p>
       </div>
-      <div class="feature">
-        <div class="feature-icon darkblue">
-            <svg role="img" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M13.983 11.078h2.119a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.119a.185.185 0 00-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 00.186-.186V3.574a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m0 2.716h2.118a.187.187 0 00.186-.186V6.29a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.887c0 .102.082.185.185.186m-2.93 0h2.12a.186.186 0 00.184-.186V6.29a.185.185 0 00-.185-.185H8.1a.185.185 0 00-.185.185v1.887c0 .102.083.185.185.186m-2.964 0h2.119a.186.186 0 00.185-.186V6.29a.185.185 0 00-.185-.185H5.136a.186.186 0 00-.186.185v1.887c0 .102.084.185.186.186m5.893 2.715h2.118a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m-2.93 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.083.185.185.185m-2.964 0h2.119a.185.185 0 00.185-.185V9.006a.185.185 0 00-.184-.186h-2.12a.186.186 0 00-.186.186v1.887c0 .102.084.185.186.185m-2.92 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.082.185.185.185M23.763 9.89c-.065-.051-.672-.51-1.954-.51-.338.001-.676.03-1.01.087-.248-1.7-1.653-2.53-1.716-2.566l-.344-.199-.226.327c-.284.438-.49.922-.612 1.43-.23.97-.09 1.882.403 2.661-.595.332-1.55.413-1.744.42H.751a.751.751 0 00-.75.748 11.376 11.376 0 00.692 4.062c.545 1.428 1.355 2.48 2.41 3.124 1.18.723 3.1 1.137 5.275 1.137.983.003 1.963-.086 2.93-.266a12.248 12.248 0 003.823-1.389c.98-.567 1.86-1.288 2.61-2.136 1.252-1.418 1.998-2.997 2.553-4.4h.221c1.372 0 2.215-.549 2.68-1.009.309-.293.55-.65.707-1.046l.098-.288Z"/></svg>
+      <div class="bg-white dark:bg-neutral-800 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-700">
+        <div class="w-13 h-13 rounded-xl flex items-center justify-center mb-3 bg-accent-darkblue text-accent-darkblue-dark">
+          <svg role="img" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M13.983 11.078h2.119a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.119a.185.185 0 00-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 00.186-.186V3.574a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m0 2.716h2.118a.187.187 0 00.186-.186V6.29a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.887c0 .102.082.185.185.186m-2.93 0h2.12a.186.186 0 00.184-.186V6.29a.185.185 0 00-.185-.185H8.1a.185.185 0 00-.185.185v1.887c0 .102.083.185.185.186m-2.964 0h2.119a.186.186 0 00.185-.186V6.29a.185.185 0 00-.185-.185H5.136a.186.186 0 00-.186.185v1.887c0 .102.084.185.186.186m5.893 2.715h2.118a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m-2.93 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.083.185.185.185m-2.964 0h2.119a.185.185 0 00.185-.185V9.006a.185.185 0 00-.184-.186h-2.12a.186.186 0 00-.186.186v1.887c0 .102.084.185.186.185m-2.92 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.082.185.185.185M23.763 9.89c-.065-.051-.672-.51-1.954-.51-.338.001-.676.03-1.01.087-.248-1.7-1.653-2.53-1.716-2.566l-.344-.199-.226.327c-.284.438-.49.922-.612 1.43-.23.97-.09 1.882.403 2.661-.595.332-1.55.413-1.744.42H.751a.751.751 0 00-.75.748 11.376 11.376 0 00.692 4.062c.545 1.428 1.355 2.48 2.41 3.124 1.18.723 3.1 1.137 5.275 1.137.983.003 1.963-.086 2.93-.266a12.248 12.248 0 003.823-1.389c.98-.567 1.86-1.288 2.61-2.136 1.252-1.418 1.998-2.997 2.553-4.4h.221c1.372 0 2.215-.549 2.68-1.009.309-.293.55-.65.707-1.046l.098-.288Z"/></svg>
         </div>
-        <h3>Self-Host</h3>
-        <p>You know you want to even though it's always a terrible idea! <a href="https://github.com/lofimx/kaya-server">Here you go.</a></p>
+        <h3 class="text-lg font-semibold mb-1 text-neutral-900 dark:text-neutral-100">Self-Host</h3>
+        <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">You know you want to even though it's always a terrible idea! <a href="https://github.com/lofimx/kaya-server">Here you go.</a></p>
       </div>
-      <div class="feature">
-        <div class="feature-icon red">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-grid2x2-plus-icon lucide-grid-2x2-plus"><path d="M12 3v17a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1H3"/><path d="M16 19h6"/><path d="M19 22v-6"/></svg>
+      <div class="bg-white dark:bg-neutral-800 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-700">
+        <div class="w-13 h-13 rounded-xl flex items-center justify-center mb-3 bg-accent-red text-accent-red-dark">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v17a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1H3"/><path d="M16 19h6"/><path d="M19 22v-6"/></svg>
         </div>
-        <h3>Append-Only</h3>
-        <p>Immutable: there is no "delete."<br> Dumb data is good data.</p>
+        <h3 class="text-lg font-semibold mb-1 text-neutral-900 dark:text-neutral-100">Append-Only</h3>
+        <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">Immutable: there is no "delete."<br> Dumb data is good data.</p>
       </div>
-      <div class="feature">
-        <div class="feature-icon orange">
-            <svg width="32" height="32" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" xmlns="http://www.w3.org/2000/svg">
-                <path d="M14.195 9.77792C14.7042 10.5612 15 11.4958 15 12.5C15 15.2612 12.7612 17.5 10 17.5C7.23875 17.5 5 15.2612 5 12.5C5 9.73875 7.23875 7.5 10 7.5C11.0037 7.5 11.9388 7.79583 12.7221 8.305"/>
-                <path d="M16.9729 7.23291C17.3129 8.08916 17.5 9.02291 17.5 10.0004C17.5 14.1425 14.1421 17.5004 10 17.5004C5.85792 17.5004 2.5 14.1425 2.5 10.0004C2.5 9.02291 2.68708 8.08916 3.02708 7.23291"/>
-                <path d="M11.248 2.60352C13.0064 2.8981 14.5576 3.80435 15.6747 5.09602"/>
-                <path d="M4.32617 5.09609C5.44326 3.80484 6.99326 2.899 8.75076 2.604"/>
-                <path d="M4.81445 7.31396L9.31445 11.814"/>
-                <path d="M15.1855 7.31381L15.6739 5.0959L17.4605 5.01465L16.9722 7.23257L15.1855 7.31381Z M4.81406 7.31381L4.32573 5.0959L2.53906 5.01465L3.0274 7.23257L4.81406 7.31381Z M15.1858 7.31396L14.3379 8.16188"/>
-                <path d="M10 4.1665V11.4976"/>
-                <path d="M10 4.16674L8.75 2.60383L10 1.11133L11.25 2.60383L10 4.16674Z M12.5371 9.96204L12.7213 8.30454L14.3375 8.16162L14.1946 9.77787L12.5371 9.96204Z M9.99854 13.5024C10.5522 13.5024 11.001 13.0536 11.001 12.5C11.001 11.9464 10.5522 11.4976 9.99854 11.4976C9.4449 11.4976 8.99609 11.9464 8.99609 12.5C8.99609 13.0536 9.4449 13.5024 9.99854 13.5024Z" fill="currentColor"/>
-            </svg>
+      <div class="bg-white dark:bg-neutral-800 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-700">
+        <div class="w-13 h-13 rounded-xl flex items-center justify-center mb-3 bg-accent-orange text-accent-orange-dark">
+          <svg width="32" height="32" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14.195 9.77792C14.7042 10.5612 15 11.4958 15 12.5C15 15.2612 12.7612 17.5 10 17.5C7.23875 17.5 5 15.2612 5 12.5C5 9.73875 7.23875 7.5 10 7.5C11.0037 7.5 11.9388 7.79583 12.7221 8.305"/>
+            <path d="M16.9729 7.23291C17.3129 8.08916 17.5 9.02291 17.5 10.0004C17.5 14.1425 14.1421 17.5004 10 17.5004C5.85792 17.5004 2.5 14.1425 2.5 10.0004C2.5 9.02291 2.68708 8.08916 3.02708 7.23291"/>
+            <path d="M11.248 2.60352C13.0064 2.8981 14.5576 3.80435 15.6747 5.09602"/>
+            <path d="M4.32617 5.09609C5.44326 3.80484 6.99326 2.899 8.75076 2.604"/>
+            <path d="M4.81445 7.31396L9.31445 11.814"/>
+            <path d="M15.1855 7.31381L15.6739 5.0959L17.4605 5.01465L16.9722 7.23257L15.1855 7.31381Z M4.81406 7.31381L4.32573 5.0959L2.53906 5.01465L3.0274 7.23257L4.81406 7.31381Z M15.1858 7.31396L14.3379 8.16188"/>
+            <path d="M10 4.1665V11.4976"/>
+            <path d="M10 4.16674L8.75 2.60383L10 1.11133L11.25 2.60383L10 4.16674Z M12.5371 9.96204L12.7213 8.30454L14.3375 8.16162L14.1946 9.77787L12.5371 9.96204Z M9.99854 13.5024C10.5522 13.5024 11.001 13.0536 11.001 12.5C11.001 11.9464 10.5522 11.4976 9.99854 11.4976C9.4449 11.4976 8.99609 11.9464 8.99609 12.5C8.99609 13.0536 9.4449 13.5024 9.99854 13.5024Z" fill="currentColor"/>
+          </svg>
         </div>
-        <h3>Local-First</h3>
-        <p>Immutable files are easy to sync.<br>P2P sync coming soon.</p>
+        <h3 class="text-lg font-semibold mb-1 text-neutral-900 dark:text-neutral-100">Local-First</h3>
+        <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">Immutable files are easy to sync.<br>P2P sync coming soon.</p>
       </div>
     </div>
   </div>

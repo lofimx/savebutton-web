@@ -1,15 +1,15 @@
-<header class="site-header">
-  <div class="header-container">
-    <div class="logo">
-      <%= link_to root_path, class: "logo-link" do %>
+<header class="fixed top-0 left-0 right-0 z-40 bg-white dark:bg-neutral-950 border-b border-neutral-200 dark:border-neutral-800">
+  <div class="max-w-5xl mx-auto px-6 py-3 flex justify-between items-center">
+    <div>
+      <%= link_to root_path, class: "inline-flex items-center gap-1.5 no-underline focus-visible:ring-2 focus-visible:ring-primary-400 rounded" do %>
         <%= render "shared/logo_icon", size: 28, id_suffix: "header" %>
-        <span class="logo-text">Save Button</span>
+        <span class="text-xl font-bold text-neutral-900 dark:text-neutral-100 tracking-tight">Save Button</span>
       <% end %>
     </div>
 
-    <nav class="nav-links">
-      <%= link_to "Log In", new_session_path, class: "btn btn-secondary" %>
-      <%= link_to "Sign Up", new_registration_path, class: "btn btn-primary" %>
+    <nav class="flex items-center gap-3">
+      <%= link_to "Log In", new_session_path, class: "inline-flex items-center justify-center px-4 py-1.5 text-sm font-medium rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors" %>
+      <%= link_to "Sign Up", new_registration_path, class: "inline-flex items-center justify-center px-4 py-1.5 text-sm font-medium rounded-lg bg-primary-400 hover:bg-primary-500 text-neutral-900 transition-colors" %>
     </nav>
   </div>
 </header>

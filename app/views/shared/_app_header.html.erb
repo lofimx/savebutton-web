@@ -1,8 +1,8 @@
-<header class="site-header">
-  <div class="header-container">
-    <div class="header-left">
-      <div class="hamburger-menu" data-controller="hamburger">
-        <button class="hamburger-button" data-action="click->hamburger#toggle" aria-label="Menu">
+<header class="fixed top-0 left-0 right-0 z-40 bg-white dark:bg-neutral-950 border-b border-neutral-200 dark:border-neutral-800">
+  <div class="max-w-5xl mx-auto px-6 py-2 flex justify-between items-center">
+    <div class="flex items-center gap-1">
+      <div class="relative" data-controller="hamburger">
+        <button class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors text-neutral-900 dark:text-neutral-100 cursor-pointer border-none bg-transparent" data-action="click->hamburger#toggle" aria-label="Menu">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="3" y1="6" x2="21" y2="6"></line>
             <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -10,7 +10,7 @@
           </svg>
         </button>
         <nav class="hamburger-dropdown" data-hamburger-target="dropdown">
-          <%= link_to app_everything_path, class: "hamburger-item #{'active' if current_page?(app_everything_path)}" do %>
+          <%= link_to app_everything_path, class: "flex items-center gap-3 px-4 py-2.5 text-neutral-900 dark:text-neutral-100 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors first:rounded-t-lg last:rounded-b-lg #{current_page?(app_everything_path) ? 'bg-primary-400 !text-neutral-900 hover:bg-primary-500 dark:hover:bg-primary-500' : ''}" do %>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="3" width="7" height="7"></rect>
               <rect x="14" y="3" width="7" height="7"></rect>
@@ -19,7 +19,7 @@
             </svg>
             <span>Everything</span>
           <% end %>
-          <%= link_to get_the_apps_path, class: "hamburger-item #{'active' if current_page?(get_the_apps_path)}" do %>
+          <%= link_to get_the_apps_path, class: "flex items-center gap-3 px-4 py-2.5 text-neutral-900 dark:text-neutral-100 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors first:rounded-t-lg last:rounded-b-lg #{current_page?(get_the_apps_path) ? 'bg-primary-400 !text-neutral-900 hover:bg-primary-500 dark:hover:bg-primary-500' : ''}" do %>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
               <polyline points="7 10 12 15 17 10"></polyline>
@@ -27,9 +27,9 @@
             </svg>
             <span>Get The Apps</span>
           <% end %>
-          <%= link_to account_path, class: "hamburger-item #{'active' if current_page?(account_path)}" do %>
+          <%= link_to account_path, class: "flex items-center gap-3 px-4 py-2.5 text-neutral-900 dark:text-neutral-100 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors first:rounded-t-lg last:rounded-b-lg #{current_page?(account_path) ? 'bg-primary-400 !text-neutral-900 hover:bg-primary-500 dark:hover:bg-primary-500' : ''}" do %>
             <% if Current.user.avatar.attached? %>
-              <%= image_tag Current.user.avatar, class: "hamburger-avatar" %>
+              <%= image_tag Current.user.avatar, class: "w-5 h-5 rounded-full object-cover" %>
             <% else %>
               <%= render "shared/icons/profile_icon" %>
             <% end %>
@@ -40,7 +40,7 @@
     </div>
 
     <% unless content_for?(:hide_add_button) %>
-      <button class="add-button" data-action="click->add-modal#open" aria-label="Add note or bookmark">
+      <button class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors text-neutral-900 dark:text-neutral-100 cursor-pointer border-none bg-transparent" data-action="click->add-modal#open" aria-label="Add note or bookmark">
         <%= render "shared/icons/plus_icon" %>
       </button>
     <% end %>

@@ -1,12 +1,12 @@
-<div class="add-modal"
+<div class="modal-backdrop"
      data-add-modal-target="modal"
      data-action="click->add-modal#closeOnBackdrop keydown.esc->add-modal#closeOnEscape dragover->add-modal#dragOver dragenter->add-modal#dragEnter dragleave->add-modal#dragLeave drop->add-modal#drop"
      tabindex="-1">
-  <div class="add-modal-dialog">
-    <header class="add-modal-header">
-      <h2 class="add-modal-title">Add</h2>
+  <div class="bg-white dark:bg-neutral-800 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-lg w-full max-w-md flex flex-col overflow-hidden">
+    <header class="flex items-center justify-between px-4 py-2.5 border-b border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900">
+      <h2 class="text-sm font-semibold text-neutral-900 dark:text-neutral-100 m-0">Add</h2>
       <button type="button"
-              class="add-modal-close"
+              class="flex items-center justify-center w-8 h-8 p-0 bg-transparent border-none rounded-lg text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100 cursor-pointer transition-colors"
               data-action="click->add-modal#close"
               aria-label="Close">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -14,25 +14,25 @@
         </svg>
       </button>
     </header>
-    <div class="add-modal-content" data-add-modal-target="content">
-      <div class="add-modal-dropzone" data-add-modal-target="dropzone">
-        <textarea class="add-input"
+    <div class="p-6 flex flex-col gap-4" data-add-modal-target="content">
+      <div class="flex flex-col gap-3 p-4 border-2 border-dashed border-neutral-300 dark:border-neutral-600 rounded-xl bg-neutral-50 dark:bg-neutral-900 transition-colors" data-add-modal-target="dropzone">
+        <textarea class="w-full px-3 py-2 text-sm rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-colors resize-y min-h-[100px]"
                   data-add-modal-target="input"
                   placeholder="Enter bookmark/note..."
                   rows="4"></textarea>
-        <div class="add-dropzone-hint">
+        <div class="text-center text-sm text-neutral-500">
           <span>or drop files here</span>
         </div>
       </div>
-      <div class="add-modal-footer">
+      <div class="flex justify-end">
         <button type="button"
-                class="btn btn-pill btn-primary"
+                class="px-6 py-1.5 text-sm font-semibold rounded-full bg-primary-400 hover:bg-primary-500 text-neutral-900 transition-colors cursor-pointer border-none"
                 data-action="click->add-modal#save"
                 data-add-modal-target="saveButton">
           Save
         </button>
       </div>
-      <div class="add-modal-status hidden" data-add-modal-target="status"></div>
+      <div class="hidden px-3 py-2 rounded-lg text-sm text-center" data-add-modal-target="status"></div>
     </div>
   </div>
 </div>
