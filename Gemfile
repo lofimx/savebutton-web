@@ -102,3 +102,5 @@ group :test do
 end
 
 gem "tailwindcss-rails", "~> 4.4"
+
+gem "device_detector", "~> 1.1"

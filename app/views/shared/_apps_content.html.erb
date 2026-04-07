@@ -1,91 +1,124 @@
-<div class="flex flex-col gap-3">
-  <h3 class="text-xl font-bold text-neutral-900 dark:text-neutral-100">Mobile Apps</h3>
-  <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">Available for iPhone, iPad, Android phones, and Android tablets.</p>
-  <div class="flex gap-3 flex-wrap">
-    <a href="https://apps.apple.com/app/save-button-app/id6758891680" class="inline-block hover:-translate-y-0.5 transition-transform" target="_blank" rel="noopener noreferrer">
-      <img src="/icons/platforms/app-store.svg" alt="Download on the App Store" class="h-[60px] w-auto block">
-    </a>
-    <a href="https://play.google.com/store/apps/details?id=org.savebutton.app" class="inline-block hover:-translate-y-0.5 transition-transform" target="_blank" rel="noopener noreferrer">
-      <img src="/icons/platforms/play-store.svg" alt="Get it on Google Play" class="h-[60px] w-auto block">
-    </a>
-  </div>
-</div>
+<% detection = detected_platform %>
+<% browser_ext = Platform::AppRegistry.extension_for(detection.browser) %>
+<% desktop_app = Platform::AppRegistry.desktop_for(detection.os) %>
+<% mobile_app = Platform::AppRegistry.mobile_for(detection.os) %>
+<% is_mobile = detection.os == :ios || detection.os == :android %>
+<% has_detection = browser_ext || desktop_app || mobile_app %>
 
-<div class="flex flex-col gap-3">
-  <h3 class="text-xl font-bold text-neutral-900 dark:text-neutral-100">Browser Extensions</h3>
-  <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">Save Button works on most browsers. If your browser is not listed, try installing from the Chromium link.</p>
-  <div class="grid grid-cols-4 gap-3 mt-2 max-sm:grid-cols-2">
-    <a href="https://chromewebstore.google.com/detail/save-button/eeoleaffndkjkgbdhaojcgehcklfihid" class="flex flex-col items-center gap-1.5 p-3 bg-neutral-100 dark:bg-neutral-800 rounded-lg no-underline border border-transparent hover:bg-white dark:hover:bg-neutral-900 hover:border-primary-400 hover:-translate-y-0.5 transition-all" target="_blank" rel="noopener noreferrer">
-      <img src="/icons/browsers/chrome.png" alt="Chrome" class="w-16 h-16 object-contain">
-      <span class="text-xs font-medium text-neutral-900 dark:text-neutral-100 text-center">Chrome</span>
-    </a>
-    <a href="https://addons.mozilla.org/en-US/firefox/addon/save-button/" class="flex flex-col items-center gap-1.5 p-3 bg-neutral-100 dark:bg-neutral-800 rounded-lg no-underline border border-transparent hover:bg-white dark:hover:bg-neutral-900 hover:border-primary-400 hover:-translate-y-0.5 transition-all" target="_blank" rel="noopener noreferrer">
-      <img src="/icons/browsers/firefox.png" alt="Firefox" class="w-16 h-16 object-contain">
-      <span class="text-xs font-medium text-neutral-900 dark:text-neutral-100 text-center">Firefox</span>
-    </a>
-    <a href="https://microsoftedge.microsoft.com/addons/detail/save-button/ldcpchibphbafmclockfeoiffafjdekj" class="flex flex-col items-center gap-1.5 p-3 bg-neutral-100 dark:bg-neutral-800 rounded-lg no-underline border border-transparent hover:bg-white dark:hover:bg-neutral-900 hover:border-primary-400 hover:-translate-y-0.5 transition-all" target="_blank" rel="noopener noreferrer">
-      <img src="/icons/browsers/edge.png" alt="Edge" class="w-16 h-16 object-contain">
-      <span class="text-xs font-medium text-neutral-900 dark:text-neutral-100 text-center">Edge</span>
-    </a>
-    <a href="https://apps.apple.com/app/save-button-for-safari/id6759535767" class="flex flex-col items-center gap-1.5 p-3 bg-neutral-100 dark:bg-neutral-800 rounded-lg no-underline border border-transparent hover:bg-white dark:hover:bg-neutral-900 hover:border-primary-400 hover:-translate-y-0.5 transition-all" target="_blank" rel="noopener noreferrer">
-      <img src="/icons/browsers/safari.png" alt="Safari" class="w-16 h-16 object-contain">
-      <span class="text-xs font-medium text-neutral-900 dark:text-neutral-100 text-center">Safari</span>
-    </a>
-    <a href="https://chromewebstore.google.com/detail/save-button/eeoleaffndkjkgbdhaojcgehcklfihid" class="flex flex-col items-center gap-1.5 p-3 bg-neutral-100 dark:bg-neutral-800 rounded-lg no-underline border border-transparent hover:bg-white dark:hover:bg-neutral-900 hover:border-primary-400 hover:-translate-y-0.5 transition-all" target="_blank" rel="noopener noreferrer">
-      <img src="/icons/browsers/chromium.png" alt="Chromium" class="w-16 h-16 object-contain">
-      <span class="text-xs font-medium text-neutral-900 dark:text-neutral-100 text-center">Chromium</span>
-    </a>
-    <a href="https://chromewebstore.google.com/detail/save-button/eeoleaffndkjkgbdhaojcgehcklfihid" class="flex flex-col items-center gap-1.5 p-3 bg-neutral-100 dark:bg-neutral-800 rounded-lg no-underline border border-transparent hover:bg-white dark:hover:bg-neutral-900 hover:border-primary-400 hover:-translate-y-0.5 transition-all" target="_blank" rel="noopener noreferrer">
-      <img src="/icons/browsers/brave.png" alt="Brave" class="w-16 h-16 object-contain">
-      <span class="text-xs font-medium text-neutral-900 dark:text-neutral-100 text-center">Brave</span>
-    </a>
-    <a href="https://chromewebstore.google.com/detail/save-button/eeoleaffndkjkgbdhaojcgehcklfihid" class="flex flex-col items-center gap-1.5 p-3 bg-neutral-100 dark:bg-neutral-800 rounded-lg no-underline border border-transparent hover:bg-white dark:hover:bg-neutral-900 hover:border-primary-400 hover:-translate-y-0.5 transition-all" target="_blank" rel="noopener noreferrer">
-      <img src="/icons/browsers/vivaldi.png" alt="Vivaldi" class="w-16 h-16 object-contain">
-      <span class="text-xs font-medium text-neutral-900 dark:text-neutral-100 text-center">Vivaldi</span>
-    </a>
-    <a href="https://chromewebstore.google.com/detail/save-button/eeoleaffndkjkgbdhaojcgehcklfihid" class="flex flex-col items-center gap-1.5 p-3 bg-neutral-100 dark:bg-neutral-800 rounded-lg no-underline border border-transparent hover:bg-white dark:hover:bg-neutral-900 hover:border-primary-400 hover:-translate-y-0.5 transition-all" target="_blank" rel="noopener noreferrer">
-      <img src="/icons/browsers/arc.png" alt="Arc" class="w-16 h-16 object-contain">
-      <span class="text-xs font-medium text-neutral-900 dark:text-neutral-100 text-center">Arc</span>
-    </a>
-  </div>
-</div>
+<div data-controller="apps-detector"
+     data-apps-detector-chromium-based-value="<%= detection.chromium_based? %>">
 
-<div class="flex flex-col gap-3" data-controller="download-modal">
-  <h3 class="text-xl font-bold text-neutral-900 dark:text-neutral-100">Desktop Apps</h3>
-  <div class="flex flex-row gap-3 mt-2 max-sm:flex-col">
-    <button type="button" class="flex-1 flex items-center gap-3 p-3 bg-neutral-100 dark:bg-neutral-800 rounded-lg border border-transparent hover:bg-white dark:hover:bg-neutral-900 hover:border-primary-400 hover:-translate-y-0.5 transition-all cursor-pointer font-[inherit] text-[inherit] text-left" data-action="click->download-modal#open" data-download-platform="windows">
-      <img src="/icons/platforms/windows.png" alt="Windows" class="w-12 h-12 object-contain shrink-0">
-      <div class="flex flex-col gap-0.5">
-        <span class="text-sm font-medium text-neutral-900 dark:text-neutral-100">Windows</span>
+  <% if has_detection %>
+    <%# === RECOMMENDED SECTION === %>
+    <div class="flex flex-col gap-3">
+      <h3 class="text-xl font-bold text-neutral-900 dark:text-neutral-100">Recommended for you</h3>
+      <div class="flex gap-4 flex-wrap">
+        <% if is_mobile && mobile_app %>
+          <a href="<%= mobile_app[:url] %>" class="inline-block hover:-translate-y-0.5 transition-transform" target="_blank" rel="noopener noreferrer">
+            <img src="<%= mobile_app[:icon] %>" alt="<%= mobile_app[:name] %>" class="h-[60px] w-auto block">
+          </a>
+        <% else %>
+          <% if browser_ext %>
+            <a href="<%= browser_ext[:url] %>" class="flex items-center gap-4 p-4 bg-white dark:bg-neutral-800 rounded-xl no-underline border-2 border-primary-400 hover:bg-neutral-50 dark:hover:bg-neutral-900 hover:-translate-y-0.5 transition-all" target="_blank" rel="noopener noreferrer">
+              <img src="<%= browser_ext[:icon] %>" alt="<%= browser_ext[:name] %>" class="w-16 h-16 object-contain" data-apps-detector-target="browserIcon">
+              <div class="flex flex-col gap-0.5">
+                <span class="text-base font-semibold text-neutral-900 dark:text-neutral-100" data-apps-detector-target="browserName"><%= browser_ext[:name] %></span>
+                <span class="text-sm text-neutral-500 dark:text-neutral-400">Browser Extension</span>
+              </div>
+            </a>
+          <% end %>
+          <% if desktop_app %>
+            <div data-controller="download-modal">
+              <button type="button" class="flex items-center gap-4 p-4 bg-white dark:bg-neutral-800 rounded-xl border-2 border-primary-400 hover:bg-neutral-50 dark:hover:bg-neutral-900 hover:-translate-y-0.5 transition-all cursor-pointer font-[inherit] text-[inherit] text-left" data-action="click->download-modal#open" data-download-platform="<%= desktop_app[:platform] %>">
+                <img src="<%= desktop_app[:icon] %>" alt="<%= desktop_app[:name] %>" class="w-16 h-16 object-contain shrink-0">
+                <div class="flex flex-col gap-0.5">
+                  <span class="text-base font-semibold text-neutral-900 dark:text-neutral-100"><%= desktop_app[:name] %></span>
+                  <span class="text-sm text-neutral-500 dark:text-neutral-400">Desktop App</span>
+                </div>
+              </button>
+              <%= render "shared/download_modal" %>
+            </div>
+          <% end %>
+        <% end %>
       </div>
-    </button>
-    <button type="button" class="flex-1 flex items-center gap-3 p-3 bg-neutral-100 dark:bg-neutral-800 rounded-lg border border-transparent hover:bg-white dark:hover:bg-neutral-900 hover:border-primary-400 hover:-translate-y-0.5 transition-all cursor-pointer font-[inherit] text-[inherit] text-left" data-action="click->download-modal#open" data-download-platform="macos">
-      <img src="/icons/platforms/macos.png" alt="macOS" class="w-12 h-12 object-contain shrink-0">
-      <div class="flex flex-col gap-0.5">
-        <span class="text-sm font-medium text-neutral-900 dark:text-neutral-100">macOS</span>
-      </div>
-    </button>
-    <button type="button" class="flex-1 flex items-center gap-3 p-3 bg-neutral-100 dark:bg-neutral-800 rounded-lg border border-transparent hover:bg-white dark:hover:bg-neutral-900 hover:border-primary-400 hover:-translate-y-0.5 transition-all cursor-pointer font-[inherit] text-[inherit] text-left" data-action="click->download-modal#open" data-download-platform="linux">
-      <img src="/icons/platforms/linux.png" alt="Linux" class="w-12 h-12 object-contain shrink-0">
-      <div class="flex flex-col gap-0.5">
-        <span class="text-sm font-medium text-neutral-900 dark:text-neutral-100">Linux</span>
-      </div>
-    </button>
-  </div>
+    </div>
 
-  <%= render "shared/download_modal" %>
-</div>
+    <%# === EXPAND BUTTON === %>
+    <div class="flex justify-center mt-2">
+      <button type="button"
+              class="text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 bg-transparent border-none cursor-pointer transition-colors p-2"
+              data-action="click->apps-detector#toggle"
+              data-apps-detector-target="expandButton">
+        See all apps
+      </button>
+    </div>
 
-<div class="flex flex-col gap-3">
-  <h3 class="text-xl font-bold text-neutral-900 dark:text-neutral-100">Service</h3>
-  <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">Grab an account with savebutton.com or, if you're a big nerd, <a href="#nerd-features">host it yourself</a>.</p>
-  <div class="flex gap-4 mt-4">
-    <div>
-      <% if authenticated? %>
-        <span class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg bg-primary-400 text-neutral-900 opacity-50 cursor-not-allowed">You're already logged in!</span>
-      <% else %>
-        <%= link_to "Sign Up", new_registration_path, class: "inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg bg-primary-400 hover:bg-primary-500 text-neutral-900 transition-colors no-underline" %>
+    <%# === FULL GRID (hidden by default) === %>
+    <div class="hidden flex flex-col gap-12" data-apps-detector-target="expanded">
+  <% end %>
+
+  <%# === MOBILE APPS === %>
+  <div class="flex flex-col gap-3">
+    <h3 class="text-xl font-bold text-neutral-900 dark:text-neutral-100">Mobile Apps</h3>
+    <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">Available for iPhone, iPad, Android phones, and Android tablets.</p>
+    <div class="flex gap-3 flex-wrap">
+      <% Platform::AppRegistry.all_mobile_apps.each do |_key, app| %>
+        <a href="<%= app[:url] %>" class="inline-block hover:-translate-y-0.5 transition-transform" target="_blank" rel="noopener noreferrer">
+          <img src="<%= app[:icon] %>" alt="<%= app[:name] %>" class="h-[60px] w-auto block">
+        </a>
       <% end %>
     </div>
   </div>
+
+  <%# === BROWSER EXTENSIONS === %>
+  <div class="flex flex-col gap-3">
+    <h3 class="text-xl font-bold text-neutral-900 dark:text-neutral-100">Browser Extensions</h3>
+    <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">Save Button works on most browsers. If your browser is not listed, try installing from the Chromium link.</p>
+    <div class="grid grid-cols-4 gap-3 mt-2 max-sm:grid-cols-2">
+      <% Platform::AppRegistry.all_extensions.each do |_key, ext| %>
+        <a href="<%= ext[:url] %>" class="flex flex-col items-center gap-1.5 p-3 bg-neutral-100 dark:bg-neutral-800 rounded-lg no-underline border border-transparent hover:bg-white dark:hover:bg-neutral-900 hover:border-primary-400 hover:-translate-y-0.5 transition-all" target="_blank" rel="noopener noreferrer">
+          <img src="<%= ext[:icon] %>" alt="<%= ext[:name] %>" class="w-16 h-16 object-contain">
+          <span class="text-xs font-medium text-neutral-900 dark:text-neutral-100 text-center"><%= ext[:name] %></span>
+        </a>
+      <% end %>
+    </div>
+  </div>
+
+  <%# === DESKTOP APPS === %>
+  <% unless has_detection %>
+    <%# Only wrap with download-modal here when NOT in detected mode (detected mode has its own) %>
+  <% end %>
+  <div class="flex flex-col gap-3" data-controller="download-modal">
+    <h3 class="text-xl font-bold text-neutral-900 dark:text-neutral-100">Desktop Apps</h3>
+    <div class="flex flex-row gap-3 mt-2 max-sm:flex-col">
+      <% Platform::AppRegistry.all_desktop_apps.each do |_key, app| %>
+        <button type="button" class="flex-1 flex items-center gap-3 p-3 bg-neutral-100 dark:bg-neutral-800 rounded-lg border border-transparent hover:bg-white dark:hover:bg-neutral-900 hover:border-primary-400 hover:-translate-y-0.5 transition-all cursor-pointer font-[inherit] text-[inherit] text-left" data-action="click->download-modal#open" data-download-platform="<%= app[:platform] %>">
+          <img src="<%= app[:icon] %>" alt="<%= app[:name] %>" class="w-12 h-12 object-contain shrink-0">
+          <div class="flex flex-col gap-0.5">
+            <span class="text-sm font-medium text-neutral-900 dark:text-neutral-100"><%= app[:name] %></span>
+          </div>
+        </button>
+      <% end %>
+    </div>
+    <%= render "shared/download_modal" %>
+  </div>
+
+  <%# === SERVICE === %>
+  <div class="flex flex-col gap-3">
+    <h3 class="text-xl font-bold text-neutral-900 dark:text-neutral-100">Service</h3>
+    <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">Grab an account with savebutton.com or, if you're a big nerd, <a href="#nerd-features">host it yourself</a>.</p>
+    <div class="flex gap-4 mt-4">
+      <div>
+        <% if authenticated? %>
+          <span class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg bg-primary-400 text-neutral-900 opacity-50 cursor-not-allowed">You're already logged in!</span>
+        <% else %>
+          <%= link_to "Sign Up", new_registration_path, class: "inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg bg-primary-400 hover:bg-primary-500 text-neutral-900 transition-colors no-underline" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <% if has_detection %>
+    </div>
+  <% end %>
 </div>
