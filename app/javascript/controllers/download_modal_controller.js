@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["modal", "panel"];
+  static targets = ["modal", "panel", "title"];
   static values = { platform: String };
 
   open(event) {
@@ -31,7 +31,14 @@ export default class extends Controller {
 
   showPanel(platform) {
     this.panelTargets.forEach((panel) => {
-      panel.classList.toggle("hidden", panel.dataset.platform !== platform);
+      const isActive = panel.dataset.platform === platform;
+      panel.classList.toggle("hidden", !isActive);
+      if (isActive && this.hasTitleTarget) {
+        const version = panel.dataset.version;
+        this.titleTarget.textContent = version
+          ? `Download Save Button v${version}`
+          : "Download Save Button";
+      }
     });
   }
 }

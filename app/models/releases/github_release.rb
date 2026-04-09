@@ -46,12 +46,25 @@ module Releases
 
       def fetch_all_assets
         unique_repos = REPOS.values.uniq
-
-        repo_assets = unique_repos.reduce({ aur: AUR_URL }) do |result, repo_path|
-          result.merge(fetch_assets_for(repo_path))
+        repo_results = unique_repos.each_with_object({}) do |repo_path, hash|
+          hash[repo_path] = fetch_assets_for(repo_path)
         end
 
-        repo_assets
+        result = { aur: AUR_URL }
+        versions = {}
+
+        REPOS.each do |platform, repo_path|
+          fetched = repo_results[repo_path]
+          version = fetched[:version]
+          versions[platform] = version if version
+        end
+
+        repo_results.each_value do |fetched|
+          fetched.each { |k, v| result[k] = v unless k == :version }
+        end
+
+        result[:versions] = versions if versions.any?
+        result
       rescue StandardError => e
         Rails.logger.error("🔴 Releases::GithubRelease — failed to fetch releases: #{e.message}")
         { aur: AUR_URL }
@@ -68,9 +81,13 @@ module Releases
         end
 
         release = JSON.parse(response.body)
+        version = release["tag_name"]&.sub(/\Av/, "")
         assets = release["assets"] || []
 
-        assets.each_with_object({}) do |asset, matched|
+        result = {}
+        result[:version] = version if version
+
+        assets.each_with_object(result) do |asset, matched|
           name = asset["name"]
           url = asset["browser_download_url"]
 

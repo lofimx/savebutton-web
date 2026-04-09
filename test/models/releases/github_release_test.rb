@@ -3,6 +3,7 @@ require "minitest/mock"
 
 class Releases::GithubReleaseTest < ActiveSupport::TestCase
   FAKE_GTK_RESPONSE = {
+    "tag_name" => "v1.0.0",
     "assets" => [
       { "name" => "SaveButton-1.0.0-x86_64.dmg", "browser_download_url" => "https://github.com/lofimx/savebutton-gtk/releases/download/v1.0.0/SaveButton-1.0.0-x86_64.dmg" },
       { "name" => "SaveButton-1.0.0-arm64.dmg", "browser_download_url" => "https://github.com/lofimx/savebutton-gtk/releases/download/v1.0.0/SaveButton-1.0.0-arm64.dmg" },
@@ -16,6 +17,7 @@ class Releases::GithubReleaseTest < ActiveSupport::TestCase
   }.freeze
 
   FAKE_WPF_RESPONSE = {
+    "tag_name" => "v1.0.0",
     "assets" => [
       { "name" => "SaveButton-1.0.0-x64.msi", "browser_download_url" => "https://github.com/lofimx/savebutton-wpf/releases/download/v1.0.0/SaveButton-1.0.0-x64.msi" }
     ]
@@ -43,6 +45,14 @@ class Releases::GithubReleaseTest < ActiveSupport::TestCase
       assert_equal "https://github.com/lofimx/savebutton-gtk/releases/download/v1.0.0/savebutton_1.0.0_amd64.snap", assets[:linux_snap]
       assert_equal "https://github.com/lofimx/savebutton-gtk/releases/download/v1.0.0/savebutton-1.0.0.ebuild", assets[:linux_ebuild]
       assert_equal Releases::GithubRelease::AUR_URL, assets[:aur]
+    end
+  end
+
+  test "extracts per-platform versions from tag_name" do
+    stub_github_api do
+      assets = Releases::GithubRelease.refresh_cache
+
+      assert_equal({ windows: "1.0.0", macos: "1.0.0", linux: "1.0.0" }, assets[:versions])
     end
   end
 

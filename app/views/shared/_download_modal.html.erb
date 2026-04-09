@@ -6,7 +6,7 @@
      tabindex="-1">
   <div class="bg-white dark:bg-neutral-800 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-lg w-full max-w-lg flex flex-col overflow-hidden">
     <header class="flex items-center justify-between px-4 py-2.5 border-b border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900">
-      <h2 class="text-sm font-semibold text-neutral-900 dark:text-neutral-100 m-0">Download Save Button</h2>
+      <h2 class="text-sm font-semibold text-neutral-900 dark:text-neutral-100 m-0" data-download-modal-target="title">Download Save Button</h2>
       <button type="button"
               class="flex items-center justify-center w-8 h-8 p-0 bg-transparent border-none rounded-lg text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100 cursor-pointer transition-colors"
               data-action="click->download-modal#close"
@@ -19,7 +19,8 @@
     <div class="p-4">
 
       <%# Windows panel %>
-      <div class="download-panel hidden" data-download-modal-target="panel" data-platform="windows">
+      <% versions = assets[:versions] || {} %>
+      <div class="download-panel hidden" data-download-modal-target="panel" data-platform="windows" data-version="<%= versions[:windows] %>">
         <div class="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
           <% if assets[:windows_msi] %>
             <a href="<%= assets[:windows_msi] %>" class="flex items-center gap-3 p-3 bg-neutral-50 dark:bg-neutral-900 rounded-lg no-underline border border-transparent hover:border-primary-400 hover:bg-white dark:hover:bg-neutral-800 hover:-translate-y-0.5 transition-all min-h-[48px]">
@@ -34,7 +35,7 @@
       </div>
 
       <%# macOS panel %>
-      <div class="download-panel hidden" data-download-modal-target="panel" data-platform="macos">
+      <div class="download-panel hidden" data-download-modal-target="panel" data-platform="macos" data-version="<%= versions[:macos] %>">
         <div class="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
           <% if assets[:macos_intel] %>
             <a href="<%= assets[:macos_intel] %>" class="flex items-center gap-3 p-3 bg-neutral-50 dark:bg-neutral-900 rounded-lg no-underline border border-transparent hover:border-primary-400 hover:bg-white dark:hover:bg-neutral-800 hover:-translate-y-0.5 transition-all min-h-[48px]">
@@ -58,7 +59,7 @@
       </div>
 
       <%# Linux panel %>
-      <div class="download-panel hidden" data-download-modal-target="panel" data-platform="linux">
+      <div class="download-panel hidden" data-download-modal-target="panel" data-platform="linux" data-version="<%= versions[:linux] %>">
         <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-3">
             If you aren't sure which package you need for your Linux distribution, download the Flatpak.
             <a href="https://flatpak.org/setup/">Flatpaks</a> are the correct way to install apps on Linux.

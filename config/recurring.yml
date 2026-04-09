@@ -15,4 +15,4 @@ production:
     schedule: every hour at minute 12
   refresh_github_releases:
     class: RefreshGithubReleasesJob
-    schedule: every hour at minute 30
+    schedule: every 15 minutes
