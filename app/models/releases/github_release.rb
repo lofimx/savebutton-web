@@ -4,9 +4,9 @@ module Releases
     CACHE_TTL = 2.hours
 
     REPOS = {
-      windows: "lofimx/kaya-wpf",
-      macos: "lofimx/kaya-gtk",
-      linux: "lofimx/kaya-gtk"
+      windows: "lofimx/savebutton-wpf",
+      macos: "lofimx/savebutton-gtk",
+      linux: "lofimx/savebutton-gtk"
     }.freeze
 
     # Asset matchers: pattern => key
@@ -60,7 +60,7 @@ module Releases
       def fetch_assets_for(repo)
         uri = URI("https://api.github.com/repos/#{repo}/releases/latest")
         response = Net::HTTP.get_response(uri, { "Accept" => "application/vnd.github.v3+json",
-                                                  "User-Agent" => "KayaServer" })
+                                                  "User-Agent" => "SaveButtonServer" })
 
         unless response.is_a?(Net::HTTPSuccess)
           Rails.logger.warn("🟠 Releases::GithubRelease — GitHub API returned #{response.code} for #{repo}")

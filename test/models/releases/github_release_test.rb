@@ -4,20 +4,20 @@ require "minitest/mock"
 class Releases::GithubReleaseTest < ActiveSupport::TestCase
   FAKE_GTK_RESPONSE = {
     "assets" => [
-      { "name" => "SaveButton-1.0.0-x86_64.dmg", "browser_download_url" => "https://github.com/lofimx/kaya-gtk/releases/download/v1.0.0/SaveButton-1.0.0-x86_64.dmg" },
-      { "name" => "SaveButton-1.0.0-arm64.dmg", "browser_download_url" => "https://github.com/lofimx/kaya-gtk/releases/download/v1.0.0/SaveButton-1.0.0-arm64.dmg" },
-      { "name" => "savebutton_1.0.0_amd64.deb", "browser_download_url" => "https://github.com/lofimx/kaya-gtk/releases/download/v1.0.0/savebutton_1.0.0_amd64.deb" },
-      { "name" => "savebutton-1.0.0-1.fc41.x86_64.rpm", "browser_download_url" => "https://github.com/lofimx/kaya-gtk/releases/download/v1.0.0/savebutton-1.0.0-1.fc41.x86_64.rpm" },
-      { "name" => "org.savebutton.SaveButton.flatpak", "browser_download_url" => "https://github.com/lofimx/kaya-gtk/releases/download/v1.0.0/org.savebutton.SaveButton.flatpak" },
-      { "name" => "savebutton_1.0.0_amd64.snap", "browser_download_url" => "https://github.com/lofimx/kaya-gtk/releases/download/v1.0.0/savebutton_1.0.0_amd64.snap" },
-      { "name" => "savebutton-1.0.0.ebuild", "browser_download_url" => "https://github.com/lofimx/kaya-gtk/releases/download/v1.0.0/savebutton-1.0.0.ebuild" },
-      { "name" => "savebutton-1.0.0-deps.tar.xz", "browser_download_url" => "https://github.com/lofimx/kaya-gtk/releases/download/v1.0.0/savebutton-1.0.0-deps.tar.xz" }
+      { "name" => "SaveButton-1.0.0-x86_64.dmg", "browser_download_url" => "https://github.com/lofimx/savebutton-gtk/releases/download/v1.0.0/SaveButton-1.0.0-x86_64.dmg" },
+      { "name" => "SaveButton-1.0.0-arm64.dmg", "browser_download_url" => "https://github.com/lofimx/savebutton-gtk/releases/download/v1.0.0/SaveButton-1.0.0-arm64.dmg" },
+      { "name" => "savebutton_1.0.0_amd64.deb", "browser_download_url" => "https://github.com/lofimx/savebutton-gtk/releases/download/v1.0.0/savebutton_1.0.0_amd64.deb" },
+      { "name" => "savebutton-1.0.0-1.fc41.x86_64.rpm", "browser_download_url" => "https://github.com/lofimx/savebutton-gtk/releases/download/v1.0.0/savebutton-1.0.0-1.fc41.x86_64.rpm" },
+      { "name" => "org.savebutton.SaveButton.flatpak", "browser_download_url" => "https://github.com/lofimx/savebutton-gtk/releases/download/v1.0.0/org.savebutton.SaveButton.flatpak" },
+      { "name" => "savebutton_1.0.0_amd64.snap", "browser_download_url" => "https://github.com/lofimx/savebutton-gtk/releases/download/v1.0.0/savebutton_1.0.0_amd64.snap" },
+      { "name" => "savebutton-1.0.0.ebuild", "browser_download_url" => "https://github.com/lofimx/savebutton-gtk/releases/download/v1.0.0/savebutton-1.0.0.ebuild" },
+      { "name" => "savebutton-1.0.0-deps.tar.xz", "browser_download_url" => "https://github.com/lofimx/savebutton-gtk/releases/download/v1.0.0/savebutton-1.0.0-deps.tar.xz" }
     ]
   }.freeze
 
   FAKE_WPF_RESPONSE = {
     "assets" => [
-      { "name" => "SaveButton-1.0.0-x64.msi", "browser_download_url" => "https://github.com/lofimx/kaya-wpf/releases/download/v1.0.0/SaveButton-1.0.0-x64.msi" }
+      { "name" => "SaveButton-1.0.0-x64.msi", "browser_download_url" => "https://github.com/lofimx/savebutton-wpf/releases/download/v1.0.0/SaveButton-1.0.0-x64.msi" }
     ]
   }.freeze
 
@@ -34,14 +34,14 @@ class Releases::GithubReleaseTest < ActiveSupport::TestCase
     stub_github_api do
       assets = Releases::GithubRelease.refresh_cache
 
-      assert_equal "https://github.com/lofimx/kaya-wpf/releases/download/v1.0.0/SaveButton-1.0.0-x64.msi", assets[:windows_msi]
-      assert_equal "https://github.com/lofimx/kaya-gtk/releases/download/v1.0.0/SaveButton-1.0.0-x86_64.dmg", assets[:macos_intel]
-      assert_equal "https://github.com/lofimx/kaya-gtk/releases/download/v1.0.0/SaveButton-1.0.0-arm64.dmg", assets[:macos_apple_silicon]
-      assert_equal "https://github.com/lofimx/kaya-gtk/releases/download/v1.0.0/savebutton_1.0.0_amd64.deb", assets[:linux_deb]
-      assert_equal "https://github.com/lofimx/kaya-gtk/releases/download/v1.0.0/savebutton-1.0.0-1.fc41.x86_64.rpm", assets[:linux_rpm]
-      assert_equal "https://github.com/lofimx/kaya-gtk/releases/download/v1.0.0/org.savebutton.SaveButton.flatpak", assets[:linux_flatpak]
-      assert_equal "https://github.com/lofimx/kaya-gtk/releases/download/v1.0.0/savebutton_1.0.0_amd64.snap", assets[:linux_snap]
-      assert_equal "https://github.com/lofimx/kaya-gtk/releases/download/v1.0.0/savebutton-1.0.0.ebuild", assets[:linux_ebuild]
+      assert_equal "https://github.com/lofimx/savebutton-wpf/releases/download/v1.0.0/SaveButton-1.0.0-x64.msi", assets[:windows_msi]
+      assert_equal "https://github.com/lofimx/savebutton-gtk/releases/download/v1.0.0/SaveButton-1.0.0-x86_64.dmg", assets[:macos_intel]
+      assert_equal "https://github.com/lofimx/savebutton-gtk/releases/download/v1.0.0/SaveButton-1.0.0-arm64.dmg", assets[:macos_apple_silicon]
+      assert_equal "https://github.com/lofimx/savebutton-gtk/releases/download/v1.0.0/savebutton_1.0.0_amd64.deb", assets[:linux_deb]
+      assert_equal "https://github.com/lofimx/savebutton-gtk/releases/download/v1.0.0/savebutton-1.0.0-1.fc41.x86_64.rpm", assets[:linux_rpm]
+      assert_equal "https://github.com/lofimx/savebutton-gtk/releases/download/v1.0.0/org.savebutton.SaveButton.flatpak", assets[:linux_flatpak]
+      assert_equal "https://github.com/lofimx/savebutton-gtk/releases/download/v1.0.0/savebutton_1.0.0_amd64.snap", assets[:linux_snap]
+      assert_equal "https://github.com/lofimx/savebutton-gtk/releases/download/v1.0.0/savebutton-1.0.0.ebuild", assets[:linux_ebuild]
       assert_equal Releases::GithubRelease::AUR_URL, assets[:aur]
     end
   end
@@ -62,7 +62,7 @@ class Releases::GithubReleaseTest < ActiveSupport::TestCase
 
     # Second call should return cached data without hitting the API
     assets = Releases::GithubRelease.assets
-    assert_equal "https://github.com/lofimx/kaya-wpf/releases/download/v1.0.0/SaveButton-1.0.0-x64.msi", assets[:windows_msi]
+    assert_equal "https://github.com/lofimx/savebutton-wpf/releases/download/v1.0.0/SaveButton-1.0.0-x64.msi", assets[:windows_msi]
   end
 
   test "returns cached data when available" do
@@ -83,25 +83,25 @@ class Releases::GithubReleaseTest < ActiveSupport::TestCase
     end
   end
 
-  test "REPOS maps both macos and linux to kaya-gtk" do
+  test "REPOS maps both macos and linux to savebutton-gtk" do
     repos = Releases::GithubRelease::REPOS
-    assert_equal "lofimx/kaya-gtk", repos[:macos]
-    assert_equal "lofimx/kaya-gtk", repos[:linux]
+    assert_equal "lofimx/savebutton-gtk", repos[:macos]
+    assert_equal "lofimx/savebutton-gtk", repos[:linux]
   end
 
-  test "REPOS maps windows to kaya-wpf" do
-    assert_equal "lofimx/kaya-wpf", Releases::GithubRelease::REPOS[:windows]
+  test "REPOS maps windows to savebutton-wpf" do
+    assert_equal "lofimx/savebutton-wpf", Releases::GithubRelease::REPOS[:windows]
   end
 
   test "fetches assets from both repos when they share the same path" do
     stub_github_api do
       assets = Releases::GithubRelease.refresh_cache
 
-      # From kaya-wpf
-      assert assets[:windows_msi].include?("kaya-wpf")
-      # From kaya-gtk
-      assert assets[:macos_intel].include?("kaya-gtk")
-      assert assets[:linux_deb].include?("kaya-gtk")
+      # From savebutton-wpf
+      assert assets[:windows_msi].include?("savebutton-wpf")
+      # From savebutton-gtk
+      assert assets[:macos_intel].include?("savebutton-gtk")
+      assert assets[:linux_deb].include?("savebutton-gtk")
     end
   end
 
@@ -110,8 +110,8 @@ class Releases::GithubReleaseTest < ActiveSupport::TestCase
     original_stub = method(:stub_github_api)
 
     fake_responses = {
-      "lofimx/kaya-wpf" => FAKE_WPF_RESPONSE,
-      "lofimx/kaya-gtk" => FAKE_GTK_RESPONSE
+      "lofimx/savebutton-wpf" => FAKE_WPF_RESPONSE,
+      "lofimx/savebutton-gtk" => FAKE_GTK_RESPONSE
     }
 
     stubbed = lambda { |uri, _headers = {}|
@@ -129,7 +129,7 @@ class Releases::GithubReleaseTest < ActiveSupport::TestCase
       Releases::GithubRelease.refresh_cache
     end
 
-    # kaya-gtk is referenced by both :macos and :linux, but should only be fetched once
+    # savebutton-gtk is referenced by both :macos and :linux, but should only be fetched once
     assert_equal 2, call_count, "Expected exactly 2 API calls (one per unique repo)"
   end
 
@@ -139,8 +139,8 @@ class Releases::GithubReleaseTest < ActiveSupport::TestCase
     original_get_response = Net::HTTP.method(:get_response)
 
     fake_responses = {
-      "lofimx/kaya-wpf" => FAKE_WPF_RESPONSE,
-      "lofimx/kaya-gtk" => FAKE_GTK_RESPONSE
+      "lofimx/savebutton-wpf" => FAKE_WPF_RESPONSE,
+      "lofimx/savebutton-gtk" => FAKE_GTK_RESPONSE
     }
 
     stubbed = lambda { |uri, _headers = {}|
