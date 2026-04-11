@@ -224,7 +224,6 @@ module Api
         session[:return_to_after_authenticating] = api_v1_auth_authorize_callback_url
         true
       end
-
     end
   end
 end
