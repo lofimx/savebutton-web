@@ -51,6 +51,8 @@ class OmniauthCallbacksController < ApplicationController
     session[:identity_provider] = auth.provider
     session[:identity_email] = auth.info.email
 
+    Rails.logger.info "OmniAuth: stored identity in session — provider=#{auth.provider}, email=#{auth.info.email}, device_auth_present=#{session[:device_auth].present?}"
+
     redirect_to after_authentication_url, notice: "Successfully signed in with #{provider_name(auth.provider)}!"
   end
 

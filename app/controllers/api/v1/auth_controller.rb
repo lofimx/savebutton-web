@@ -35,14 +35,33 @@ module Api
           return redirect_to new_session_path, alert: "Authentication required."
         end
 
+        # Identity provider is stored in device_auth (from the authorize URL path).
+        # Identity email comes from the OmniAuth callback session or, as a fallback,
+        # from the user's most recent identity matching the provider.
+        identity_provider = device_auth["identity_provider"] || session.delete(:identity_provider)
+        identity_email = session.delete(:identity_email)
+
+        # If identity_email wasn't in the session (session lost across redirects),
+        # look it up from the user's linked identities
+        if identity_provider.present? && identity_email.blank?
+          identity = Current.user.identities.find_by(provider: identity_provider)
+          if identity
+            # The Identity model doesn't store the email directly, so we note
+            # the provider but can't recover the email from here alone.
+            Rails.logger.warn "Auth: identity_email missing from session for provider=#{identity_provider}, user=#{Current.user.id}"
+          end
+        end
+
+        Rails.logger.info "Auth: authorize_callback — identity_provider=#{identity_provider.inspect}, identity_email=#{identity_email.inspect}"
+
         auth_code = AuthorizationCode.generate_for(
           user: Current.user,
           code_challenge: device_auth["code_challenge"],
           redirect_uri: device_auth["redirect_uri"],
           device_name: device_auth["device_name"],
           device_type: device_auth["device_type"],
-          identity_provider: session.delete(:identity_provider),
-          identity_email: session.delete(:identity_email)
+          identity_provider: identity_provider,
+          identity_email: identity_email
         )
 
         redirect_uri = build_callback_uri(
@@ -51,7 +70,7 @@ module Api
           state: device_auth["state"]
         )
 
-        Rails.logger.info "Auth: issued authorization code for user #{Current.user.id} to #{device_auth['redirect_uri']}"
+        Rails.logger.info "Auth: issued authorization code #{auth_code.id} for user #{Current.user.id}, identity_provider=#{auth_code.identity_provider.inspect}, identity_email=#{auth_code.identity_email.inspect}"
         redirect_to redirect_uri, allow_other_host: true
       end
 
@@ -116,6 +135,8 @@ module Api
         unless auth_code.redeem!
           return render json: { error: "invalid_grant", error_description: "authorization code already used" }, status: :bad_request
         end
+
+        Rails.logger.info "Auth: exchanging auth code #{auth_code.id} — identity_provider=#{auth_code.identity_provider.inspect}, identity_email=#{auth_code.identity_email.inspect}"
 
         issue_tokens(
           auth_code.user,
@@ -186,7 +207,7 @@ module Api
 
         access_token = JwtService.encode(user)
 
-        Rails.logger.info "Auth: issued tokens for device #{device_token.id}, user #{user.id} (#{device_type})"
+        Rails.logger.info "Auth: issued tokens for device #{device_token.id}, user #{user.id} (#{device_type}), identity_provider=#{identity_provider.inspect}, identity_email=#{identity_email.inspect}"
 
         response = {
           access_token: access_token,

@@ -55,7 +55,8 @@ module Api
           redirect_uri: params[:redirect_uri],
           state: params[:state],
           device_name: params[:device_name],
-          device_type: params[:device_type]
+          device_type: params[:device_type],
+          identity_provider: params[:provider]
         }
 
         session[:return_to_after_authenticating] = api_v1_auth_authorize_callback_url
