@@ -34,16 +34,18 @@
 # Ignore key files for decrypting credentials and more.
 /config/*.key
 
-# Ignore lofimx tools
-/flargon
-
 # Ignore dem JavaScripts
 /node_modules
 
-# Ignore slop turds from PRs
+/app/assets/builds/*
+!/app/assets/builds/.keep
+
+# flargon
+/flargon
+/tmp
+
+# slop PRs
 /.claude
 AGENTS.md
 CLAUDE.md
 
-/app/assets/builds/*
-!/app/assets/builds/.keep
