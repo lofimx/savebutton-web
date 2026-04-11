@@ -2,6 +2,12 @@ Rails.application.routes.draw do
   # API
   namespace :api do
     namespace :v1 do
+      # Device auth (PKCE flow + token management)
+      get "auth/authorize", to: "auth#authorize"
+      get "auth/authorize/callback", to: "auth#authorize_callback", as: "auth_authorize_callback"
+      post "auth/token", to: "auth#token"
+      post "auth/revoke", to: "auth#revoke"
+
       get "handshake", to: "handshake#show"
       scope ":user_email", constraints: { user_email: /[^\/]+/ } do
         resources :anga, only: [ :index ], controller: "anga", as: "user_anga"
@@ -37,6 +43,7 @@ Rails.application.routes.draw do
   # Account management
   resource :account, only: [ :show, :update ] do
     delete "identities/:identity_id", to: "accounts#destroy_identity", as: :identity
+    delete "device_tokens/:device_token_id", to: "accounts#destroy_device_token", as: :device_token
     patch "avatar", to: "accounts#update_avatar"
   end
 

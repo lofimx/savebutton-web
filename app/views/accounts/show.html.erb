@@ -130,6 +130,40 @@
     </section>
 
     <section class="bg-white dark:bg-neutral-900 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 mb-4">
+      <h2 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2">Linked Devices</h2>
+      <p class="text-sm text-neutral-500 mb-3">Apps and devices that can sync with your account.</p>
+
+      <div class="flex flex-col gap-3">
+        <% if @user.device_tokens.active.any? %>
+          <% @user.device_tokens.active.order(last_used_at: :desc, created_at: :desc).each do |device_token| %>
+            <div class="flex items-center justify-between p-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg border border-neutral-200 dark:border-neutral-700">
+              <div class="flex items-center gap-3">
+                <span class="flex items-center justify-center"><%= device_type_icon(device_token.device_type) %></span>
+                <div>
+                  <span class="text-sm font-medium text-neutral-900 dark:text-neutral-100"><%= device_token.device_name %></span>
+                  <div class="flex items-center gap-2 text-xs text-neutral-500">
+                    <span><%= device_type_label(device_token.device_type) %></span>
+                    <% if device_token.app_version.present? %>
+                      <span>v<%= device_token.app_version %></span>
+                    <% end %>
+                    <% if device_token.last_used_at.present? %>
+                      <span>Last used <%= time_ago_in_words(device_token.last_used_at) %> ago</span>
+                    <% else %>
+                      <span>Added <%= time_ago_in_words(device_token.created_at) %> ago</span>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+              <%= button_to "Remove", account_device_token_path(device_token_id: device_token.id), method: :delete, class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors cursor-pointer", data: { turbo_confirm: "Remove #{device_token.device_name}? This device will need to sign in again." } %>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="text-sm text-neutral-500 text-center py-3">No linked devices.</p>
+        <% end %>
+      </div>
+    </section>
+
+    <section class="bg-white dark:bg-neutral-900 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 mb-4">
       <h2 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2">Log Out</h2>
       <p class="text-sm text-neutral-500 mb-3">End your session in this browser.</p>
       <div class="flex justify-end">

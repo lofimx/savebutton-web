@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_03_202748) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_10_000002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -52,6 +52,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_03_202748) do
     t.index ["user_id"], name: "index_angas_on_user_id"
   end
 
+  create_table "authorization_codes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "code", null: false
+    t.string "code_challenge", null: false
+    t.datetime "created_at", null: false
+    t.string "device_name"
+    t.string "device_type"
+    t.datetime "expires_at", null: false
+    t.string "redirect_uri", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "used", default: false, null: false
+    t.uuid "user_id", null: false
+    t.index ["code"], name: "index_authorization_codes_on_code", unique: true
+    t.index ["user_id"], name: "index_authorization_codes_on_user_id"
+  end
+
   create_table "bookmarks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "anga_id", null: false
     t.text "cache_error"
@@ -60,6 +75,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_03_202748) do
     t.datetime "updated_at", null: false
     t.string "url"
     t.index ["anga_id"], name: "index_bookmarks_on_anga_id"
+  end
+
+  create_table "device_tokens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "app_version"
+    t.datetime "created_at", null: false
+    t.string "device_name", null: false
+    t.string "device_type", null: false
+    t.datetime "expires_at", null: false
+    t.datetime "last_used_at"
+    t.string "refresh_token_digest", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.index ["refresh_token_digest"], name: "index_device_tokens_on_refresh_token_digest", unique: true
+    t.index ["user_id"], name: "index_device_tokens_on_user_id"
   end
 
   create_table "identities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -127,7 +156,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_03_202748) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "angas", "users"
+  add_foreign_key "authorization_codes", "users"
   add_foreign_key "bookmarks", "angas"
+  add_foreign_key "device_tokens", "users"
   add_foreign_key "identities", "users"
   add_foreign_key "metas", "angas", on_delete: :nullify
   add_foreign_key "metas", "users"

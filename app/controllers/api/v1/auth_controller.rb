@@ -1,0 +1,229 @@
+module Api
+  module V1
+    class AuthController < ActionController::API
+      include ActionController::Cookies
+      include Authentication
+
+      # The authorize endpoint is browser-facing (redirects to login page).
+      # The token and revoke endpoints are API-facing (JSON responses).
+      allow_unauthenticated_access only: %i[authorize authorize_callback token revoke]
+
+      # GET /api/v1/auth/authorize
+      # Initiates the PKCE authorization flow. The client opens this URL in a browser.
+      # Stores PKCE params in session and redirects to the login page.
+      def authorize
+        required = %i[code_challenge redirect_uri]
+        missing = required.select { |p| params[p].blank? }
+        if missing.any?
+          return redirect_to new_session_path, alert: "Missing required parameters: #{missing.join(', ')}"
+        end
+
+        # Store PKCE params in the browser session for after login
+        session[:device_auth] = {
+          code_challenge: params[:code_challenge],
+          code_challenge_method: params[:code_challenge_method] || "S256",
+          redirect_uri: params[:redirect_uri],
+          state: params[:state],
+          device_name: params[:device_name],
+          device_type: params[:device_type]
+        }
+
+        # Store the return URL so the login flow redirects back here
+        session[:return_to_after_authenticating] = api_v1_auth_authorize_callback_url
+
+        if authenticated?
+          # User is already logged in in this browser -- skip login, issue code
+          redirect_to api_v1_auth_authorize_callback_url
+        else
+          redirect_to new_session_path
+        end
+      end
+
+      # GET /api/v1/auth/authorize/callback
+      # Called after successful login. Generates an authorization code and redirects
+      # back to the client's redirect_uri.
+      def authorize_callback
+        device_auth = session.delete(:device_auth)
+        unless device_auth
+          return redirect_to root_path, alert: "No pending device authorization."
+        end
+
+        unless authenticated?
+          return redirect_to new_session_path, alert: "Authentication required."
+        end
+
+        auth_code = AuthorizationCode.generate_for(
+          user: Current.user,
+          code_challenge: device_auth["code_challenge"],
+          redirect_uri: device_auth["redirect_uri"],
+          device_name: device_auth["device_name"],
+          device_type: device_auth["device_type"]
+        )
+
+        redirect_uri = build_callback_uri(
+          device_auth["redirect_uri"],
+          code: auth_code.code,
+          state: device_auth["state"]
+        )
+
+        Rails.logger.info "Auth: issued authorization code for user #{Current.user.id} to #{device_auth['redirect_uri']}"
+        redirect_to redirect_uri, allow_other_host: true
+      end
+
+      # POST /api/v1/auth/token
+      # Exchanges credentials for JWT tokens. Supports three grant types:
+      #   - authorization_code: PKCE code exchange
+      #   - password: direct email/password
+      #   - refresh_token: refresh an access token
+      def token
+        case params[:grant_type]
+        when "authorization_code"
+          handle_authorization_code_grant
+        when "password"
+          handle_password_grant
+        when "refresh_token"
+          handle_refresh_token_grant
+        else
+          render json: { error: "unsupported_grant_type" }, status: :bad_request
+        end
+      end
+
+      # POST /api/v1/auth/revoke
+      # Revokes a refresh token (deletes the DeviceToken).
+      def revoke
+        refresh_token = params[:refresh_token]
+        if refresh_token.blank?
+          return render json: { error: "missing_refresh_token" }, status: :bad_request
+        end
+
+        # Find and destroy the device token. Per RFC 7009, revocation always returns 200
+        # even if the token was already invalid.
+        DeviceToken.active.find_each do |dt|
+          if dt.refresh_token_matches?(refresh_token)
+            Rails.logger.info "Auth: revoked device token #{dt.id} for user #{dt.user_id}"
+            dt.destroy!
+            break
+          end
+        end
+
+        render json: {}, status: :ok
+      end
+
+      private
+
+      def handle_authorization_code_grant
+        code = params[:code]
+        code_verifier = params[:code_verifier]
+
+        if code.blank? || code_verifier.blank?
+          return render json: { error: "invalid_request", error_description: "code and code_verifier are required" }, status: :bad_request
+        end
+
+        auth_code = AuthorizationCode.find_by(code: code)
+        if auth_code.nil? || auth_code.redeemed? || auth_code.expired?
+          return render json: { error: "invalid_grant", error_description: "authorization code is invalid or expired" }, status: :bad_request
+        end
+
+        unless auth_code.verify_pkce(code_verifier)
+          return render json: { error: "invalid_grant", error_description: "PKCE verification failed" }, status: :bad_request
+        end
+
+        unless auth_code.redeem!
+          return render json: { error: "invalid_grant", error_description: "authorization code already used" }, status: :bad_request
+        end
+
+        issue_tokens(
+          auth_code.user,
+          device_name: params[:device_name] || auth_code.device_name,
+          device_type: params[:device_type] || auth_code.device_type,
+          app_version: params[:app_version]
+        )
+      end
+
+      def handle_password_grant
+        email = params[:email]
+        password = params[:password]
+
+        if email.blank? || password.blank?
+          return render json: { error: "invalid_request", error_description: "email and password are required" }, status: :bad_request
+        end
+
+        user = User.authenticate_by(email_address: email, password: password)
+        unless user
+          return render json: { error: "invalid_grant", error_description: "invalid email or password" }, status: :unauthorized
+        end
+
+        issue_tokens(
+          user,
+          device_name: params[:device_name] || "Unknown Device",
+          device_type: params[:device_type] || "mobile_android",
+          app_version: params[:app_version]
+        )
+      end
+
+      def handle_refresh_token_grant
+        refresh_token = params[:refresh_token]
+        if refresh_token.blank?
+          return render json: { error: "invalid_request", error_description: "refresh_token is required" }, status: :bad_request
+        end
+
+        device_token = find_device_token_by_refresh(refresh_token)
+        unless device_token
+          return render json: { error: "invalid_grant", error_description: "refresh token is invalid or expired" }, status: :unauthorized
+        end
+
+        # Slide the expiry window forward
+        device_token.touch_usage!
+
+        access_token = JwtService.encode(device_token.user)
+
+        Rails.logger.info "Auth: refreshed access token for device #{device_token.id}, user #{device_token.user_id}"
+
+        render json: {
+          access_token: access_token,
+          token_type: "Bearer",
+          expires_in: JwtService::ACCESS_TOKEN_EXPIRY.to_i
+        }
+      end
+
+      def issue_tokens(user, device_name:, device_type:, app_version: nil)
+        device_token = user.device_tokens.build(
+          device_name: device_name,
+          device_type: device_type,
+          app_version: app_version
+        )
+
+        refresh_token = device_token.generate_refresh_token!
+        device_token.save!
+
+        access_token = JwtService.encode(user)
+
+        Rails.logger.info "Auth: issued tokens for device #{device_token.id}, user #{user.id} (#{device_type})"
+
+        render json: {
+          access_token: access_token,
+          refresh_token: refresh_token,
+          token_type: "Bearer",
+          expires_in: JwtService::ACCESS_TOKEN_EXPIRY.to_i,
+          user_email: user.email_address
+        }, status: :created
+      end
+
+      def find_device_token_by_refresh(plaintext_token)
+        DeviceToken.active.find_each do |dt|
+          return dt if dt.refresh_token_matches?(plaintext_token)
+        end
+        nil
+      end
+
+      def build_callback_uri(base_uri, code:, state:)
+        uri = URI.parse(base_uri)
+        query_params = URI.decode_www_form(uri.query || "")
+        query_params << [ "code", code ]
+        query_params << [ "state", state ] if state.present?
+        uri.query = URI.encode_www_form(query_params)
+        uri.to_s
+      end
+    end
+  end
+end

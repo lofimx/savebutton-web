@@ -531,6 +531,7 @@ DEPENDENCIES
   image_processing (~> 1.2)
   importmap-rails
   jbuilder
+  jwt
   kamal
   minitest (~> 6.0)
   minitest-mock

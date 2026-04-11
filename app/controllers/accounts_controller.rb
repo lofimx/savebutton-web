@@ -12,6 +12,12 @@ class AccountsController < ApplicationController
     end
   end
 
+  def destroy_device_token
+    device_token = @user.device_tokens.find(params[:device_token_id])
+    device_token.destroy
+    redirect_to account_path, notice: "#{device_token.device_name} has been removed."
+  end
+
   def destroy_identity
     identity = @user.identities.find(params[:identity_id])
 

@@ -16,3 +16,9 @@ production:
   refresh_github_releases:
     class: RefreshGithubReleasesJob
     schedule: every 15 minutes
+  cleanup_expired_device_tokens:
+    class: CleanupExpiredDeviceTokensJob
+    schedule: at 3am every day
+  cleanup_expired_authorization_codes:
+    class: CleanupExpiredAuthorizationCodesJob
+    schedule: every hour at minute 30

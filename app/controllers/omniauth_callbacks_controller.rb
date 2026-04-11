@@ -43,16 +43,9 @@ class OmniauthCallbacksController < ApplicationController
   def sign_in_with_oauth(auth)
     user = User.from_omniauth(auth)
 
-    # Create a new session for the user
-    session = user.sessions.create!(
-      ip_address: request.remote_ip,
-      user_agent: request.user_agent
-    )
+    start_new_session_for(user)
 
-    # Set the session cookie
-    cookies.signed.permanent[:session_id] = { value: session.id, httponly: true, same_site: :lax }
-
-    redirect_to root_path, notice: "Successfully signed in with #{provider_name(auth.provider)}!"
+    redirect_to after_authentication_url, notice: "Successfully signed in with #{provider_name(auth.provider)}!"
   end
 
   def provider_name(provider)

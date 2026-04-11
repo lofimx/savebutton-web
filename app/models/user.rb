@@ -20,6 +20,7 @@ class User < ApplicationRecord
   has_secure_password validations: false, reset_token: { expires_in: 45.minutes }
   has_many :sessions, dependent: :destroy
   has_many :identities, dependent: :destroy
+  has_many :device_tokens, dependent: :destroy
   has_many :angas, dependent: :destroy
   has_many :metas, dependent: :destroy
   has_one_attached :avatar
