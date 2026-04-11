@@ -40,7 +40,9 @@ module Api
           code_challenge: device_auth["code_challenge"],
           redirect_uri: device_auth["redirect_uri"],
           device_name: device_auth["device_name"],
-          device_type: device_auth["device_type"]
+          device_type: device_auth["device_type"],
+          identity_provider: session.delete(:identity_provider),
+          identity_email: session.delete(:identity_email)
         )
 
         redirect_uri = build_callback_uri(
@@ -119,7 +121,9 @@ module Api
           auth_code.user,
           device_name: params[:device_name] || auth_code.device_name,
           device_type: params[:device_type] || auth_code.device_type,
-          app_version: params[:app_version]
+          app_version: params[:app_version],
+          identity_provider: auth_code.identity_provider,
+          identity_email: auth_code.identity_email
         )
       end
 
@@ -169,7 +173,8 @@ module Api
         }
       end
 
-      def issue_tokens(user, device_name:, device_type:, app_version: nil)
+      def issue_tokens(user, device_name:, device_type:, app_version: nil,
+                       identity_provider: nil, identity_email: nil)
         device_token = user.device_tokens.build(
           device_name: device_name,
           device_type: device_type,
@@ -183,13 +188,19 @@ module Api
 
         Rails.logger.info "Auth: issued tokens for device #{device_token.id}, user #{user.id} (#{device_type})"
 
-        render json: {
+        response = {
           access_token: access_token,
           refresh_token: refresh_token,
           token_type: "Bearer",
           expires_in: JwtService::ACCESS_TOKEN_EXPIRY.to_i,
           user_email: user.email_address
-        }, status: :created
+        }
+
+        # Include OAuth identity info when the user authenticated via a provider
+        response[:identity_provider] = identity_provider if identity_provider.present?
+        response[:identity_email] = identity_email if identity_email.present?
+
+        render json: response, status: :created
       end
 
       def find_device_token_by_refresh(plaintext_token)

@@ -3,17 +3,19 @@
 # Table name: authorization_codes
 # Database name: primary
 #
-#  id             :uuid             not null, primary key
-#  code           :string           not null
-#  code_challenge :string           not null
-#  device_name    :string
-#  device_type    :string
-#  expires_at     :datetime         not null
-#  redirect_uri   :string           not null
-#  used           :boolean          default(FALSE), not null
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  user_id        :uuid             not null
+#  id                :uuid             not null, primary key
+#  code              :string           not null
+#  code_challenge    :string           not null
+#  device_name       :string
+#  device_type       :string
+#  expires_at        :datetime         not null
+#  identity_email    :string
+#  identity_provider :string
+#  redirect_uri      :string           not null
+#  used              :boolean          default(FALSE), not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  user_id           :uuid             not null
 #
 # Indexes
 #

@@ -6,17 +6,19 @@
 # Table name: authorization_codes
 # Database name: primary
 #
-#  id             :uuid             not null, primary key
-#  code           :string           not null
-#  code_challenge :string           not null
-#  device_name    :string
-#  device_type    :string
-#  expires_at     :datetime         not null
-#  redirect_uri   :string           not null
-#  used           :boolean          default(FALSE), not null
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  user_id        :uuid             not null
+#  id                :uuid             not null, primary key
+#  code              :string           not null
+#  code_challenge    :string           not null
+#  device_name       :string
+#  device_type       :string
+#  expires_at        :datetime         not null
+#  identity_email    :string
+#  identity_provider :string
+#  redirect_uri      :string           not null
+#  used              :boolean          default(FALSE), not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  user_id           :uuid             not null
 #
 # Indexes
 #
@@ -39,7 +41,8 @@ class AuthorizationCode < ApplicationRecord
 
   scope :expired, -> { where("expires_at <= ?", Time.current) }
 
-  def self.generate_for(user:, code_challenge:, redirect_uri:, device_name: nil, device_type: nil)
+  def self.generate_for(user:, code_challenge:, redirect_uri:, device_name: nil, device_type: nil,
+                        identity_provider: nil, identity_email: nil)
     create!(
       user: user,
       code: SecureRandom.urlsafe_base64(32),
@@ -47,6 +50,8 @@ class AuthorizationCode < ApplicationRecord
       redirect_uri: redirect_uri,
       device_name: device_name,
       device_type: device_type,
+      identity_provider: identity_provider,
+      identity_email: identity_email,
       expires_at: EXPIRY.from_now
     )
   end

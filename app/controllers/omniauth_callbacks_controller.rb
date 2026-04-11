@@ -45,6 +45,12 @@ class OmniauthCallbacksController < ApplicationController
 
     start_new_session_for(user)
 
+    # Store identity info for device auth flows (browser extensions, mobile apps).
+    # The authorize_callback reads these to include in the token response so
+    # clients can display the OAuth identity email instead of the primary account email.
+    session[:identity_provider] = auth.provider
+    session[:identity_email] = auth.info.email
+
     redirect_to after_authentication_url, notice: "Successfully signed in with #{provider_name(auth.provider)}!"
   end
 

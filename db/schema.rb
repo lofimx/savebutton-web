@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_10_000002) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_11_212916) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -59,6 +59,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_10_000002) do
     t.string "device_name"
     t.string "device_type"
     t.datetime "expires_at", null: false
+    t.string "identity_email"
+    t.string "identity_provider"
     t.string "redirect_uri", null: false
     t.datetime "updated_at", null: false
     t.boolean "used", default: false, null: false
