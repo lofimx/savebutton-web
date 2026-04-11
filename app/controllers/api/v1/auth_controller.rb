@@ -12,32 +12,15 @@ module Api
       # Initiates the PKCE authorization flow. The client opens this URL in a browser.
       # Stores PKCE params in session and redirects to the login page.
       def authorize
-        required = %i[code_challenge redirect_uri]
-        missing = required.select { |p| params[p].blank? }
-        if missing.any?
-          return redirect_to new_session_path, alert: "Missing required parameters: #{missing.join(', ')}"
+        terminate_session if authenticated?
+
+        unless store_device_auth_params
+          return redirect_to new_session_path, alert: "Missing required parameters: code_challenge, redirect_uri"
         end
 
-        # Store PKCE params in the browser session for after login
-        session[:device_auth] = {
-          code_challenge: params[:code_challenge],
-          code_challenge_method: params[:code_challenge_method] || "S256",
-          redirect_uri: params[:redirect_uri],
-          state: params[:state],
-          device_name: params[:device_name],
-          device_type: params[:device_type]
-        }
-
-        # Store the return URL so the login flow redirects back here
-        session[:return_to_after_authenticating] = api_v1_auth_authorize_callback_url
-
-        if authenticated?
-          # User is already logged in in this browser -- skip login, issue code
-          redirect_to api_v1_auth_authorize_callback_url
-        else
-          redirect_to new_session_path
-        end
+        redirect_to new_session_path
       end
+
 
       # GET /api/v1/auth/authorize/callback
       # Called after successful login. Generates an authorization code and redirects
@@ -224,6 +207,24 @@ module Api
         uri.query = URI.encode_www_form(query_params)
         uri.to_s
       end
+
+      # Stores PKCE and device params in session. Returns false if required params are missing.
+      def store_device_auth_params
+        return false if params[:code_challenge].blank? || params[:redirect_uri].blank?
+
+        session[:device_auth] = {
+          code_challenge: params[:code_challenge],
+          code_challenge_method: params[:code_challenge_method] || "S256",
+          redirect_uri: params[:redirect_uri],
+          state: params[:state],
+          device_name: params[:device_name],
+          device_type: params[:device_type]
+        }
+
+        session[:return_to_after_authenticating] = api_v1_auth_authorize_callback_url
+        true
+      end
+
     end
   end
 end

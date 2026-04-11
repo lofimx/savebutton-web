@@ -1,0 +1,33 @@
+<% content_for(:title) { "Sign In with #{@provider_name} - Save Button" } %>
+<% content_for(:hide_header) { true } %>
+
+<%
+  icon_name = case @provider
+              when "google_oauth2" then "google"
+              when "microsoft_graph" then "microsoft"
+              when "apple" then "apple"
+              else @provider
+              end
+%>
+
+<div class="min-h-screen flex flex-col bg-neutral-50 dark:bg-neutral-950">
+  <div class="flex-1 flex items-center justify-center p-6">
+    <div class="w-full max-w-sm bg-white dark:bg-neutral-900 p-8 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-lg">
+      <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">Sign In with <%= @provider_name %></h1>
+        <p class="mt-2 text-sm text-neutral-500">You will be redirected to <%= @provider_name %> to sign in.</p>
+      </div>
+
+      <% if flash[:alert] %>
+        <div class="px-3 py-2 rounded-lg text-sm mb-3 bg-red-100 text-red-700 border border-red-200 dark:bg-red-500/15 dark:text-red-400 dark:border-red-500/30"><%= flash[:alert] %></div>
+      <% end %>
+
+      <div class="flex flex-col gap-3">
+        <%= button_to "/auth/#{@provider}", method: :post, data: { turbo: false }, class: "w-full inline-flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-medium rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors cursor-pointer min-h-[44px]" do %>
+          <%= render "shared/#{icon_name}_icon" %>
+          Continue with <%= @provider_name %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

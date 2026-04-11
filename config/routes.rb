@@ -5,6 +5,8 @@ Rails.application.routes.draw do
       # Device auth (PKCE flow + token management)
       get "auth/authorize", to: "auth#authorize"
       get "auth/authorize/callback", to: "auth#authorize_callback", as: "auth_authorize_callback"
+      get "auth/authorize/register", to: "auth_pages#register", as: "auth_authorize_register"
+      get "auth/authorize/:provider", to: "auth_pages#provider", as: "auth_authorize_provider"
       post "auth/token", to: "auth#token"
       post "auth/revoke", to: "auth#revoke"
 
