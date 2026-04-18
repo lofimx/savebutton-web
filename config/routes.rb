@@ -82,6 +82,7 @@ Rails.application.routes.draw do
 
   # Static pages
   get "get-the-apps", to: "pages#get_the_apps", as: :get_the_apps
+  get "oauth/extension-callback", to: "pages#oauth_extension_callback", as: :oauth_extension_callback
 
   # Homepage
   root "pages#home"
