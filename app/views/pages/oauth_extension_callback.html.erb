@@ -5,7 +5,16 @@
     <%= render "shared/logo_icon", size: 96 %>
     <h2 class="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">Sign-in complete</h2>
     <p class="text-base text-neutral-700 dark:text-neutral-300">
-      You can close this window and return to your browser extension.
+      You can close this window and return to Save Button.
     </p>
   </section>
 </div>
+
+<script>
+  (function () {
+    var qs = window.location.search;
+    if (qs && qs.indexOf("code=") !== -1) {
+      window.location.href = "savebutton://auth/callback" + qs;
+    }
+  })();
+</script>
