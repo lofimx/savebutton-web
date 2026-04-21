@@ -16,9 +16,9 @@ Examples:
 
 * `~/.kaya/anga/2026-01-27T171207-bookmark.url`
 * `~/.kaya/anga/2025-01-01T120000-wakarimasen-lol.png`
-* `~/.kaya/anga/2026-01-21T164145_354000000-note.md`
+* `~/.kaya/anga/2026-01-21T164145_354000000-blurb.md`
 
-The core functionality of Kaya comes from retrieval: looking up old notes, bookmarks, and files. Arbitrary files can be added, but images and PDFs are the most likely formats.
+The core functionality of Kaya comes from retrieval: looking up old blurbs, bookmarks, and files. Arbitrary files can be added, but images and PDFs are the most likely formats.
 
 ## Status
 

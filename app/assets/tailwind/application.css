@@ -281,7 +281,7 @@
   .preview-unsupported {
     @apply text-neutral-500;
   }
-  .preview-note {
+  .preview-blurb {
     @apply font-sans text-sm leading-relaxed whitespace-pre-wrap break-words m-0 p-0;
     @apply text-neutral-900 dark:text-neutral-100;
   }

@@ -19,8 +19,17 @@ class EverythingControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "index shows angas in reverse chronological order" do
-    create(:anga, user: @user, filename: "2025-06-28T120000-note.md")
-    create(:anga, user: @user, filename: "2025-06-29T130000-note.md")
+    create(:anga, user: @user, filename: "2025-06-28T120000-blurb.md")
+    create(:anga, user: @user, filename: "2025-06-29T130000-blurb.md")
+
+    get app_everything_path
+    assert_response :success
+    assert_select ".anga-tile", 2
+  end
+
+  test "index renders legacy -note.md angas alongside new -blurb.md ones" do
+    create(:anga, user: @user, filename: "2024-01-01T120000-note.md")
+    create(:anga, user: @user, filename: "2026-04-21T120000-blurb.md")
 
     get app_everything_path
     assert_response :success

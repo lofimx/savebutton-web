@@ -21,24 +21,36 @@
 FactoryBot.define do
   factory :anga do
     user
-    sequence(:filename) { |n| "#{Time.now.utc.strftime('%Y-%m-%dT%H%M%S')}-note-#{n}.md" }
+    sequence(:filename) { |n| "#{Time.now.utc.strftime('%Y-%m-%dT%H%M%S')}-blurb-#{n}.md" }
 
     after(:build) do |anga|
       unless anga.file.attached?
         anga.file.attach(
-          io: StringIO.new("# Sample Note\n\nThis is a sample note."),
+          io: StringIO.new("# Sample Blurb\n\nThis is a sample blurb."),
           filename: anga.filename,
           content_type: "text/markdown"
         )
       end
     end
 
-    trait :note do
+    trait :blurb do
+      sequence(:filename) { |n| "#{Time.now.utc.strftime('%Y-%m-%dT%H%M%S')}-blurb-#{n}.md" }
+
+      after(:build) do |anga|
+        anga.file.attach(
+          io: StringIO.new("# Sample Blurb\n\nThis is a sample blurb."),
+          filename: anga.filename,
+          content_type: "text/markdown"
+        )
+      end
+    end
+
+    trait :legacy_note do
       sequence(:filename) { |n| "#{Time.now.utc.strftime('%Y-%m-%dT%H%M%S')}-note-#{n}.md" }
 
       after(:build) do |anga|
         anga.file.attach(
-          io: StringIO.new("# Sample Note\n\nThis is a sample note."),
+          io: StringIO.new("# Legacy Note\n\nThis is a legacy note from before the blurb rename."),
           filename: anga.filename,
           content_type: "text/markdown"
         )

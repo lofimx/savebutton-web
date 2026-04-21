@@ -69,7 +69,7 @@ class SetupBookmarkJobTest < ActiveJob::TestCase
   end
 
   test "does nothing for non-.url files" do
-    anga = create(:anga, :note)
+    anga = create(:anga, :blurb)
 
     assert_no_enqueued_jobs only: CacheBookmarkJob do
       SetupBookmarkJob.perform_now(anga.id)

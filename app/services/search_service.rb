@@ -35,8 +35,8 @@ class SearchService
   def searcher_for(anga)
     file_type = Files::FileType.new(anga.filename)
 
-    if file_type.note?
-      Search::NoteSearch.new(anga)
+    if file_type.blurb?
+      Search::BlurbSearch.new(anga)
     elsif file_type.text?
       Search::TextSearch.new(anga)
     elsif file_type.pdf?

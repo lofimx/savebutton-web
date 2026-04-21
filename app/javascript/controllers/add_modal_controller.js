@@ -64,7 +64,7 @@ export default class extends Controller {
   async save() {
     const text = this.inputTarget.value.trim();
     if (!text) {
-      this.showStatus("Please enter a note or bookmark", "error");
+      this.showStatus("Please enter a blurb or bookmark", "error");
       return;
     }
 
@@ -81,7 +81,7 @@ export default class extends Controller {
         },
         body: JSON.stringify({
           content: text,
-          type: isBookmark ? "bookmark" : "note",
+          type: isBookmark ? "bookmark" : "blurb",
         }),
       });
 

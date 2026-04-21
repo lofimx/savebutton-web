@@ -11,7 +11,7 @@ module Files
   class FileType
     # Preview types for the modal preview system
     PREVIEW_TYPES = {
-      note: "note",
+      blurb: "blurb",
       bookmark: "bookmark",
       pdf: "pdf",
       image: "image",
@@ -20,17 +20,18 @@ module Files
     }.freeze
 
     # File extensions by category
-    NOTE_EXTENSIONS = %w[.md].freeze
+    BLURB_EXTENSIONS = %w[.md].freeze
     BOOKMARK_EXTENSIONS = %w[.url].freeze
     PDF_EXTENSIONS = %w[.pdf].freeze
     IMAGE_EXTENSIONS = %w[.png .gif .jpg .jpeg .webp .svg .bmp .ico].freeze
     TEXT_EXTENSIONS = %w[.txt].freeze
 
     # All known extensions (used for exact-match search queries)
-    ALL_EXTENSIONS = (NOTE_EXTENSIONS + BOOKMARK_EXTENSIONS + PDF_EXTENSIONS + IMAGE_EXTENSIONS + TEXT_EXTENSIONS).freeze
+    ALL_EXTENSIONS = (BLURB_EXTENSIONS + BOOKMARK_EXTENSIONS + PDF_EXTENSIONS + IMAGE_EXTENSIONS + TEXT_EXTENSIONS).freeze
 
-    # Common auto-generated filename patterns that shouldn't fuzzy-match
-    COMMON_FILENAME_PATTERNS = %w[note bookmark].freeze
+    # Common auto-generated filename patterns that shouldn't fuzzy-match.
+    # "note" remains here as a legacy pattern for blurbs created before the rename.
+    COMMON_FILENAME_PATTERNS = %w[blurb note bookmark].freeze
 
     # Extension to MIME type mapping
     # Note: script/sync.rb has its own copy for standalone operation
@@ -60,8 +61,8 @@ module Files
     end
 
     # Type predicate methods
-    def note?
-      NOTE_EXTENSIONS.include?(extension)
+    def blurb?
+      BLURB_EXTENSIONS.include?(extension)
     end
 
     def bookmark?
@@ -82,8 +83,8 @@ module Files
 
     # Returns the preview type for the modal preview system
     def preview_type
-      if note?
-        PREVIEW_TYPES[:note]
+      if blurb?
+        PREVIEW_TYPES[:blurb]
       elsif bookmark?
         PREVIEW_TYPES[:bookmark]
       elsif pdf?

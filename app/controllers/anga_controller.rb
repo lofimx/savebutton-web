@@ -212,7 +212,7 @@ class AngaController < ApplicationController
       file_content = "[InternetShortcut]\nURL=#{content}\n"
       content_type = "text/plain"
     else
-      filename = generate_filename("note.md")
+      filename = generate_filename("blurb.md")
       file_content = content
       content_type = "text/markdown"
     end

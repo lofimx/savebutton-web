@@ -67,7 +67,7 @@ docker push $YOUR_DOCKERHUB_USER/kaya_server:latest
 * [x] avatar
 * [x] sync API
 * [x] basic fuzzy search
-* [x] save a note/bookmark
+* [x] save a blurb/bookmark
 * [x] pre-cache bookmarks in /cache
 * [ ] per-user SQLite full-text search?
 * [ ] PDF OCR with tesseract?

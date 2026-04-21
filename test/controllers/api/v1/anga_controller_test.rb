@@ -26,7 +26,7 @@ class Api::V1::AngaControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "index should return list of filenames" do
-    create(:anga, user: @user, filename: "2025-06-28T120000-note.md")
+    create(:anga, user: @user, filename: "2025-06-28T120000-blurb.md")
     create(:anga, :bookmark, user: @user, filename: "2025-06-29T130000-bookmark.url")
 
     get api_v1_user_anga_index_url(user_email: @user.email_address),
@@ -35,8 +35,19 @@ class Api::V1::AngaControllerTest < ActionDispatch::IntegrationTest
     assert_equal "text/plain", response.media_type
 
     lines = response.body.strip.split("\n")
-    assert_includes lines, "2025-06-28T120000-note.md"
+    assert_includes lines, "2025-06-28T120000-blurb.md"
     assert_includes lines, "2025-06-29T130000-bookmark.url"
+  end
+
+  test "index includes legacy -note.md filenames" do
+    create(:anga, user: @user, filename: "2024-01-01T120000-note.md")
+
+    get api_v1_user_anga_index_url(user_email: @user.email_address),
+        headers: basic_auth_header(@user.email_address, "password")
+    assert_response :success
+
+    lines = response.body.strip.split("\n")
+    assert_includes lines, "2024-01-01T120000-note.md"
   end
 
   test "index should URL-escape filenames with special characters" do
@@ -68,7 +79,7 @@ class Api::V1::AngaControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "show should return file content" do
-    content = "# My Note\n\nThis is a test note."
+    content = "# My Blurb\n\nThis is a test blurb."
     anga = @user.angas.new(filename: "2025-06-28T120000-test.md")
     anga.file.attach(io: StringIO.new(content), filename: "2025-06-28T120000-test.md", content_type: "text/markdown")
     anga.save!
@@ -106,7 +117,7 @@ class Api::V1::AngaControllerTest < ActionDispatch::IntegrationTest
 
   test "create should successfully upload a new file" do
     file = Tempfile.new([ "2025-06-28T140000-new", ".md" ])
-    file.write("# New Note")
+    file.write("# New Blurb")
     file.rewind
 
     uploaded = Rack::Test::UploadedFile.new(file.path, "text/markdown", false, original_filename: "2025-06-28T140000-new.md")

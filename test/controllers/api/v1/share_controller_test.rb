@@ -6,13 +6,13 @@ class Api::V1::ShareControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should return 401 without authentication" do
-    post "/api/v1/#{@user.email_address}/share/anga/2025-06-28T120000-note.md"
+    post "/api/v1/#{@user.email_address}/share/anga/2025-06-28T120000-blurb.md"
     assert_response :unauthorized
   end
 
   test "should return 403 when accessing another user's namespace" do
     other_user = create(:user)
-    anga = create(:anga, user: other_user, filename: "2025-06-28T120000-note.md")
+    anga = create(:anga, user: other_user, filename: "2025-06-28T120000-blurb.md")
 
     post "/api/v1/#{other_user.email_address}/share/anga/#{anga.filename}",
          headers: basic_auth_header(@user.email_address, "password")
@@ -26,7 +26,7 @@ class Api::V1::ShareControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should return share URL for existing anga" do
-    anga = create(:anga, user: @user, filename: "2025-06-28T120000-note.md")
+    anga = create(:anga, user: @user, filename: "2025-06-28T120000-blurb.md")
 
     post "/api/v1/#{@user.email_address}/share/anga/#{anga.filename}",
          headers: basic_auth_header(@user.email_address, "password")

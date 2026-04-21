@@ -306,6 +306,7 @@ export default class extends Controller {
       '<div class="preview-loading">Loading...</div>';
 
     switch (fileType) {
+      case "blurb":
       case "note":
       case "text":
         this.loadText(url);

@@ -24,7 +24,7 @@ class AngaTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
 
   test "bookmark_url returns nil for non-bookmark files" do
-    anga = build(:anga, :note)
+    anga = build(:anga, :blurb)
     anga.save!
     assert_nil anga.bookmark_url
   end
@@ -93,7 +93,7 @@ class AngaTest < ActiveSupport::TestCase
   end
 
   test "bookmark_file? returns false for non-.url files" do
-    anga = build(:anga, :note)
+    anga = build(:anga, :blurb)
     assert_not anga.bookmark_file?
   end
 
@@ -121,7 +121,7 @@ class AngaTest < ActiveSupport::TestCase
   end
 
   test "does not create bookmark for non-.url files" do
-    anga = build(:anga, :note)
+    anga = build(:anga, :blurb)
     anga.save!
     assert_nil anga.bookmark
   end

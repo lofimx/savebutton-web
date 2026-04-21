@@ -1,5 +1,5 @@
 module Search
-  class NoteSearch < BaseSearch
+  class BlurbSearch < BaseSearch
     protected
 
     def extract_content

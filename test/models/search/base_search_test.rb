@@ -68,14 +68,14 @@ class Search::BaseSearchTest < ActiveSupport::TestCase
   end
 
   test "substring match finds query within content word" do
-    anga = create(:anga, :note, user: @user, filename: "2026-01-01T120000-test.md")
+    anga = create(:anga, :blurb, user: @user, filename: "2026-01-01T120000-test.md")
     anga.file.attach(
       io: StringIO.new("This document discusses superheroes and their powers."),
       filename: anga.filename,
       content_type: "text/markdown"
     )
 
-    search = Search::NoteSearch.new(anga)
+    search = Search::BlurbSearch.new(anga)
     result = search.search("hero")
 
     assert result.match?, "Expected 'hero' to substring-match 'superheroes'"
