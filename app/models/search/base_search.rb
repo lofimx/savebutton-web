@@ -26,7 +26,7 @@ module Search
         end
       end
 
-      # Check if query exactly matches a common pattern (user wants all notes/bookmarks)
+      # Check if query exactly matches a common pattern (user wants all bookmarks/blurbs)
       if Files::FileType.common_pattern_query?(query)
         if filename_base == query.downcase
           return SearchResult.new(match?: true, score: 1.0, matched_text: @anga.filename)

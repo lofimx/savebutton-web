@@ -27,11 +27,11 @@ module Files
     TEXT_EXTENSIONS = %w[.txt].freeze
 
     # All known extensions (used for exact-match search queries)
-    ALL_EXTENSIONS = (BLURB_EXTENSIONS + BOOKMARK_EXTENSIONS + PDF_EXTENSIONS + IMAGE_EXTENSIONS + TEXT_EXTENSIONS).freeze
+    ALL_EXTENSIONS = (BOOKMARK_EXTENSIONS + BLURB_EXTENSIONS + PDF_EXTENSIONS + IMAGE_EXTENSIONS + TEXT_EXTENSIONS).freeze
 
     # Common auto-generated filename patterns that shouldn't fuzzy-match.
     # "note" remains here as a legacy pattern for blurbs created before the rename.
-    COMMON_FILENAME_PATTERNS = %w[blurb note bookmark].freeze
+    COMMON_FILENAME_PATTERNS = %w[bookmark blurb note].freeze
 
     # Extension to MIME type mapping
     # Note: script/sync.rb has its own copy for standalone operation

@@ -64,7 +64,7 @@ export default class extends Controller {
   async save() {
     const text = this.inputTarget.value.trim();
     if (!text) {
-      this.showStatus("Please enter a blurb or bookmark", "error");
+      this.showStatus("Please enter a bookmark or blurb", "error");
       return;
     }
 
