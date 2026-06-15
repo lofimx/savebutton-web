@@ -7,6 +7,8 @@ class AccountsController < ApplicationController
   def update
     if password_change?
       update_password
+    elsif slop_change?
+      update_slop
     else
       update_account
     end
@@ -52,6 +54,19 @@ class AccountsController < ApplicationController
 
   def password_change?
     params[:password].present? || params[:password_confirmation].present?
+  end
+
+  def slop_change?
+    params.key?(:slop_enabled)
+  end
+
+  def update_slop
+    sub = @user.subscription
+    unless sub.advanced? || sub.friend?
+      redirect_to account_path, alert: "Slop is only available for Advanced subscribers." and return
+    end
+    sub.update!(slop_enabled: ActiveModel::Type::Boolean.new.cast(params[:slop_enabled]))
+    redirect_to account_path, notice: sub.slop_enabled? ? "Slop enabled." : "Slop disabled."
   end
 
   def update_password

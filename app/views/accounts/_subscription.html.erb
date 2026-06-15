@@ -1,0 +1,91 @@
+<% tier_colors = {
+  "free" => "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300",
+  "basic" => "bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300",
+  "advanced" => "bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300",
+  "friend" => "bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300"
+} %>
+<% used = subscription.bytes_used %>
+<% quota = subscription.quota_bytes %>
+<% percent = (quota.is_a?(Numeric) && quota.positive?) ? (used.to_f / quota * 100).clamp(0, 100) : 0 %>
+
+<section class="bg-white dark:bg-neutral-900 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 mb-4">
+  <div class="flex items-center justify-between mb-3">
+    <h2 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100">Subscription</h2>
+    <span class="inline-block px-3 py-1 text-xs font-medium rounded-full <%= tier_colors[subscription.tier] %>">
+      <%= subscription.tier.capitalize %>
+    </span>
+  </div>
+
+  <% if user.restricted? %>
+    <div class="px-3 py-2 rounded-lg text-sm mb-3 bg-red-100 text-red-700 border border-red-200 dark:bg-red-500/15 dark:text-red-400 dark:border-red-500/30">
+      Your account is restricted. You can still read your data, but new uploads are blocked. Please contact support.
+    </div>
+  <% end %>
+
+  <% if subscription.in_grace_period? %>
+    <div class="px-3 py-2 rounded-lg text-sm mb-3 bg-amber-100 text-amber-800 border border-amber-200 dark:bg-amber-500/15 dark:text-amber-300 dark:border-amber-500/30">
+      <strong>Grace period:</strong> Your account is over quota or has a payment issue. Uploads continue to succeed until <%= subscription.grace_period_ends_at.strftime("%B %-d, %Y") %>. Please upgrade or update your payment method.
+    </div>
+  <% elsif subscription.over_quota? && !subscription.friend? %>
+    <div class="px-3 py-2 rounded-lg text-sm mb-3 bg-red-100 text-red-700 border border-red-200 dark:bg-red-500/15 dark:text-red-400 dark:border-red-500/30">
+      You're out of storage. Upgrade your plan to continue uploading documents and images.
+    </div>
+  <% elsif subscription.approaching_quota? %>
+    <div class="px-3 py-2 rounded-lg text-sm mb-3 bg-amber-100 text-amber-800 border border-amber-200 dark:bg-amber-500/15 dark:text-amber-300 dark:border-amber-500/30">
+      You've used <%= percent.round %>% of your storage. Consider upgrading soon.
+    </div>
+  <% end %>
+
+  <% unless subscription.friend? %>
+    <div class="mb-4">
+      <div class="flex items-center justify-between text-sm text-neutral-600 dark:text-neutral-400 mb-1">
+        <span>Storage</span>
+        <span>
+          <%= number_to_human_size(used) %>
+          <% if quota.is_a?(Numeric) %>
+            / <%= number_to_human_size(quota) %>
+          <% end %>
+        </span>
+      </div>
+      <div class="w-full h-2 bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
+        <div class="h-full <%= percent >= 80 ? "bg-red-500" : "bg-primary-400" %>" style="width: <%= percent %>%"></div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="flex flex-wrap gap-3">
+    <% unless subscription.friend? %>
+      <% if subscription.free? %>
+        <%= button_to "Upgrade", billing_checkout_path(tier: "basic"), method: :post, class: "px-4 py-2 text-sm font-medium rounded-lg bg-primary-400 hover:bg-primary-500 text-neutral-900 transition-colors cursor-pointer border-none" %>
+      <% else %>
+        <%= button_to "Change plan", billing_checkout_path(tier: subscription.basic? ? "advanced" : "basic"), method: :post, class: "px-4 py-2 text-sm font-medium rounded-lg bg-primary-400 hover:bg-primary-500 text-neutral-900 transition-colors cursor-pointer border-none" %>
+      <% end %>
+    <% end %>
+
+    <% if subscription.stripe_customer_id.present? %>
+      <%= button_to "Manage billing", billing_portal_path, method: :post, class: "px-4 py-2 text-sm font-medium rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors cursor-pointer" %>
+    <% end %>
+  </div>
+
+  <div class="mt-4 pt-4 border-t border-neutral-200 dark:border-neutral-700">
+    <% slop_available = subscription.advanced? || subscription.friend? %>
+    <%= form_with url: account_path, method: :patch, class: "flex items-center justify-between gap-3" do |f| %>
+      <div>
+        <label class="text-sm font-medium text-neutral-900 dark:text-neutral-100 flex items-center gap-2">
+          ✨ Slop ✨
+          <% unless slop_available %>
+            <span class="text-xs text-neutral-500" title="Slop is an AI-powered search feature available to Advanced subscribers.">(Advanced only)</span>
+          <% end %>
+        </label>
+        <p class="text-xs text-neutral-500 mt-0.5">AI-powered full-text search.</p>
+      </div>
+      <%= f.hidden_field :slop_enabled, value: subscription.slop_enabled? ? "0" : "1" %>
+      <button type="submit"
+              class="px-3 py-1.5 text-xs font-medium rounded-lg border <%= slop_available ? "border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-700 cursor-pointer" : "border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-800 text-neutral-400 cursor-not-allowed" %>"
+              <%= slop_available ? "" : "disabled" %>
+              title="<%= slop_available ? "" : "Slop is an AI-powered search feature available to Advanced subscribers." %>">
+        <%= subscription.slop_enabled? ? "Disable" : "Enable" %>
+      </button>
+    <% end %>
+  </div>
+</section>

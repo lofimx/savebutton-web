@@ -23,8 +23,18 @@ FactoryBot.define do
     user
     sequence(:filename) { |n| "#{Time.now.utc.strftime('%Y-%m-%dT%H%M%S')}-blurb-#{n}.md" }
 
-    after(:build) do |anga|
-      unless anga.file.attached?
+    transient do
+      file_size { nil }
+    end
+
+    after(:build) do |anga, evaluator|
+      if evaluator.file_size
+        anga.file.attach(
+          io: StringIO.new("a" * evaluator.file_size),
+          filename: anga.filename,
+          content_type: "application/octet-stream"
+        )
+      elsif !anga.file.attached?
         anga.file.attach(
           io: StringIO.new("# Sample Blurb\n\nThis is a sample blurb."),
           filename: anga.filename,

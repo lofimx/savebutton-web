@@ -1,0 +1,35 @@
+<h1 class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Sessions</h1>
+
+<div class="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 overflow-hidden">
+  <table class="w-full text-sm table-fixed">
+    <colgroup>
+      <col class="w-56">
+      <col class="w-32">
+      <col>
+      <col class="w-40">
+      <col class="w-32">
+    </colgroup>
+    <thead class="bg-neutral-50 dark:bg-neutral-800/50 text-left text-xs uppercase tracking-wide text-neutral-500">
+      <tr>
+        <th class="px-4 py-3">User</th>
+        <th class="px-4 py-3">IP</th>
+        <th class="px-4 py-3">User agent</th>
+        <th class="px-4 py-3">Created</th>
+        <th class="px-4 py-3"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @sessions.each do |session| %>
+        <tr class="border-t border-neutral-200 dark:border-neutral-800">
+          <td class="px-4 py-2 truncate"><%= link_to session.user.email_address, admin_user_path(session.user), class: "underline" %></td>
+          <td class="px-4 py-2 font-mono text-xs truncate"><%= session.ip_address %></td>
+          <td class="px-4 py-2 text-neutral-500 truncate" title="<%= session.user_agent %>"><%= session.user_agent %></td>
+          <td class="px-4 py-2 text-neutral-500 whitespace-nowrap"><%= session.created_at.strftime("%Y-%m-%d %H:%M") %></td>
+          <td class="px-4 py-2 text-right whitespace-nowrap">
+            <%= button_to "Terminate", admin_session_path(session), method: :delete, class: "px-2 py-1 text-xs rounded border border-red-200 dark:border-red-500/40 bg-red-50 dark:bg-red-500/10 text-red-900 dark:text-red-200 cursor-pointer", data: { turbo_confirm: "Terminate this session?" } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

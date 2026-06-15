@@ -1,0 +1,51 @@
+<% content_for(:title) { "Pricing - Save Button" } %>
+
+<div class="min-h-screen pt-[calc(60px+3rem)] pb-12 px-6 bg-neutral-50 dark:bg-neutral-950">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-10">
+      <h1 class="text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 mb-3">Simple pricing</h1>
+      <p class="text-neutral-600 dark:text-neutral-400">Pay only for what you store. Bookmarks and blurbs are always free.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <%= render "pricing_tile",
+                 name: "Free",
+                 price_label: "Free",
+                 features: [
+                   "Sync unlimited bookmarks and blurbs",
+                   "Full-text search",
+                   "All your devices, forever"
+                 ],
+                 cta_label: "Sign up free",
+                 cta_path: authenticated? ? account_path : new_registration_path,
+                 cta_method: :get,
+                 highlight: false %>
+
+      <%= render "pricing_tile",
+                 name: "Basic",
+                 price_label: "$3/mo",
+                 features: [
+                   "Sync unlimited bookmarks and blurbs",
+                   "Up to 2 GB of documents and images",
+                   "Full-text search"
+                 ],
+                 cta_label: "Choose Basic",
+                 cta_path: authenticated? ? billing_checkout_path(tier: "basic") : new_registration_path(pending_tier: "basic"),
+                 cta_method: authenticated? ? :post : :get,
+                 highlight: true %>
+
+      <%= render "pricing_tile",
+                 name: "Advanced",
+                 price_label: "$6/mo",
+                 features: [
+                   "Sync unlimited bookmarks and blurbs",
+                   "Up to 10 GB of documents and images",
+                   "Advanced (AI-powered) full-text search"
+                 ],
+                 cta_label: "Choose Advanced",
+                 cta_path: authenticated? ? billing_checkout_path(tier: "advanced") : new_registration_path(pending_tier: "advanced"),
+                 cta_method: authenticated? ? :post : :get,
+                 highlight: false %>
+    </div>
+  </div>
+</div>

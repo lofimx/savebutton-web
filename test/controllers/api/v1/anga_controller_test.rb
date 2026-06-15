@@ -3,6 +3,11 @@ require "test_helper"
 class Api::V1::AngaControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = create(:user)
+    # Pre-existing tests in this file pre-date the per-tier quota rules and use
+    # arbitrary .md/binary filenames. Upgrade the default user to basic so those
+    # tests continue to validate filename encoding and round-trip behaviour.
+    # The dedicated quota tests (further down) override the tier explicitly.
+    @user.subscription.update!(tier: :basic)
   end
 
   test "should return 401 without authentication" do
@@ -221,6 +226,164 @@ class Api::V1::AngaControllerTest < ActionDispatch::IntegrationTest
 
     file.close
     file.unlink
+  end
+
+  # Quota enforcement
+  test "free user can post .url within 1 MB cap" do
+    @user.subscription.update!(tier: :free)
+    file = Tempfile.new([ "bookmark", ".url" ])
+    file.write("[InternetShortcut]\nURL=https://example.com\n")
+    file.rewind
+    uploaded = Rack::Test::UploadedFile.new(file.path, "text/plain", false, original_filename: "2026-05-07T120000-bookmark.url")
+
+    post "/api/v1/#{@user.email_address}/anga/2026-05-07T120000-bookmark.url",
+         params: { file: uploaded },
+         headers: basic_auth_header(@user.email_address, "password")
+    assert_response :created
+    file.close; file.unlink
+  end
+
+  test "free user posting .url over 1 MB returns 413" do
+    @user.subscription.update!(tier: :free)
+    file = Tempfile.new([ "big", ".url" ])
+    file.write("a" * (Subscription::MAX_STRUCTURAL_BYTES + 1))
+    file.rewind
+    uploaded = Rack::Test::UploadedFile.new(file.path, "text/plain", false, original_filename: "2026-05-07T120000-big.url")
+
+    post "/api/v1/#{@user.email_address}/anga/2026-05-07T120000-big.url",
+         params: { file: uploaded },
+         headers: basic_auth_header(@user.email_address, "password")
+    assert_response :content_too_large
+    file.close; file.unlink
+  end
+
+  test "free user posting binary returns 413" do
+    @user.subscription.update!(tier: :free)
+    file = Tempfile.new([ "img", ".png" ])
+    file.write("fake png")
+    file.rewind
+    uploaded = Rack::Test::UploadedFile.new(file.path, "image/png", false, original_filename: "2026-05-07T120000-img.png")
+
+    post "/api/v1/#{@user.email_address}/anga/2026-05-07T120000-img.png",
+         params: { file: uploaded },
+         headers: basic_auth_header(@user.email_address, "password")
+    assert_response :content_too_large
+    file.close; file.unlink
+  end
+
+  test "free user posting other .md returns 413" do
+    @user.subscription.update!(tier: :free)
+    file = Tempfile.new([ "essay", ".md" ])
+    file.write("# essay\n\nhello")
+    file.rewind
+    uploaded = Rack::Test::UploadedFile.new(file.path, "text/markdown", false, original_filename: "2026-05-07T120000-essay.md")
+
+    post "/api/v1/#{@user.email_address}/anga/2026-05-07T120000-essay.md",
+         params: { file: uploaded },
+         headers: basic_auth_header(@user.email_address, "password")
+    assert_response :content_too_large
+    file.close; file.unlink
+  end
+
+  test "free user posting -blurb.md within 1 MB succeeds" do
+    @user.subscription.update!(tier: :free)
+    file = Tempfile.new([ "blurb", ".md" ])
+    file.write("# blurb")
+    file.rewind
+    uploaded = Rack::Test::UploadedFile.new(file.path, "text/markdown", false, original_filename: "2026-05-07T120000-blurb.md")
+
+    post "/api/v1/#{@user.email_address}/anga/2026-05-07T120000-blurb.md",
+         params: { file: uploaded },
+         headers: basic_auth_header(@user.email_address, "password")
+    assert_response :created
+    file.close; file.unlink
+  end
+
+  test "basic user posting binary that fits succeeds" do
+    @user.subscription.update!(tier: :basic)
+    file = Tempfile.new([ "img", ".png" ])
+    file.write("a" * 1024)
+    file.rewind
+    uploaded = Rack::Test::UploadedFile.new(file.path, "image/png", false, original_filename: "2026-05-07T120000-img.png")
+
+    post "/api/v1/#{@user.email_address}/anga/2026-05-07T120000-img.png",
+         params: { file: uploaded },
+         headers: basic_auth_header(@user.email_address, "password")
+    assert_response :created
+    file.close; file.unlink
+  end
+
+  test "basic user already over quota with expired grace returns 402" do
+    # Already past the line and grace has expired (or was never started).
+    @user.subscription.update!(tier: :basic, bytes_used: 2.gigabytes + 1.megabyte)
+    file = Tempfile.new([ "img", ".png" ])
+    file.write("more bytes")
+    file.rewind
+    uploaded = Rack::Test::UploadedFile.new(file.path, "image/png", false, original_filename: "2026-05-07T120000-img.png")
+
+    post "/api/v1/#{@user.email_address}/anga/2026-05-07T120000-img.png",
+         params: { file: uploaded },
+         headers: basic_auth_header(@user.email_address, "password")
+    assert_response :payment_required
+    file.close; file.unlink
+  end
+
+  test "basic user pushing over quota for first time enters grace and succeeds" do
+    @user.subscription.update!(tier: :basic, bytes_used: 2.gigabytes - 100)
+    file = Tempfile.new([ "img", ".png" ])
+    file.write("a" * 1024)
+    file.rewind
+    uploaded = Rack::Test::UploadedFile.new(file.path, "image/png", false, original_filename: "2026-05-07T120000-img.png")
+
+    post "/api/v1/#{@user.email_address}/anga/2026-05-07T120000-img.png",
+         params: { file: uploaded },
+         headers: basic_auth_header(@user.email_address, "password")
+    assert_response :created
+    @user.subscription.reload
+    assert @user.subscription.in_grace_period?
+    file.close; file.unlink
+  end
+
+  test "friend user can post arbitrarily large binary" do
+    @user.subscription.update!(tier: :friend)
+    file = Tempfile.new([ "doc", ".pdf" ])
+    file.write("a" * (10 * 1024 * 1024)) # 10 MB
+    file.rewind
+    uploaded = Rack::Test::UploadedFile.new(file.path, "application/pdf", false, original_filename: "2026-05-07T120000-big.pdf")
+
+    post "/api/v1/#{@user.email_address}/anga/2026-05-07T120000-big.pdf",
+         params: { file: uploaded },
+         headers: basic_auth_header(@user.email_address, "password")
+    assert_response :created
+    file.close; file.unlink
+  end
+
+  test "friend user posting .url over 1 MB still returns 413" do
+    @user.subscription.update!(tier: :friend)
+    file = Tempfile.new([ "big", ".url" ])
+    file.write("a" * (Subscription::MAX_STRUCTURAL_BYTES + 1))
+    file.rewind
+    uploaded = Rack::Test::UploadedFile.new(file.path, "text/plain", false, original_filename: "2026-05-07T120000-big.url")
+
+    post "/api/v1/#{@user.email_address}/anga/2026-05-07T120000-big.url",
+         params: { file: uploaded },
+         headers: basic_auth_header(@user.email_address, "password")
+    assert_response :content_too_large
+    file.close; file.unlink
+  end
+
+  test "restricted user cannot post anything" do
+    @user.update!(restricted_at: Time.current)
+    file = Tempfile.new([ "blurb", ".md" ])
+    file.write("# blurb")
+    file.rewind
+    uploaded = Rack::Test::UploadedFile.new(file.path, "text/markdown", false, original_filename: "2026-05-07T120000-blurb.md")
+
+    post "/api/v1/#{@user.email_address}/anga/2026-05-07T120000-blurb.md",
+         params: { file: uploaded },
+         headers: basic_auth_header(@user.email_address, "password")
+    assert_response :forbidden
+    file.close; file.unlink
   end
 
   private

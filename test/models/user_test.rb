@@ -7,12 +7,15 @@
 #  email_address       :string           not null
 #  incidental_password :boolean          default(FALSE), not null
 #  password_digest     :string
+#  restricted_at       :datetime
+#  role                :string           default("user"), not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #
 # Indexes
 #
 #  index_users_on_email_address  (email_address) UNIQUE
+#  index_users_on_role           (role)
 #
 require "test_helper"
 

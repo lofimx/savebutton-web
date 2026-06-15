@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Admin - Save Button" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <meta name="robots" content="noindex,nofollow">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+
+    <script>
+      (function() {
+        var pref = localStorage.getItem('theme') || 'auto';
+        var resolved = pref;
+        if (pref === 'auto') {
+          resolved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', resolved);
+      })();
+    </script>
+
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-neutral-50 dark:bg-neutral-950">
+    <%= render "shared/flash" %>
+
+    <div class="min-h-screen flex">
+      <aside class="w-64 border-r border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 flex flex-col gap-1">
+        <div class="px-2 py-3 border-b border-neutral-200 dark:border-neutral-800 mb-3">
+          <%= link_to root_path, class: "block text-lg font-bold text-neutral-900 dark:text-neutral-100 no-underline" do %>
+            Save Button <span class="text-sm font-medium text-neutral-500">/ admin</span>
+          <% end %>
+          <p class="text-xs text-neutral-500 mt-1">Signed in as <%= Current.user.email_address %></p>
+        </div>
+
+        <%= render "admin/shared/nav_link", path: admin_users_path,         label: "Users" %>
+        <%= render "admin/shared/nav_link", path: admin_identities_path,    label: "Identities" %>
+        <%= render "admin/shared/nav_link", path: admin_device_tokens_path, label: "Device Tokens" %>
+        <%= render "admin/shared/nav_link", path: admin_sessions_path,      label: "Sessions" %>
+        <%= render "admin/shared/nav_link", path: admin_versions_path,      label: "Audit Log" %>
+
+        <div class="mt-auto pt-3 border-t border-neutral-200 dark:border-neutral-800">
+          <%= link_to "← Back to app", app_everything_path, class: "block px-2 py-1.5 text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 no-underline" %>
+        </div>
+      </aside>
+
+      <main class="flex-1 p-6 overflow-x-auto">
+        <%= turbo_frame_tag "admin_main" do %>
+          <%= yield %>
+        <% end %>
+      </main>
+    </div>
+  </body>
+</html>

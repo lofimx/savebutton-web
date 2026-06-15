@@ -12,6 +12,9 @@ Rails.application.routes.draw do
 
       get "handshake", to: "handshake#show"
       scope ":user_email", constraints: { user_email: /[^\/]+/ } do
+        # Account/subscription status (read-only, for clients to query restriction/grace)
+        get "account", to: "account#show", as: "user_account"
+
         resources :anga, only: [ :index ], controller: "anga", as: "user_anga"
         get "anga/:filename", to: "anga#show", as: "user_anga_file", constraints: { filename: /[^\/]+/ }
         post "anga/:filename", to: "anga#create", constraints: { filename: /[^\/]+/ }
@@ -83,6 +86,36 @@ Rails.application.routes.draw do
   # Static pages
   get "get-the-apps", to: "pages#get_the_apps", as: :get_the_apps
   get "oauth/extension-callback", to: "pages#oauth_extension_callback", as: :oauth_extension_callback
+
+  # Pricing (public)
+  get "pricing", to: "pricing#show", as: :pricing
+
+  # Billing (authenticated)
+  post "billing/checkout", to: "billing#checkout", as: :billing_checkout
+  post "billing/portal",   to: "billing#portal",   as: :billing_portal
+  get  "billing/return",   to: "billing#return",   as: :billing_return
+  get  "billing/cancel",   to: "billing#cancel",   as: :billing_cancel
+
+  # Stripe webhooks (signature-verified, no auth)
+  post "webhooks/stripe", to: "webhooks/stripe#create", as: :stripe_webhook
+
+  # Admin
+  namespace :admin do
+    root to: "users#index"
+    resources :users, only: [ :index, :show, :destroy ] do
+      member do
+        patch :toggle_friend
+        patch :restrict
+        patch :unrestrict
+        patch :sync_to_stripe
+        patch :recalculate_usage
+      end
+    end
+    resources :identities,    only: [ :index, :show, :destroy ]
+    resources :device_tokens, only: [ :index, :show, :destroy ]
+    resources :sessions,      only: [ :index, :show, :destroy ]
+    resources :versions,      only: [ :index ]
+  end
 
   # Homepage
   root "pages#home"

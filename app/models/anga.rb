@@ -23,6 +23,7 @@ class Anga < ApplicationRecord
 
   after_create_commit :setup_bookmark, if: :bookmark_file?
   after_create_commit :setup_pdf_words, if: :pdf_file?
+  after_create_commit :record_subscription_bytes
 
   belongs_to :user
   has_one_attached :file
@@ -69,5 +70,12 @@ class Anga < ApplicationRecord
 
   def setup_pdf_words
     ExtractPlaintextPdfJob.perform_later(id)
+  end
+
+  def record_subscription_bytes
+    return unless user&.subscription
+    user.subscription.record_anga_bytes!(self)
+  rescue => e
+    Rails.logger.error "🔴 ERROR: Failed to record subscription bytes for anga #{id}: #{e.message}"
   end
 end

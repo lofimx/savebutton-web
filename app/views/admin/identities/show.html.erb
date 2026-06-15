@@ -1,0 +1,19 @@
+<div class="mb-4">
+  <%= link_to "← All identities", admin_identities_path, class: "text-sm text-neutral-500 no-underline" %>
+</div>
+
+<h1 class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Identity</h1>
+<dl class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 p-6">
+  <dt class="text-neutral-500">User</dt>
+  <dd><%= link_to @identity.user.email_address, admin_user_path(@identity.user), class: "underline" %></dd>
+  <dt class="text-neutral-500">Provider</dt>
+  <dd><%= @identity.provider %></dd>
+  <dt class="text-neutral-500">UID</dt>
+  <dd class="font-mono text-xs"><%= @identity.uid %></dd>
+  <dt class="text-neutral-500">Created</dt>
+  <dd><%= @identity.created_at %></dd>
+</dl>
+
+<div class="mt-4">
+  <%= button_to "Delete identity", admin_identity_path(@identity), method: :delete, class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-red-200 dark:border-red-500/40 bg-red-50 dark:bg-red-500/10 text-red-900 dark:text-red-200 cursor-pointer", data: { turbo_confirm: "Delete this identity?" } %>
+</div>

@@ -1,0 +1,30 @@
+<h1 class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Device Tokens</h1>
+
+<div class="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-neutral-50 dark:bg-neutral-800/50 text-left text-xs uppercase tracking-wide text-neutral-500">
+      <tr>
+        <th class="px-4 py-3">User</th>
+        <th class="px-4 py-3">Device</th>
+        <th class="px-4 py-3">Type</th>
+        <th class="px-4 py-3">Last used</th>
+        <th class="px-4 py-3">Created</th>
+        <th class="px-4 py-3"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @device_tokens.each do |token| %>
+        <tr class="border-t border-neutral-200 dark:border-neutral-800">
+          <td class="px-4 py-2"><%= link_to token.user.email_address, admin_user_path(token.user), class: "underline" %></td>
+          <td class="px-4 py-2"><%= token.device_name %></td>
+          <td class="px-4 py-2 text-neutral-600 dark:text-neutral-400"><%= token.device_type %></td>
+          <td class="px-4 py-2 text-neutral-500"><%= token.last_used_at&.strftime("%Y-%m-%d %H:%M") || "—" %></td>
+          <td class="px-4 py-2 text-neutral-500"><%= token.created_at.strftime("%Y-%m-%d") %></td>
+          <td class="px-4 py-2 text-right">
+            <%= button_to "Revoke", admin_device_token_path(token), method: :delete, class: "px-2 py-1 text-xs rounded border border-red-200 dark:border-red-500/40 bg-red-50 dark:bg-red-500/10 text-red-900 dark:text-red-200 cursor-pointer", data: { turbo_confirm: "Revoke this device token?" } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

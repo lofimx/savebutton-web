@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_11_212916) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_01_191857) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -116,6 +116,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_11_212916) do
     t.index ["user_id"], name: "index_metas_on_user_id"
   end
 
+  create_table "processed_stripe_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "event_id", null: false
+    t.string "event_type", null: false
+    t.datetime "processed_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_processed_stripe_events_on_event_id", unique: true
+  end
+
   create_table "sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "ip_address"
@@ -125,13 +134,34 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_11_212916) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
+  create_table "subscriptions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "bytes_used", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "current_period_end"
+    t.datetime "grace_period_ends_at"
+    t.boolean "slop_enabled", default: false, null: false
+    t.string "stripe_customer_id"
+    t.string "stripe_status"
+    t.string "stripe_subscription_id"
+    t.integer "tier", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.index ["stripe_customer_id"], name: "index_subscriptions_on_stripe_customer_id", unique: true, where: "(stripe_customer_id IS NOT NULL)"
+    t.index ["stripe_subscription_id"], name: "index_subscriptions_on_stripe_subscription_id", unique: true, where: "(stripe_subscription_id IS NOT NULL)"
+    t.index ["tier"], name: "index_subscriptions_on_tier"
+    t.index ["user_id"], name: "index_subscriptions_on_user_id", unique: true
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email_address", null: false
     t.boolean "incidental_password", default: false, null: false
     t.string "password_digest"
+    t.datetime "restricted_at"
+    t.string "role", default: "user", null: false
     t.datetime "updated_at", null: false
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
+    t.index ["role"], name: "index_users_on_role"
   end
 
   create_table "versions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -165,5 +195,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_11_212916) do
   add_foreign_key "metas", "angas", on_delete: :nullify
   add_foreign_key "metas", "users"
   add_foreign_key "sessions", "users"
+  add_foreign_key "subscriptions", "users"
   add_foreign_key "words", "angas"
 end

@@ -1,9 +1,15 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
+# Idempotent seed data. Safe to re-run.
 #
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# Run with: bin/rails db:seed
+
+if Rails.env.development?
+  %w[free basic advanced friend].each do |tier|
+    email = "#{tier}@example.com"
+    user = User.find_or_create_by!(email_address: email) do |u|
+      u.password = "password"
+    end
+    sub = user.subscription || user.create_subscription!(tier: :free)
+    sub.update!(tier: tier.to_sym)
+    puts "Seeded #{email} (tier: #{tier})"
+  end
+end

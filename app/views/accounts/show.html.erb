@@ -46,6 +46,8 @@
       </div>
     </div>
 
+    <%= render "subscription", subscription: @user.subscription, user: @user %>
+
     <section class="bg-white dark:bg-neutral-900 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 mb-4">
       <h2 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-3">Email Address</h2>
       <%= form_with url: account_path, method: :patch, class: "flex flex-col gap-3" do |f| %>

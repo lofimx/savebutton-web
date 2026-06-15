@@ -1,0 +1,36 @@
+<div class="flex items-center justify-between mb-4">
+  <h1 class="text-2xl font-bold text-neutral-900 dark:text-neutral-100">Audit Log</h1>
+  <%= form_with url: admin_versions_path, method: :get, local: true, class: "flex gap-2" do |f| %>
+    <%= f.text_field :user_id, value: params[:user_id], placeholder: "Filter by user UUID", class: "px-3 py-1.5 text-sm rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 min-h-[36px] w-72 font-mono text-xs" %>
+    <%= f.submit "Filter", class: "px-3 py-1.5 text-sm font-medium rounded-lg bg-primary-400 hover:bg-primary-500 text-neutral-900 cursor-pointer border-none" %>
+  <% end %>
+</div>
+
+<% if @user %>
+  <p class="text-sm text-neutral-500 mb-3">Showing versions for <strong><%= @user.email_address %></strong></p>
+<% end %>
+
+<div class="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-neutral-50 dark:bg-neutral-800/50 text-left text-xs uppercase tracking-wide text-neutral-500">
+      <tr>
+        <th class="px-4 py-3">When</th>
+        <th class="px-4 py-3">Type</th>
+        <th class="px-4 py-3">Event</th>
+        <th class="px-4 py-3">Item ID</th>
+        <th class="px-4 py-3">Whodunnit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @versions.each do |v| %>
+        <tr class="border-t border-neutral-200 dark:border-neutral-800">
+          <td class="px-4 py-2 text-neutral-500"><%= v.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+          <td class="px-4 py-2"><%= v.item_type %></td>
+          <td class="px-4 py-2"><%= v.event %></td>
+          <td class="px-4 py-2 font-mono text-xs"><%= v.item_id %></td>
+          <td class="px-4 py-2 font-mono text-xs"><%= v.whodunnit || "—" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

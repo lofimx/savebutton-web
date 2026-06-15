@@ -7,12 +7,15 @@
 #  email_address       :string           not null
 #  incidental_password :boolean          default(FALSE), not null
 #  password_digest     :string
+#  restricted_at       :datetime
+#  role                :string           default("user"), not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #
 # Indexes
 #
 #  index_users_on_email_address  (email_address) UNIQUE
+#  index_users_on_role           (role)
 #
 class User < ApplicationRecord
   has_paper_trail
@@ -23,7 +26,10 @@ class User < ApplicationRecord
   has_many :device_tokens, dependent: :destroy
   has_many :angas, dependent: :destroy
   has_many :metas, dependent: :destroy
+  has_one :subscription, dependent: :destroy
   has_one_attached :avatar
+
+  enum :role, { user: "user", staff: "staff" }, default: "user"
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
@@ -31,6 +37,8 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 8 }, if: :password_required?
   validates :password, confirmation: true, if: -> { password.present? }
   validates :password_confirmation, presence: true, if: -> { password.present? && password_confirmation_required? }
+
+  after_create :ensure_subscription
 
   attr_accessor :password_confirmation_required
 
@@ -41,6 +49,14 @@ class User < ApplicationRecord
   def password_required?
     # Password is required if no password_digest exists (new user) and no OAuth identity
     password_digest.nil? || password.present?
+  end
+
+  def restricted?
+    restricted_at.present?
+  end
+
+  def ensure_subscription
+    create_subscription!(tier: :free) unless subscription
   end
 
   private

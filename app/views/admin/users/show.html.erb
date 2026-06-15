@@ -1,0 +1,89 @@
+<div class="mb-4">
+  <%= link_to "← All users", admin_users_path, class: "text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 no-underline" %>
+</div>
+
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <h1 class="text-2xl font-bold text-neutral-900 dark:text-neutral-100"><%= @user.email_address %></h1>
+    <p class="text-sm text-neutral-500">
+      Role: <%= @user.role %>
+      <% if @user.restricted? %>
+        <span class="ml-2 px-2 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-300">RESTRICTED</span>
+      <% end %>
+    </p>
+  </div>
+  <div><%= render "admin/users/tier_badge", subscription: @user.subscription %></div>
+</div>
+
+<section class="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 p-6 mb-4">
+  <h2 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-3">Subscription</h2>
+  <dl class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+    <dt class="text-neutral-500">Tier</dt>
+    <dd class="text-neutral-900 dark:text-neutral-100"><%= @user.subscription.tier %></dd>
+
+    <dt class="text-neutral-500">Stripe status</dt>
+    <dd class="text-neutral-900 dark:text-neutral-100"><%= @user.subscription.stripe_status || "—" %></dd>
+
+    <dt class="text-neutral-500">Stripe customer</dt>
+    <dd class="text-neutral-900 dark:text-neutral-100 font-mono text-xs"><%= @user.subscription.stripe_customer_id || "—" %></dd>
+
+    <dt class="text-neutral-500">Stripe subscription</dt>
+    <dd class="text-neutral-900 dark:text-neutral-100 font-mono text-xs"><%= @user.subscription.stripe_subscription_id || "—" %></dd>
+
+    <dt class="text-neutral-500">Current period end</dt>
+    <dd class="text-neutral-900 dark:text-neutral-100"><%= @user.subscription.current_period_end&.strftime("%Y-%m-%d %H:%M %Z") || "—" %></dd>
+
+    <dt class="text-neutral-500">Grace period ends</dt>
+    <dd class="text-neutral-900 dark:text-neutral-100"><%= @user.subscription.grace_period_ends_at&.strftime("%Y-%m-%d %H:%M %Z") || "—" %></dd>
+
+    <dt class="text-neutral-500">Bytes used</dt>
+    <dd class="text-neutral-900 dark:text-neutral-100"><%= number_to_human_size(@user.subscription.bytes_used) %></dd>
+
+    <dt class="text-neutral-500">Quota</dt>
+    <dd class="text-neutral-900 dark:text-neutral-100">
+      <% q = @user.subscription.quota_bytes %>
+      <%= q == Float::INFINITY ? "Unlimited" : number_to_human_size(q) %>
+    </dd>
+  </dl>
+
+  <p class="text-xs text-neutral-500 mt-4">
+    Tier changes (Free / Basic / Advanced) must go through Stripe. Use <strong>Sync to Stripe</strong> after editing the Stripe dashboard manually.
+  </p>
+</section>
+
+<section class="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 p-6 mb-4">
+  <h2 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-3">Counts</h2>
+  <dl class="grid grid-cols-4 gap-4 text-sm">
+    <div><dt class="text-neutral-500">Anga</dt><dd class="text-neutral-900 dark:text-neutral-100 text-xl font-semibold"><%= @anga_count %></dd></div>
+    <div><dt class="text-neutral-500">Sessions</dt><dd class="text-neutral-900 dark:text-neutral-100 text-xl font-semibold"><%= @session_count %></dd></div>
+    <div><dt class="text-neutral-500">Identities</dt><dd class="text-neutral-900 dark:text-neutral-100 text-xl font-semibold"><%= @identity_count %></dd></div>
+    <div><dt class="text-neutral-500">Devices</dt><dd class="text-neutral-900 dark:text-neutral-100 text-xl font-semibold"><%= @device_token_count %></dd></div>
+  </dl>
+</section>
+
+<section class="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 p-6 mb-4">
+  <h2 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-3">Actions</h2>
+  <div class="flex flex-wrap gap-3">
+    <%= button_to (@user.subscription.friend? ? "Remove friend tier" : "Grant friend tier"),
+                   toggle_friend_admin_user_path(@user),
+                   method: :patch,
+                   class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-700 cursor-pointer",
+                   data: { turbo_confirm: "Toggle friend tier?" } %>
+
+    <% if @user.restricted? %>
+      <%= button_to "Unrestrict", unrestrict_admin_user_path(@user), method: :patch, class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-700 cursor-pointer" %>
+    <% else %>
+      <%= button_to "Restrict (block writes)", restrict_admin_user_path(@user), method: :patch, class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-amber-200 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/10 text-amber-900 dark:text-amber-200 hover:bg-amber-100 dark:hover:bg-amber-500/20 cursor-pointer", data: { turbo_confirm: "Block API writes for this user?" } %>
+    <% end %>
+
+    <% if @user.subscription.stripe_customer_id.present? %>
+      <%= button_to "Sync to Stripe", sync_to_stripe_admin_user_path(@user), method: :patch, class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-700 cursor-pointer" %>
+    <% else %>
+      <button class="px-3 py-1.5 text-sm font-medium rounded-lg border border-neutral-200 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 text-neutral-400 cursor-not-allowed" disabled>Sync to Stripe</button>
+    <% end %>
+
+    <%= button_to "Recalculate usage", recalculate_usage_admin_user_path(@user), method: :patch, class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-700 cursor-pointer" %>
+
+    <%= button_to "Delete user", admin_user_path(@user), method: :delete, class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-red-200 dark:border-red-500/40 bg-red-50 dark:bg-red-500/10 text-red-900 dark:text-red-200 hover:bg-red-100 dark:hover:bg-red-500/20 cursor-pointer", data: { turbo_confirm: "Hard-delete #{@user.email_address} and all their data? This cannot be undone." } %>
+  </div>
+</section>

@@ -69,6 +69,9 @@ gem "toml-rb"
 # Versioning for mutable models (User, Identity, Session, etc.)
 gem "paper_trail", "~> 17.0"
 
+# Stripe for payment subscriptions
+gem "stripe", "~> 13.0"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

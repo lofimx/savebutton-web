@@ -1,0 +1,23 @@
+<div class="mb-4">
+  <%= link_to "← All device tokens", admin_device_tokens_path, class: "text-sm text-neutral-500 no-underline" %>
+</div>
+
+<h1 class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4"><%= @device_token.device_name %></h1>
+<dl class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 p-6">
+  <dt class="text-neutral-500">User</dt>
+  <dd><%= link_to @device_token.user.email_address, admin_user_path(@device_token.user), class: "underline" %></dd>
+  <dt class="text-neutral-500">Type</dt>
+  <dd><%= @device_token.device_type %></dd>
+  <dt class="text-neutral-500">App version</dt>
+  <dd><%= @device_token.app_version || "—" %></dd>
+  <dt class="text-neutral-500">Last used</dt>
+  <dd><%= @device_token.last_used_at || "Never" %></dd>
+  <dt class="text-neutral-500">Expires</dt>
+  <dd><%= @device_token.expires_at %></dd>
+  <dt class="text-neutral-500">Created</dt>
+  <dd><%= @device_token.created_at %></dd>
+</dl>
+
+<div class="mt-4">
+  <%= button_to "Revoke device token", admin_device_token_path(@device_token), method: :delete, class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-red-200 dark:border-red-500/40 bg-red-50 dark:bg-red-500/10 text-red-900 dark:text-red-200 cursor-pointer", data: { turbo_confirm: "Revoke this device token?" } %>
+</div>

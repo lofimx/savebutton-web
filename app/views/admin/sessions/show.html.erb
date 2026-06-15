@@ -1,0 +1,19 @@
+<div class="mb-4">
+  <%= link_to "← All sessions", admin_sessions_path, class: "text-sm text-neutral-500 no-underline" %>
+</div>
+
+<h1 class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Session</h1>
+<dl class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 p-6">
+  <dt class="text-neutral-500">User</dt>
+  <dd><%= link_to @session.user.email_address, admin_user_path(@session.user), class: "underline" %></dd>
+  <dt class="text-neutral-500">IP</dt>
+  <dd class="font-mono text-xs"><%= @session.ip_address %></dd>
+  <dt class="text-neutral-500">User agent</dt>
+  <dd class="text-xs"><%= @session.user_agent %></dd>
+  <dt class="text-neutral-500">Created</dt>
+  <dd><%= @session.created_at %></dd>
+</dl>
+
+<div class="mt-4">
+  <%= button_to "Terminate session", admin_session_path(@session), method: :delete, class: "px-3 py-1.5 text-sm font-medium rounded-lg border border-red-200 dark:border-red-500/40 bg-red-50 dark:bg-red-500/10 text-red-900 dark:text-red-200 cursor-pointer", data: { turbo_confirm: "Terminate this session?" } %>
+</div>

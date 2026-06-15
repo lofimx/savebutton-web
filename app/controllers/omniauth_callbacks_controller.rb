@@ -53,7 +53,24 @@ class OmniauthCallbacksController < ApplicationController
 
     Rails.logger.info "OmniAuth: stored identity in session — provider=#{auth.provider}, email=#{auth.info.email}, device_auth_present=#{session[:device_auth].present?}"
 
-    redirect_to after_authentication_url, notice: "Successfully signed in with #{provider_name(auth.provider)}!"
+    pending_tier = session.delete(:pending_tier)
+    if RegistrationsController::VALID_PENDING_TIERS.include?(pending_tier.to_s)
+      redirect_to_stripe_checkout(user, pending_tier)
+    else
+      redirect_to after_authentication_url, notice: "Successfully signed in with #{provider_name(auth.provider)}!"
+    end
+  end
+
+  def redirect_to_stripe_checkout(user, tier)
+    checkout_session = StripeCheckoutSessionCreator.new(
+      user, tier,
+      success_url: billing_return_url,
+      cancel_url: billing_cancel_url
+    ).call
+    redirect_to checkout_session.url, allow_other_host: true, status: :see_other
+  rescue StripeCheckoutSessionCreator::Error, Stripe::StripeError => e
+    Rails.logger.error "🔴 ERROR: Post-OAuth Stripe checkout failed for user #{user.id}: #{e.message}"
+    redirect_to account_path, alert: "Billing checkout could not be started: #{e.message}"
   end
 
   def provider_name(provider)

@@ -1,0 +1,28 @@
+<h1 class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Identities</h1>
+
+<div class="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-neutral-50 dark:bg-neutral-800/50 text-left text-xs uppercase tracking-wide text-neutral-500">
+      <tr>
+        <th class="px-4 py-3">User</th>
+        <th class="px-4 py-3">Provider</th>
+        <th class="px-4 py-3">UID</th>
+        <th class="px-4 py-3">Created</th>
+        <th class="px-4 py-3"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @identities.each do |identity| %>
+        <tr class="border-t border-neutral-200 dark:border-neutral-800">
+          <td class="px-4 py-2"><%= link_to identity.user.email_address, admin_user_path(identity.user), class: "underline" %></td>
+          <td class="px-4 py-2"><%= identity.provider %></td>
+          <td class="px-4 py-2 font-mono text-xs"><%= identity.uid %></td>
+          <td class="px-4 py-2 text-neutral-500"><%= identity.created_at.strftime("%Y-%m-%d") %></td>
+          <td class="px-4 py-2 text-right">
+            <%= button_to "Delete", admin_identity_path(identity), method: :delete, class: "px-2 py-1 text-xs rounded border border-red-200 dark:border-red-500/40 bg-red-50 dark:bg-red-500/10 text-red-900 dark:text-red-200 cursor-pointer", data: { turbo_confirm: "Delete this identity?" } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
