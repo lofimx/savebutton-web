@@ -11,6 +11,7 @@
       </li>
     <% end %>
   </ul>
+
   <% if cta_method == :post %>
     <%= button_to cta_label, cta_path, method: :post, class: "w-full px-4 py-2 text-sm font-medium rounded-lg bg-primary-400 hover:bg-primary-500 text-neutral-900 transition-colors cursor-pointer border-none" %>
   <% else %>

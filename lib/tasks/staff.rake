@@ -1,11 +1,11 @@
 namespace :kaya do
   namespace :staff do
-    desc "Promote a user to staff role. Usage: bin/rails 'staff:promote[user@example.com]'"
+    desc "Promote a user to staff role. Usage: bin/rails 'kaya:staff:promote[user@example.com]'"
     task :promote, [ :email ] => :environment do |_t, args|
       email = args[:email].to_s
 
       if email.blank?
-        $stderr.puts "Error: email is required. Usage: bin/rails 'staff:promote[user@example.com]'"
+        $stderr.puts "Error: email is required. Usage: bin/rails 'kaya:staff:promote[user@example.com]'"
         exit 1
       end
 
@@ -26,12 +26,12 @@ namespace :kaya do
       end
     end
 
-    desc "Demote a user from staff to regular user. Usage: bin/rails 'staff:demote[user@example.com]'"
+    desc "Demote a user from staff to regular user. Usage: bin/rails 'kaya:staff:demote[user@example.com]'"
     task :demote, [ :email ] => :environment do |_t, args|
       email = args[:email].to_s
 
       if email.blank?
-        $stderr.puts "Error: email is required. Usage: bin/rails 'staff:demote[user@example.com]'"
+        $stderr.puts "Error: email is required. Usage: bin/rails 'kaya:staff:demote[user@example.com]'"
         exit 1
       end
 
