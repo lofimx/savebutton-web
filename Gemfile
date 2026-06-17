@@ -70,7 +70,7 @@ gem "toml-rb"
 gem "paper_trail", "~> 17.0"
 
 # Stripe for payment subscriptions
-gem "stripe", "~> 13.0"
+gem "stripe", "~> 19.2"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
