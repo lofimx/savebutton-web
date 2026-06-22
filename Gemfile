@@ -53,6 +53,11 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem "image_processing", "~> 2.0"
 
+# ImageMagick bindings for favicon ICO->PNG sanitization (Files::Favicon).
+# image_processing 2.0 dropped its transitive mini_magick dependency, so we
+# declare it explicitly here.
+gem "mini_magick", "~> 5.0"
+
 # Full-text search with fuzzy matching
 gem "amatch"
 gem "pdf-reader"
