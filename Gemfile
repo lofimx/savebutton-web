@@ -107,6 +107,6 @@ group :test do
   gem "minitest-mock"
 end
 
-gem "tailwindcss-rails", "~> 4.4"
+gem "tailwindcss-rails", "~> 4.6"
 
 gem "device_detector", "~> 1.1"
