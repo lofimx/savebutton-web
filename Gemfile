@@ -57,7 +57,7 @@ gem "ruby-vips", "~> 2.0"
 # ImageMagick bindings for favicon ICO->PNG sanitization (Files::Favicon).
 # image_processing 2.0 dropped its transitive mini_magick dependency, so we
 # declare it explicitly here.
-gem "mini_magick", "~> 5.0"
+gem "mini_magick", "~> 5.3"
 
 # Full-text search with fuzzy matching
 gem "amatch"
