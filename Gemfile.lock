@@ -83,7 +83,7 @@ GEM
     amatch (0.7.0)
       mize
       tins (~> 1)
-    annotaterb (4.22.0)
+    annotaterb (4.24.0)
       activerecord (>= 6.0.0)
       activesupport (>= 6.0.0)
     ast (2.4.3)
