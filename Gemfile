@@ -52,11 +52,12 @@ gem "thruster", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem "image_processing", "~> 2.0"
+gem "ruby-vips", "~> 2.0"
 
 # ImageMagick bindings for favicon ICO->PNG sanitization (Files::Favicon).
 # image_processing 2.0 dropped its transitive mini_magick dependency, so we
 # declare it explicitly here.
-gem "mini_magick", "~> 5.0"
+gem "mini_magick", "~> 5.3"
 
 # Full-text search with fuzzy matching
 gem "amatch"
@@ -75,7 +76,7 @@ gem "toml-rb"
 gem "paper_trail", "~> 17.0"
 
 # Stripe for payment subscriptions
-gem "stripe", "~> 13.0"
+gem "stripe", "~> 19.4"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
